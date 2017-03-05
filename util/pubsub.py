@@ -8,6 +8,7 @@ class PubSub(object):
   """ Simple Publish/Subscribe implementation 
   """
   def __init__(self, name='pubsub'):
+    super(PubSub, self).__init__()
     self.name = name
     self._lstAllEvents = []
     self._dctSubEvents = {}
