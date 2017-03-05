@@ -40,7 +40,7 @@ class MongoDBCreateTest(MongoTestCase):
     db = MongoDB()
     with db:
       dct = db.databases()
-      print dct
+      #print dct
 
 
 class MongoDBTest(MongoTestCase):
