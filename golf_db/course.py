@@ -15,11 +15,20 @@ class GolfHole(object):
       self.fromDict(dct)
    
   def fromDict(self, dct):
+    """Load from a dictionary."""
     self.par = dct['par']
     self.handicap = dct['handicap']
   
   def toDict(self):
+    """Return a dictionary of all values."""
     return { 'par': self.par, 'handicap': self.handicap }
+
+  def __eq__(self, other):
+    return (self.par == other.par and
+            self.handicap == other.handicap)
+
+  def __ne__(self,other):
+    return not self == other
 
   def __str__(self):
     return 'par {} handicap {}'.format(self.par, self.handicap)
@@ -49,6 +58,13 @@ class GolfCourse(object):
     return { 'name': self.name,
              'holes': [hole.toDict() for hole in self.holes] }
   
+  def __eq__(self, other):
+    return (self.name == other.name and
+            self.holes == other.holes)
+
+  def __ne__(self, other):
+    return not self == other
+
   def __str__(self):
     return '{} - {} holes'.format(self.name, len(self.holes))
   
