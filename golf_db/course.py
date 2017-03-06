@@ -21,7 +21,12 @@ class GolfHole(object):
   def toDict(self):
     return { 'par': self.par, 'handicap': self.handicap }
 
-
+  def __str__(self):
+    return 'par {} handicap {}'.format(self.par, self.handicap)
+  
+  def __repr__(self):
+    return 'GolfHole(dct={})'.format(self.toDict())
+  
 class GolfCourse(object):
   """Golf course object
   
@@ -48,4 +53,4 @@ class GolfCourse(object):
     return '{} - {} holes'.format(self.name, len(self.holes))
   
   def __repr__(self):
-    return 'GolfCourse(dct={}'.format(self.toDict())
+    return 'GolfCourse(dct={})'.format(self.toDict())

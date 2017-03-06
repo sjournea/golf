@@ -1,6 +1,6 @@
 import unittest
 
-from golf_db.course import GolfCourse
+from golf_db.course import GolfCourse, GolfHole
 
 from util.tl_logger import TLLog
 log = TLLog.getLogger('mongo')
@@ -127,3 +127,42 @@ class GolfCourseDictCase(unittest.TestCase):
       course = GolfCourse()
       course.fromDict(dct)
       self.assertEqual(course.toDict(), dct)
+
+class GolfCourseHoleCase(unittest.TestCase):
+  lstDicts = [
+    {'par': 5, 'handicap': 1},
+    {'par': 4, 'handicap': 10},
+    {'par': 3, 'handicap': 18},
+  ]
+
+  def test_init_empty(self):
+    # check default parameters
+    hole = GolfHole()
+    self.assertIsNone(hole.par)
+    self.assertIsNone(hole.handicap)
+
+  def test_init_from_dict(self):
+    for dct in self.lstDicts:
+      hole = GolfHole(dct=dct)
+      self.assertEqual(dct['par'], hole.par)
+      self.assertEqual(dct['handicap'], hole.handicap)
+      
+class GolfHoleDictCase(unittest.TestCase):
+  lstDicts = [
+    {'par': 5, 'handicap': 1},
+    {'par': 4, 'handicap': 10},
+    {'par': 3, 'handicap': 18},
+  ]
+  def test_toDict(self):
+    # check course name
+    for dct in self.lstDicts:
+      hole = GolfHole(dct=dct) 
+      self.assertEqual(hole.toDict(), dct)
+    
+  def test_fromDict(self):
+    # check course name
+    for dct in self.lstDicts:
+      hole = GolfHole() 
+      hole.fromDict(dct)
+      self.assertEqual(hole.toDict(), dct)
+
