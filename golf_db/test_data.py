@@ -84,8 +84,15 @@ poppy_hills_men_holes = [
 ]
 
 GolfCourseTestData = [
-  {'name': 'Canyon Lakes', 'holes': canyon_lakes_mens_holes},
-  {'name': 'Santa Jose Muni', 'holes':sj_muni_holes},
-  {'name': 'Diablo Grande', 'holes':diablo_grande_men_holes},
-  {'name': 'Poppy Hills', 'holes':poppy_hills_men_holes},
+  {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes},
+  {'name': 'Santa Jose Muni', 'holes': sj_muni_holes},
+  {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes},
+  {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes},
+]
+
+GolfPlayerTestData = [
+  {'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 19.8},
+  {'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
+  {'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
+  {'first_name': 'Mike',  'last_name': 'Myers',    'nick_name': 'Rock',   'handicap': 22.0},
 ]

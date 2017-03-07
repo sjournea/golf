@@ -70,3 +70,52 @@ class GolfCourse(object):
   
   def __repr__(self):
     return 'GolfCourse(dct={})'.format(self.toDict())
+  
+
+class GolfPlayer(object):
+  """Golf player
+  
+  Members:
+    first_name - string
+    last_name  - string
+    nick_name  - string
+    handicap   - float
+  """
+  def __init__(self, dct=None):
+    super(GolfPlayer, self).__init__()
+    self.first_name = None
+    self.last_name = None
+    self.nick_name = None
+    self.handicap = None
+    if dct:
+      self.fromDict(dct)
+   
+  def fromDict(self, dct):
+    """Load from a dictionary."""
+    self.first_name = dct['first_name']
+    self.last_name = dct['last_name']
+    self.nick_name = dct['nick_name']
+    self.handicap = dct['handicap']
+    
+  def toDict(self):
+    """Return a dictionary of all values."""
+    return { 'first_name': self.first_name,
+             'last_name': self.last_name,
+             'nick_name': self.nick_name,
+             'handicap': self.handicap,
+             }
+
+  def __eq__(self, other):
+    return (self.first_name == other.first_name and
+            self.last_name == other.last_name and
+            self.nick_name == other.nick_name and
+            self.handicap == other.handicap)
+
+  def __ne__(self,other):
+    return not self == other
+
+  def __str__(self):
+    return '{} {} ({}) handicap {}'.format(self.first_name, self.last_name, self.nick_name, self.handicap)
+  
+  def __repr__(self):
+    return 'GolfPlayer(dct={})'.format(self.toDict())
