@@ -24,16 +24,20 @@ TLLog.config( 'logs\\dbmain.log', defLogLevel=logging.INFO )
 log = TLLog.getLogger( 'dbmain' )
 
 class GolfMenu(Menu):
-  def __init__(self, mongo_db, cmdFile=None):
+  def __init__(self, mongo_db, cmdFile=None, **kwargs):
     super(GolfMenu, self).__init__(cmdFile)
     self.db = mongo_db
-    self.database = None
+    self.database = kwargs.get('database')
     # add menu items
-    self.addMenuItem( MenuItem( 'li', '',             'Show databases.' ,                   self._showDatabases) )
-    self.addMenuItem( MenuItem( 'td', '<database>',   'create golf test data database.',    self._createGolfDatabase) )
-    self.addMenuItem( MenuItem( 'dr', '<database>',   'Drop a database.',                   self._dropDatabase) )
-    self.addMenuItem( MenuItem( 'use', '<database>',  'Use a database.',                    self._useDatabase) )
-    ##self.addMenuItem( MenuItem( 'co', '',      'Execute a commit', self._commit))
+    self.addMenuItem( MenuItem( 'dl', '',             'Show databases.' ,                  self._showDatabases) )
+    self.addMenuItem( MenuItem( 'dc', '<database>',   'create golf test data database.',   self._createGolfDatabase) )
+    self.addMenuItem( MenuItem( 'dr', '<database>',   'Drop a database.',                  self._dropDatabase) )
+    self.addMenuItem( MenuItem( 'use', '<database>',  'Use a database.',                   self._useDatabase) )
+    self.addMenuItem( MenuItem( 'pll',  '',           'List players.',                     self._listPlayers) )
+    self.addMenuItem( MenuItem( 'col',  '',           'List courses.',                     self._listCourses) )
+    self.addMenuItem( MenuItem( 'co', '',             'Execute a command',                 self._execute))
+    self.addMenuItem( MenuItem( 'cos', '',            'Get a scorecard'  ,                 self._courseGetScorecard))
+    self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     ##self.addMenuItem( MenuItem( 'f1', '',      'fetch one result', self._fetchone))
     ##self.addMenuItem( MenuItem( 'fa', '',      'fetch all results', self._fetchall))
     #self.addMenuItem( MenuItem( 'ta', '',      'Show tables', self._showTables))
@@ -55,7 +59,7 @@ class GolfMenu(Menu):
     self.header = 'Mongo DB - host:{} port:{} database:{}'.format(self.db.host, self.db.port, self.database)
 
   def _showDatabases(self):
-    with self.db as db:
+    with self.db as session:
       dctDatabases = self.db.databases()
     for database, tables in dctDatabases.items():
       print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
@@ -63,14 +67,14 @@ class GolfMenu(Menu):
   def _dropDatabase(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    with self.db as db:
+    with self.db as session:
       self.db.drop_database(self.lstCmd[1])
 
   def _createGolfDatabase(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     db_name = self.lstCmd[1]
-    with self.db as db:
+    with self.db as session:
       self.db.drop_database(db_name)
       self.db.insert_many(db_name, 'players', GolfPlayerTestData)
       self.db.insert_many(db_name, 'courses', GolfCourseTestData)
@@ -81,15 +85,68 @@ class GolfMenu(Menu):
     self.database = self.lstCmd[1]
     self.updateHeader()
 
+  def _listPlayers(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    with self.db as session:
+      db = session.conn[self.database]
+      for dct in db.players.find():
+        player = GolfPlayer(dct=dct)
+        print player
+      
+  def _listCourses(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    with self.db as session:
+      db = session.conn[self.database]
+      for dct in db.courses.find():
+        course = GolfCourse(dct=dct)
+        print course
+      
+  def _execute(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    with self.db as session:
+      db = session.conn[self.database]
+      cmd = ' '.join(self.lstCmd[1:])
+      cmd_string = 'rc = db.{}'.format(cmd)
+      print 'cmd_string:"{}"'.format(cmd_string)
+      exec(cmd_string)
+      print rc
+
+  def _playerPut(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    with self.db as session:
+      db = session.conn[self.database]
+      dct = db.players.find_one()
+      player = GolfPlayer(dct=dct)
+      print player
+      player.last_name = 'Abbaub'
+      player.put(db.players)
+
+  def _courseGetScorecard(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    with self.db as session:
+      db = session.conn[self.database]
+      dct = db.courses.find_one({'name': { '$regex': self.lstCmd[1]}})
+      course = GolfCourse(dct=dct)
+      print course
+      lst = course.getScorecard()
+      for line in lst:
+        print line
+
   #def _disconnect(self):
     #self.db.close()
     #self.updateHeader()
 
-  #def _execute(self):
-    #if len(self.lstCmd) < 2:
-      #raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    #sql = ' '.join( self.lstCmd[1:] )
-    #self.db.execute( sql )
 
   #def _commit(self):
     #self.db.commit()
@@ -349,7 +406,7 @@ def main():
     db = MongoDB(host=options.db_host, port=options.db_port)
 
     # create menu application 
-    menu = GolfMenu(db, options.cmdFile)
+    menu = GolfMenu(db, options.cmdFile, database=options.database)
     menu.runMenu()
 
   except Exception, err:

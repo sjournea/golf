@@ -79,6 +79,13 @@ class Collection(object):
     log.debug( 'create_index() - index:{0}'.format(index))
     self.coll.create_index(index)
 
+
+class MongoSession(object):
+  def __init__(self, conn):
+    self.conn = conn
+
+  
+    
 class MongoDB(object):
   """ class for mongo db usage """
   DEF_HOST = 'localhost'
@@ -103,7 +110,7 @@ class MongoDB(object):
       s = 'connect() fail - %s' % ex
       log.error( s )
       raise Exception( s )
-    return self._conn
+    return MongoSession(self._conn)
   
   def __exit__(self, ex_ty, ex_val, tb):
     log.debug( '__exit__()')

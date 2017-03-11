@@ -1,38 +1,57 @@
 """course.py - simple golf course class."""
 
 class DB(object):
-  def __init__(self):
+  """Abstract - fields MUST be defined."""
+  def __init__(self, dct=None):
     super(DB, self).__init__()
+    # Add _id field
+    self.fields.append('_id')
+
+  def put(self, collection):
+    collection.save(self.toDict(), safe=True)
+
+
+class Doc(object):
+  """Abstract fields MUST be defined."""
+  def __init__(self, dct=None):
+    super(Doc, self).__init__()
+    # initiaze all fields to None
+    for field in self.fields:
+      setattr(self, field, None)
+    # initialize from dictionary
+    if dct:
+      self.fromDict(dct)
+  
+  def fromDict(self, dct):
+    for field in self.fields:
+      setattr(self, field, dct.get(field))
+  
+  def toDict(self):
+    dct = {}
+    for field in self.fields:
+      dct[field] = getattr(self, field)
+    return dct
     
-class GolfHole(object):
+  def __eq__(self, other):
+    for field in self.fields:
+      if getattr(self, field) != getattr(other, field):
+        return False
+    return True
+
+  def __ne__(self,other):
+    return not self == other
+
+
+class GolfHole(Doc):
   """Golf hole
   
   Members:
     par      - Int - Usually 3, 4, or 5.
     handicap - Int - 1 to 18.
   """
+  fields = ['par', 'handicap']
   def __init__(self, dct=None):
-    super(GolfHole, self).__init__()
-    self.par = None
-    self.handicap = None
-    if dct:
-      self.fromDict(dct)
-   
-  def fromDict(self, dct):
-    """Load from a dictionary."""
-    self.par = dct.get('par')
-    self.handicap = dct.get('handicap')
-  
-  def toDict(self):
-    """Return a dictionary of all values."""
-    return { 'par': self.par, 'handicap': self.handicap }
-
-  def __eq__(self, other):
-    return (self.par == other.par and
-            self.handicap == other.handicap)
-
-  def __ne__(self,other):
-    return not self == other
+    super(GolfHole, self).__init__(dct)
 
   def __str__(self):
     return 'par {} handicap {}'.format(self.par, self.handicap)
@@ -59,6 +78,11 @@ class GolfCourse(object):
     self.name = course_dct.get('name')
     self.holes = [GolfHole(dct) for dct in course_dct['holes']]
   
+  def setStats(self):
+    self.out_tot = sum([hole.par for hole in self.holes[:9]])
+    self.in_tot  = sum([hole.par for hole in self.holes[9:]])
+    self.total   = self.in_tot + self.out_tot
+
   def toDict(self):
     return { 'name': self.name,
              'holes': [hole.toDict() for hole in self.holes] }
@@ -70,6 +94,32 @@ class GolfCourse(object):
   def __ne__(self, other):
     return not self == other
 
+  def getScorecard(self):
+    """
+    <Name>    
+          1  2  3  4  5  6  7  8  9 Out  10 11 12 13 14 15 16 17 18 In Total
+    Par
+    Hdcp 
+    """
+    self.setStats()
+    hdr  = 'Hole  '
+    par  = 'Par   '
+    hdcp = 'Hdcp  '
+    for n,hole in enumerate(self.holes[:9]):
+      hdr += ' {:>2}'.format(n+1)
+      par += ' {:>2}'.format(hole.par)
+      hdcp += ' {:>2}'.format(hole.handicap)
+    hdr += ' Out '
+    par += ' {:>3} '.format(self.out_tot)
+    hdcp += '     '
+    for n,hole in enumerate(self.holes[9:]):
+      hdr += '{:>2} '.format(n+10)
+      par += '{:>2} '.format(hole.par)
+      hdcp += '{:>2} '.format(hole.handicap)
+    hdr += ' In Tot'
+    par += ' {:>2} {:>3}'.format(self.in_tot, self.total)
+    return [self.name, hdr, par, hdcp]
+      
   def __str__(self):
     return '{} - {} holes'.format(self.name, len(self.holes))
   
@@ -77,7 +127,7 @@ class GolfCourse(object):
     return 'GolfCourse(dct={})'.format(self.toDict())
   
 
-class GolfPlayer(object):
+class GolfPlayer(Doc, DB):
   """Golf player
   
   Members:
@@ -86,41 +136,15 @@ class GolfPlayer(object):
     nick_name  - string
     handicap   - float
   """
+  fields = ['first_name',
+            'last_name',
+            'nick_name',
+            'handicap']
   def __init__(self, dct=None):
-    super(GolfPlayer, self).__init__()
-    self.first_name = None
-    self.last_name = None
-    self.nick_name = None
-    self.handicap = None
-    if dct:
-      self.fromDict(dct)
-   
-  def fromDict(self, dct):
-    """Load from a dictionary."""
-    self.first_name = dct.get('first_name')
-    self.last_name = dct.get('last_name')
-    self.nick_name = dct.get('nick_name')
-    self.handicap = dct.get('handicap')
-    
-  def toDict(self):
-    """Return a dictionary of all values."""
-    return { 'first_name': self.first_name,
-             'last_name': self.last_name,
-             'nick_name': self.nick_name,
-             'handicap': self.handicap,
-             }
-
-  def __eq__(self, other):
-    return (self.first_name == other.first_name and
-            self.last_name == other.last_name and
-            self.nick_name == other.nick_name and
-            self.handicap == other.handicap)
-
-  def __ne__(self,other):
-    return not self == other
+    super(GolfPlayer, self).__init__(dct=dct)
 
   def __str__(self):
-    return '{} {} ({}) handicap {}'.format(self._id, self.first_name, self.last_name, self.nick_name, self.handicap)
+    return '{} {} ({}) handicap {}'.format(self.first_name, self.last_name, self.nick_name, self.handicap)
   
   def __repr__(self):
     return 'GolfPlayer(dct={})'.format(self.toDict())
