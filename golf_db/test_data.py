@@ -91,8 +91,8 @@ GolfCourseTestData = [
 ]
 
 GolfPlayerTestData = [
-  {'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 19.8},
+  {'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
   {'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
   {'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
-  {'first_name': 'Mike',  'last_name': 'Myers',    'nick_name': 'Rock',   'handicap': 22.0},
+  {'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
 ]
