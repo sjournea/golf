@@ -174,6 +174,13 @@ class MongoDB(object):
     obj = co.insert(doc)
     return obj
 
+  def insert_many(self, dbName, collName, lstDocs):
+    """Bulk insert documents """
+    log.debug( 'insert_many() - dbName:{0} collName:{1}'.format(dbName,collName))
+    db = self._conn[str(dbName)]
+    co = db[str(collName)]
+    return co.insert_many(lstDocs)
+
   def find_one(self, dbName, dbColl, query=None):
     """ drop a collection from a database """
     log.debug( 'find_one() - dbName:{0} collName:{1}'.format(dbName,dbColl))

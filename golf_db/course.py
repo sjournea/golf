@@ -1,5 +1,9 @@
 """course.py - simple golf course class."""
 
+class DB(object):
+  def __init__(self):
+    super(DB, self).__init__()
+    
 class GolfHole(object):
   """Golf hole
   
@@ -16,8 +20,8 @@ class GolfHole(object):
    
   def fromDict(self, dct):
     """Load from a dictionary."""
-    self.par = dct['par']
-    self.handicap = dct['handicap']
+    self.par = dct.get('par')
+    self.handicap = dct.get('handicap')
   
   def toDict(self):
     """Return a dictionary of all values."""
@@ -35,7 +39,8 @@ class GolfHole(object):
   
   def __repr__(self):
     return 'GolfHole(dct={})'.format(self.toDict())
-  
+
+
 class GolfCourse(object):
   """Golf course object
   
@@ -51,7 +56,7 @@ class GolfCourse(object):
       self.fromDict(dct)
    
   def fromDict(self, course_dct):
-    self.name = course_dct['name']
+    self.name = course_dct.get('name')
     self.holes = [GolfHole(dct) for dct in course_dct['holes']]
   
   def toDict(self):
@@ -92,10 +97,10 @@ class GolfPlayer(object):
    
   def fromDict(self, dct):
     """Load from a dictionary."""
-    self.first_name = dct['first_name']
-    self.last_name = dct['last_name']
-    self.nick_name = dct['nick_name']
-    self.handicap = dct['handicap']
+    self.first_name = dct.get('first_name')
+    self.last_name = dct.get('last_name')
+    self.nick_name = dct.get('nick_name')
+    self.handicap = dct.get('handicap')
     
   def toDict(self):
     """Return a dictionary of all values."""
@@ -115,7 +120,8 @@ class GolfPlayer(object):
     return not self == other
 
   def __str__(self):
-    return '{} {} ({}) handicap {}'.format(self.first_name, self.last_name, self.nick_name, self.handicap)
+    return '{} {} ({}) handicap {}'.format(self._id, self.first_name, self.last_name, self.nick_name, self.handicap)
   
   def __repr__(self):
     return 'GolfPlayer(dct={})'.format(self.toDict())
+
