@@ -1,3 +1,5 @@
+import datetime
+
 canyon_lakes_mens_holes = [
   {'par': 4, 'handicap': 17},
   {'par': 5, 'handicap':  9},
@@ -95,4 +97,11 @@ GolfPlayerTestData = [
   {'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
   {'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
   {'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
+]
+
+GolfRoundTestData = [
+  { 'date': datetime.datetime(2017, 3, 7), 
+    'course': GolfCourseTestData[0],
+    'players': GolfPlayerTestData,
+  },
 ]

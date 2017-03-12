@@ -7,8 +7,8 @@ import traceback
 import threading
 #import time,datetime,re,os,traceback,pdb
 
-from golf_db.test_data import GolfCourseTestData, GolfPlayerTestData
-from golf_db.course import GolfPlayer, GolfCourse, GolfHole
+from golf_db.test_data import GolfCourseTestData, GolfPlayerTestData, GolfRoundTestData
+from golf_db.course import GolfPlayer, GolfCourse, GolfHole, GolfRound
 from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException
 from util.tl_logger import TLLog,logOptions
@@ -38,6 +38,8 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'co', '',             'Execute a command',                 self._execute))
     self.addMenuItem( MenuItem( 'cos', '',            'Get a scorecard'  ,                 self._courseGetScorecard))
     self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
+    self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
+    self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
     ##self.addMenuItem( MenuItem( 'f1', '',      'fetch one result', self._fetchone))
     ##self.addMenuItem( MenuItem( 'fa', '',      'fetch all results', self._fetchall))
     #self.addMenuItem( MenuItem( 'ta', '',      'Show tables', self._showTables))
@@ -78,6 +80,7 @@ class GolfMenu(Menu):
       self.db.drop_database(db_name)
       self.db.insert_many(db_name, 'players', GolfPlayerTestData)
       self.db.insert_many(db_name, 'courses', GolfCourseTestData)
+      self.db.insert_many(db_name, 'rounds', GolfRoundTestData)
 
   def _useDatabase(self):
     if len(self.lstCmd) < 2:
@@ -102,6 +105,15 @@ class GolfMenu(Menu):
       for dct in db.courses.find():
         course = GolfCourse(dct=dct)
         print course
+      
+  def _listRounds(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    with self.db as session:
+      db = session.conn[self.database]
+      for dct in db.rounds.find():
+        rnd = GolfRound(dct=dct)
+        print rnd
       
   def _execute(self):
     if self.database is None:
@@ -141,6 +153,19 @@ class GolfMenu(Menu):
       print course
       lst = course.getScorecard()
       for line in lst:
+        print line
+
+  def _roundGetScorecard(self):
+    if self.database is None:
+      raise InputException( 'Database must be set with use command.')      
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    with self.db as session:
+      db = session.conn[self.database]
+      dct = db.rounds.find_one({'course.name': { '$regex': self.lstCmd[1]}})
+      rnd = GolfRound(dct=dct)
+      print rnd
+      for line in rnd.getScorecard():
         print line
 
   #def _disconnect(self):

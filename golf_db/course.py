@@ -74,15 +74,15 @@ class GolfCourse(object):
     if dct:
       self.fromDict(dct)
    
-  def fromDict(self, course_dct):
-    self.name = course_dct.get('name')
-    self.holes = [GolfHole(dct) for dct in course_dct['holes']]
-  
   def setStats(self):
     self.out_tot = sum([hole.par for hole in self.holes[:9]])
     self.in_tot  = sum([hole.par for hole in self.holes[9:]])
     self.total   = self.in_tot + self.out_tot
 
+  def fromDict(self, course_dct):
+    self.name = course_dct.get('name')
+    self.holes = [GolfHole(dct) for dct in course_dct['holes']]
+  
   def toDict(self):
     return { 'name': self.name,
              'holes': [hole.toDict() for hole in self.holes] }
@@ -149,3 +149,34 @@ class GolfPlayer(Doc, DB):
   def __repr__(self):
     return 'GolfPlayer(dct={})'.format(self.toDict())
 
+
+class GolfRound(object):
+  def __init__(self, dct):
+    super(GolfRound, self).__init__()
+    self.course = None
+    self.date = None
+    if dct:
+      self.fromDict(dct)
+
+  def fromDict(self, dct):
+    self.course = GolfCourse(dct['course'])
+    self.date = dct.get('date')
+    self.players = [GolfPlayer(player_dct) for player_dct in dct['players']]
+    
+  
+  def toDict(self):
+    return { 'course': self.course.toDict(),
+             'date': self.date,
+             'players': [player.toDict() for player in self.players],
+           }
+  
+  def getScorecard(self):
+    lst = self.course.getScorecard()
+    for player in self.players:
+      lst.append(player.nick_name)
+    return lst
+  
+  def __str__(self):
+    return '{} - {} - {}'.format(self.date.date(), self.course.name, ','.join([player.nick_name for player in self.players]))
+  
+    
