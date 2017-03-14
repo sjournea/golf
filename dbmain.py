@@ -151,9 +151,10 @@ class GolfMenu(Menu):
       dct = db.courses.find_one({'name': { '$regex': self.lstCmd[1]}})
       course = GolfCourse(dct=dct)
       print course
-      lst = course.getScorecard()
-      for line in lst:
-        print line
+      dct = course.getScorecard()
+      print dct['hdr']
+      print dct['par']
+      print dct['hdcp']
 
   def _roundGetScorecard(self):
     if self.database is None:
@@ -165,8 +166,14 @@ class GolfMenu(Menu):
       dct = db.rounds.find_one({'course.name': { '$regex': self.lstCmd[1]}})
       rnd = GolfRound(dct=dct)
       print rnd
-      for line in rnd.getScorecard():
-        print line
+      dct = rnd.getScorecard()
+      print dct['hdr']
+      print dct['par']
+      print dct['hdcp']
+      if 'player_0' in dct: print dct['player_0']['gross']
+      if 'player_1' in dct: print dct['player_1']['gross']
+      if 'player_2' in dct: print dct['player_2']['gross']
+      if 'player_3' in dct: print dct['player_3']['gross']
 
   #def _disconnect(self):
     #self.db.close()

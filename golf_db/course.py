@@ -118,7 +118,10 @@ class GolfCourse(object):
       hdcp += '{:>2} '.format(hole.handicap)
     hdr += ' In Tot'
     par += ' {:>2} {:>3}'.format(self.in_tot, self.total)
-    return [self.name, hdr, par, hdcp]
+    return { 'hdr': hdr,
+             'par': par,
+             'hdcp': hdcp,
+           }
       
   def __str__(self):
     return '{} - {} holes'.format(self.name, len(self.holes))
@@ -127,7 +130,7 @@ class GolfCourse(object):
     return 'GolfCourse(dct={})'.format(self.toDict())
   
 
-class GolfPlayer(Doc, DB):
+class GolfPlayer(Doc):
   """Golf player
   
   Members:
@@ -150,6 +153,28 @@ class GolfPlayer(Doc, DB):
     return 'GolfPlayer(dct={})'.format(self.toDict())
 
 
+class GolfScore(GolfPlayer):
+  """Golf Score for a player."""
+  fields = GolfPlayer.fields + ['gross', 'net', 'win', 'bumps']
+  def __init__(self, dct=None):
+    super(GolfScore, self).__init__(dct)
+    
+  #def toDict(self):
+    #dct = super(GolfScore, self).toDict()
+    #dct['player'] = self.player.toDict()
+    #return dct
+  
+  #def fromDict(self, dct):
+    #super(GolfScore, self).fromDict(dct)
+    #self.player = GolfPlayer(dct=dct.get('player'))
+    
+  def __str__(self):
+    return '{} - gross:{} net:{} bumps:{} win:{}'.format(self.nick_name, self.gross, self.net, self.bumps, self.win)
+  
+  def __repr__(self):
+    return 'GolfScore(dct={})'.format(self.toDict())
+
+
 class GolfRound(object):
   def __init__(self, dct):
     super(GolfRound, self).__init__()
@@ -161,7 +186,7 @@ class GolfRound(object):
   def fromDict(self, dct):
     self.course = GolfCourse(dct['course'])
     self.date = dct.get('date')
-    self.players = [GolfPlayer(player_dct) for player_dct in dct['players']]
+    self.players = [GolfScore(player_dct) for player_dct in dct['players']]
     
   
   def toDict(self):
@@ -171,10 +196,27 @@ class GolfRound(object):
            }
   
   def getScorecard(self):
-    lst = self.course.getScorecard()
-    for player in self.players:
-      lst.append(player.nick_name)
-    return lst
+    """Scorecard with all players."""
+    dct_scorecard = self.course.getScorecard()
+    for n,player in enumerate(self.players):
+      dct = {'player': player }
+      dct['gross'] = '{}'.format(player.nick_name)
+      dct_scorecard['player_%d' % n] = dct
+
+      #for n,hole in enumerate(self.course.holes[:9]):
+        #gross += ' {:>2}'.format(n+1)
+        #par += ' {:>2}'.format(hole.par)
+        #hdcp += ' {:>2}'.format(hole.handicap)
+      #hdr += ' Out '
+      #par += ' {:>3} '.format(self.out_tot)
+      #hdcp += '     '
+      #for n,hole in enumerate(self.holes[9:]):
+        #hdr += '{:>2} '.format(n+10)
+        #par += '{:>2} '.format(hole.par)
+        #hdcp += '{:>2} '.format(hole.handicap)
+      #hdr += ' In Tot'
+      
+    return dct_scorecard
   
   def __str__(self):
     return '{} - {} - {}'.format(self.date.date(), self.course.name, ','.join([player.nick_name for player in self.players]))
