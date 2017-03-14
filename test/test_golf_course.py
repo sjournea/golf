@@ -1,7 +1,7 @@
 import unittest
 
-from golf_db.course import GolfCourse, GolfHole, GolfPlayer
-from golf_db.test_data import GolfCourseTestData, GolfPlayerTestData
+from golf_db.course import GolfCourse, GolfHole, GolfPlayer, GolfScore
+from golf_db.test_data import GolfCourseTestData, GolfPlayerTestData, GolfScoreTestData
 from util.tl_logger import TLLog
 log = TLLog.getLogger('mongo')
 
@@ -133,3 +133,17 @@ class GolfPlayerDictCase(unittest.TestCase):
       self.assertNotEqual(player1, player2)
 
 
+class GolfScoreInitCase(unittest.TestCase):
+
+  def test_init_empty(self):
+    # check default parameters
+    player = GolfScore()
+    self.assertIsNone(player.player.nick_name)
+    self.assertEqual(player.gross, [])
+
+  def test_init_from_dict(self):
+    for dct in GolfScoreTestData:
+      score = GolfScore(dct=dct)
+      self.assertEqual(dct['player'], score.player.toDict())
+      self.assertEqual(dct['gross'], score.gross)
+      

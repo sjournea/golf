@@ -99,9 +99,16 @@ GolfPlayerTestData = [
   {'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
 ]
 
+GolfScoreTestData = [
+  {'player': GolfPlayerTestData[0], 'gross': [6,6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6,6]},
+  {'player': GolfPlayerTestData[1], 'gross': [5,5,5,5,5,5,5,5,5, 5,5,5,5,5,5,5,5,5]},
+  {'player': GolfPlayerTestData[2], 'gross': [7,7,7,7,7,7,7,7,7, 7,7,7,7,7,7,7,7,7]},
+  {'player': GolfPlayerTestData[3], 'gross': [8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8]},
+]
+
 GolfRoundTestData = [
   { 'date': datetime.datetime(2017, 3, 7), 
     'course': GolfCourseTestData[0],
-    'players': GolfPlayerTestData,
+    'players': GolfScoreTestData,
   },
 ]
