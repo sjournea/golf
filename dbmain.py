@@ -170,10 +170,10 @@ class GolfMenu(Menu):
       print dct['hdr']
       print dct['par']
       print dct['hdcp']
-      if 'player_0' in dct: print dct['player_0']['gross_line']
-      if 'player_1' in dct: print dct['player_1']['gross_line']
-      if 'player_2' in dct: print dct['player_2']['gross_line']
-      if 'player_3' in dct: print dct['player_3']['gross_line']
+      if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
+      if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
+      if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
+      if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
 
   #def _disconnect(self):
     #self.db.close()

@@ -187,7 +187,7 @@ class GolfRound(object):
       dct['gross_in'] = gross_in
       dct['gross_out'] = gross_out
       dct['gross_tot'] = gross_tot
-      dct_scorecard['player_%d' % n] = dct
+      dct_scorecard['player_%d_gross' % n] = dct
       
     return dct_scorecard
   
