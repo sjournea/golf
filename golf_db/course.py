@@ -72,18 +72,18 @@ class GolfCourse(object):
     par  = 'Par   '
     hdcp = 'Hdcp  '
     for n,hole in enumerate(self.holes[:9]):
-      hdr += ' {:>2}'.format(n+1)
-      par += ' {:>2}'.format(hole.par)
-      hdcp += ' {:>2}'.format(hole.handicap)
-    hdr += ' Out '
-    par += ' {:>3} '.format(self.out_tot)
-    hdcp += '     '
+      hdr += ' {:>3}'.format(n+1)
+      par += ' {:>3}'.format(hole.par)
+      hdcp += ' {:>3}'.format(hole.handicap)
+    hdr += '  Out '
+    par += ' {:>4} '.format(self.out_tot)
+    hdcp += '      '
     for n,hole in enumerate(self.holes[9:]):
-      hdr += '{:>2} '.format(n+10)
-      par += '{:>2} '.format(hole.par)
-      hdcp += '{:>2} '.format(hole.handicap)
-    hdr += ' In Tot'
-    par += ' {:>2} {:>3}'.format(self.in_tot, self.total)
+      hdr += '{:>3} '.format(n+10)
+      par += '{:>3} '.format(hole.par)
+      hdcp += '{:>3} '.format(hole.handicap)
+    hdr += '  In  Tot'
+    par += '{:>4} {:>4}'.format(self.in_tot, self.total)
     return { 'hdr': hdr,
              'par': par,
              'hdcp': hdcp,
@@ -175,14 +175,14 @@ class GolfRound(object):
       gross_out = 0
       gross_in = 0
       for gross in score.gross[:9]:
-        gross_line += ' {:>2}'.format(gross)
+        gross_line += ' {:>3}'.format(gross)
         gross_out += gross
-      gross_line += ' {:>3}'.format(gross_out)
+      gross_line += ' {:>4}'.format(gross_out)
       for gross in score.gross[9:]:
-        gross_line += ' {:>2}'.format(gross)
+        gross_line += ' {:>3}'.format(gross)
         gross_in += gross
       gross_tot = gross_out + gross_in
-      gross_line += ' {:>3} {:>3}'.format(gross_in, gross_tot)
+      gross_line += ' {:>4} {:>4}'.format(gross_in, gross_tot)
       dct['gross_line'] = gross_line
       dct['gross_in'] = gross_in
       dct['gross_out'] = gross_out
