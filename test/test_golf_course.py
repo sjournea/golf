@@ -7,25 +7,28 @@ log = TLLog.getLogger('mongo')
 
 class GolfCourseInitCase(unittest.TestCase):
   lstDicts = [
-    {'name': 'Canyon Lakes', 'holes':[]},
-    {'name': 'Santa Clara', 'holes':[]},
-    {'name': 'Diablo Grande', 'holes':[]},
+    {'name': 'Canyon Lakes', 'holes':[], 'tees':[]},
+    {'name': 'Santa Clara', 'holes':[], 'tees':[]},
+    {'name': 'Diablo Grande', 'holes':[], 'tees':[]},
   ]
 
   def test_init_empty(self):
     # check default parameters
     course = GolfCourse()
     self.assertIsNone(course.name)
-    self.assertIsNone(course.holes)
+    self.assertEqual(course.holes, [])
+    self.assertEqual(course.tees, [])
 
   def test_init_from_dict(self):
     for dct in self.lstDicts:
       course = GolfCourse(dct=dct)
       self.assertEqual(dct['name'], course.name)
       self.assertEqual(dct['holes'], course.holes)
+      self.assertEqual(dct['tees'], course.tees)
       
 class GolfCourseDictCase(unittest.TestCase):
   def test_toDict(self):
+    self.maxDiff = None
     # check course name
     for dct in GolfCourseTestData:
       course = GolfCourse(dct=dct) 

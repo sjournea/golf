@@ -29,7 +29,8 @@ class GolfCourse(object):
   def __init__(self, dct=None):
     super(GolfCourse, self).__init__()
     self.name = None
-    self.holes = None
+    self.holes = []
+    self.tees = []
     if dct:
       self.fromDict(dct)
    
@@ -38,17 +39,23 @@ class GolfCourse(object):
     self.in_tot  = sum([hole.par for hole in self.holes[9:]])
     self.total   = self.in_tot + self.out_tot
 
-  def fromDict(self, course_dct):
-    self.name = course_dct.get('name')
-    self.holes = [GolfHole(dct) for dct in course_dct['holes']]
+  def fromDict(self, dct):
+    self.name = dct.get('name')
+    self.holes = dct.get('holes', [])
+    if self.holes:
+      self.holes = [GolfHole(hole_dct) for hole_dct in dct['holes']]
+    self.tees = dct.get('tees', [])
   
   def toDict(self):
     return { 'name': self.name,
-             'holes': [hole.toDict() for hole in self.holes] }
+             'holes': [hole.toDict() for hole in self.holes],
+             'tees': self.tees, }
   
   def __eq__(self, other):
     return (self.name == other.name and
-            self.holes == other.holes)
+            self.holes == other.holes and
+            self.tees == other.tees
+           )
 
   def __ne__(self, other):
     return not self == other
@@ -83,7 +90,8 @@ class GolfCourse(object):
            }
       
   def __str__(self):
-    return '{} - {} holes'.format(self.name, len(self.holes))
+    return '{} - {} holes - {} tees'.format(self.name, len(self.holes), len(
+      self.tees))
   
   def __repr__(self):
     return 'GolfCourse(dct={})'.format(self.toDict())
