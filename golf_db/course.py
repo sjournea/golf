@@ -1,17 +1,6 @@
 """course.py - simple golf course class."""
 from .doc import Doc
 
-class DB(object):
-  """Abstract - fields MUST be defined."""
-  def __init__(self, dct=None):
-    super(DB, self).__init__()
-    # Add _id field
-    self.fields.append('_id')
-
-  def put(self, collection):
-    collection.save(self.toDict(), safe=True)
-
-
 class GolfHole(Doc):
   """Golf hole
   
@@ -180,7 +169,7 @@ class GolfRound(object):
       for gross in score.gross[:9]:
         gross_line += ' {:>2}'.format(gross)
         gross_out += gross
-      gross_line += ' {:>3} '.format(gross_out)
+      gross_line += ' {:>3}'.format(gross_out)
       for gross in score.gross[9:]:
         gross_line += ' {:>2}'.format(gross)
         gross_in += gross

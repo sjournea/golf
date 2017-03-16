@@ -100,7 +100,7 @@ GolfPlayerTestData = [
 ]
 
 GolfScoreTestData = [
-  {'player': GolfPlayerTestData[0], 'gross': [6,6,6,6,6,6,6,6,6, 6,6,6,6,6,6,6,6,6]},
+  {'player': GolfPlayerTestData[0], 'gross': [4,8,6,8,4,5,6,7,9, 6,6,6,6,6,6,6,6,6]},
   {'player': GolfPlayerTestData[1], 'gross': [5,5,5,5,5,5,5,5,5, 5,5,5,5,5,5,5,5,5]},
   {'player': GolfPlayerTestData[2], 'gross': [7,7,7,7,7,7,7,7,7, 7,7,7,7,7,7,7,7,7]},
   {'player': GolfPlayerTestData[3], 'gross': [8,8,8,8,8,8,8,8,8, 8,8,8,8,8,8,8,8,8]},
