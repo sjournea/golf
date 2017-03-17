@@ -106,6 +106,29 @@ lake_chabot_holes = [
   {'par': 3, 'handicap':  8},
   {'par': 6, 'handicap':  12},
 ]
+
+delta_view_holes = [
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':   1},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  17},
+  {'par': 5, 'handicap':   9},
+  {'par': 3, 'handicap':   7},
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':  13},
+  {'par': 3, 'handicap':   3},
+
+  {'par': 4, 'handicap':   6},
+  {'par': 5, 'handicap':   2},
+  {'par': 4, 'handicap':  14},
+  {'par': 3, 'handicap':  16},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':  10},
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+]
+
 sj_muni_tees = [
   {'gender': 'mens', 'name': 'Gold',     'rating': 71.9, 'slope': 123 },
   {'gender': 'mens', 'name': 'Black',    'rating': 70.1, 'slope': 118 },
@@ -142,12 +165,19 @@ lake_chabot_tees = [
   {'gender': 'womens', 'name': 'White', 'rating': 72.8, 'slope': 123 },
   {'gender': 'womens', 'name': 'Red',   'rating': 70.1, 'slope': 116 },
 ]
+
+delta_view_tees = [
+  {'gender': 'mens',   'name': 'Blue',  'rating': 71.3, 'slope': 133 },
+  {'gender': 'mens',   'name': 'White', 'rating': 68.3, 'slope': 125 },
+]
+
 GolfCourseTestData = [
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'Santa Jose Muni', 'holes': sj_muni_holes, 'tees': sj_muni_tees},
   {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
   {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
   {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},
+  {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
 ]
 
 GolfPlayerTestData = [
@@ -171,6 +201,12 @@ LakeChabot_Players = [
   {'player': GolfPlayerTestData[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6]},
 ]
 
+DeltaView_Players = [
+  {'player': GolfPlayerTestData[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8]},
+  {'player': GolfPlayerTestData[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6]},
+  {'player': GolfPlayerTestData[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5]},
+]
+
 GolfRoundTestData = [
   { 'date': datetime.datetime(2017, 3, 7), 
     'course': GolfCourseTestData[0],
@@ -179,5 +215,9 @@ GolfRoundTestData = [
   { 'date': datetime.datetime(2016, 6, 8), 
     'course': GolfCourseTestData[4],
     'players': LakeChabot_Players,
+  },
+  { 'date': datetime.datetime(2016, 10, 1), 
+    'course': GolfCourseTestData[5],
+    'players': DeltaView_Players,
   },
 ]
