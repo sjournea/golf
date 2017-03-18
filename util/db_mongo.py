@@ -79,6 +79,13 @@ class Collection(object):
     log.debug( 'create_index() - index:{0}'.format(index))
     self.coll.create_index(index)
 
+
+class MongoSession(object):
+  def __init__(self, conn):
+    self.conn = conn
+
+  
+    
 class MongoDB(object):
   """ class for mongo db usage """
   DEF_HOST = 'localhost'
@@ -103,7 +110,7 @@ class MongoDB(object):
       s = 'connect() fail - %s' % ex
       log.error( s )
       raise Exception( s )
-    return self._conn
+    return MongoSession(self._conn)
   
   def __exit__(self, ex_ty, ex_val, tb):
     log.debug( '__exit__()')
@@ -173,6 +180,13 @@ class MongoDB(object):
     co = db[str(collName)]
     obj = co.insert(doc)
     return obj
+
+  def insert_many(self, dbName, collName, lstDocs):
+    """Bulk insert documents """
+    log.debug( 'insert_many() - dbName:{0} collName:{1}'.format(dbName,collName))
+    db = self._conn[str(dbName)]
+    co = db[str(collName)]
+    return co.insert_many(lstDocs)
 
   def find_one(self, dbName, dbColl, query=None):
     """ drop a collection from a database """
