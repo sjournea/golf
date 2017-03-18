@@ -45,3 +45,52 @@ class GolfHoleValidateTest(unittest.TestCase):
       g = GolfHole(par=5, handicap=handicap)
       with self.assertRaises(DocValidateFail):
         g.validate()
+
+class GolfHoleInitCase(unittest.TestCase):
+  lstDicts = [
+    {'par': 5, 'handicap': 1},
+    {'par': 4, 'handicap': 10},
+    {'par': 3, 'handicap': 18},
+  ]
+
+  def test_init_empty(self):
+    # check default parameters
+    hole = GolfHole()
+    self.assertIsNone(hole.par)
+    self.assertIsNone(hole.handicap)
+
+  def test_init_from_dict(self):
+    for dct in self.lstDicts:
+      hole = GolfHole(dct=dct)
+      self.assertEqual(dct['par'], hole.par)
+      self.assertEqual(dct['handicap'], hole.handicap)
+      
+
+class GolfHoleDictCase(unittest.TestCase):
+  lstDicts = [
+    {'par': 5, 'handicap': 1},
+    {'par': 4, 'handicap': 10},
+    {'par': 3, 'handicap': 18},
+  ]
+  def test_toDict(self):
+    # check course name
+    for dct in self.lstDicts:
+      hole = GolfHole(dct=dct) 
+      self.assertEqual(hole.toDict(), dct)
+    
+  def test_fromDict(self):
+    # check course name
+    for dct in self.lstDicts:
+      hole = GolfHole() 
+      hole.fromDict(dct)
+      self.assertEqual(hole.toDict(), dct)
+
+  def test_equalOperator(self):
+    for dct in self.lstDicts:
+      hole1 = GolfHole(dct=dct) 
+      hole2 = GolfHole(dct=hole1.toDict()) 
+      self.assertEqual(hole1, hole2)
+      hole2.par += 1 
+      self.assertNotEqual(hole1, hole2)
+
+

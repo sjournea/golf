@@ -212,10 +212,10 @@ GolfCourses = [
 ]
 
 GolfPlayers = [
-  {'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
-  {'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
-  {'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
-  {'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
+  {'email':'sjournea@taralaur.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
+  {'email':'snake@tl.com', 'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
+  {'email':'spanky@tl.com','first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
+  {'email':'rock@tl.com','first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
 ]
 
 CanyonLake_Players = [

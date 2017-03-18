@@ -1,6 +1,6 @@
 from .doc import Doc
 from .hole import GolfHole
-
+from .player import GolfPlayer
 
 class GolfCourse(object):
   """Golf course object
@@ -79,29 +79,6 @@ class GolfCourse(object):
   def __repr__(self):
     return 'GolfCourse(dct={})'.format(self.toDict())
   
-
-class GolfPlayer(Doc):
-  """Golf player
-  
-  Members:
-    first_name - string
-    last_name  - string
-    nick_name  - string
-    handicap   - float
-  """
-  fields = ['first_name',
-            'last_name',
-            'nick_name',
-            'handicap']
-  def __init__(self, dct=None):
-    super(GolfPlayer, self).__init__(dct=dct)
-
-  def __str__(self):
-    return '{} {} ({}) handicap {}'.format(self.first_name, self.last_name, self.nick_name, self.handicap)
-  
-  def __repr__(self):
-    return 'GolfPlayer(dct={})'.format(self.toDict())
-
 
 class GolfScore(object):
   """Golf Score for a player."""
