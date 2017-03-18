@@ -129,6 +129,28 @@ delta_view_holes = [
   {'par': 4, 'handicap':   4},
 ]
 
+villages_men_holes = [
+  {'par': 4, 'handicap':  10},
+  {'par': 5, 'handicap':  16},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+  {'par': 3, 'handicap':  12},
+  {'par': 4, 'handicap':  14},
+  {'par': 4, 'handicap':   6},
+  {'par': 5, 'handicap':   8},
+
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':  15},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':  13},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   5},
+]
+
 sj_muni_tees = [
   {'gender': 'mens', 'name': 'Gold',     'rating': 71.9, 'slope': 123 },
   {'gender': 'mens', 'name': 'Black',    'rating': 70.1, 'slope': 118 },
@@ -171,6 +193,14 @@ delta_view_tees = [
   {'gender': 'mens',   'name': 'White', 'rating': 68.3, 'slope': 125 },
 ]
 
+villages_tees = [
+  {'gender': 'mens',   'name': '55555', 'rating': 72.2, 'slope': 125 },
+  {'gender': 'mens',   'name': '4444',  'rating': 70.9, 'slope': 121 },
+  {'gender': 'mens',   'name': '333',   'rating': 69.3, 'slope': 118 },
+  {'gender': 'mens',   'name': '22',    'rating': 64.1, 'slope': 111 },
+  {'gender': 'mens',   'name': '1',     'rating': 60.7, 'slope':  97 },
+]
+
 GolfCourses = [
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'Santa Jose Muni', 'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -178,6 +208,7 @@ GolfCourses = [
   {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
   {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},
   {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
+  {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
 ]
 
 GolfPlayers = [

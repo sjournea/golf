@@ -90,7 +90,7 @@ class GolfCourse(object):
            }
       
   def __str__(self):
-    return '{} - {} holes - {} tees'.format(self.name, len(self.holes), len(
+    return '{:<20} - {} holes - {} tees'.format(self.name, len(self.holes), len(
       self.tees))
   
   def __repr__(self):
