@@ -1,7 +1,7 @@
 import unittest
 
 from golf_db.course import GolfCourse, GolfHole, GolfPlayer, GolfScore
-from golf_db.test_data import GolfCourseTestData, GolfPlayerTestData, GolfScoreTestData
+from golf_db.test_data import GolfCourses, GolfPlayers, CanyonLake_Players
 from util.tl_logger import TLLog
 log = TLLog.getLogger('mongo')
 
@@ -30,18 +30,18 @@ class GolfCourseDictCase(unittest.TestCase):
   def test_toDict(self):
     self.maxDiff = None
     # check course name
-    for dct in GolfCourseTestData:
+    for dct in GolfCourses:
       course = GolfCourse(dct=dct) 
       self.assertEqual(course.toDict(), dct)
     
   def test_fromDict(self):
-    for dct in GolfCourseTestData:
+    for dct in GolfCourses:
       course = GolfCourse()
       course.fromDict(dct)
       self.assertEqual(course.toDict(), dct)
 
   def test_equalOperator(self):
-    for dct in GolfCourseTestData:
+    for dct in GolfCourses:
       course = GolfCourse(dct=dct)
       course2 = GolfCourse(dct=course.toDict())
       self.assertEqual(course, course2)
@@ -107,7 +107,7 @@ class GolfPlayerInitCase(unittest.TestCase):
     self.assertIsNone(player.handicap)
 
   def test_init_from_dict(self):
-    for dct in GolfPlayerTestData:
+    for dct in GolfPlayers:
       player = GolfPlayer(dct=dct)
       self.assertEqual(dct['last_name'], player.last_name)
       self.assertEqual(dct['first_name'], player.first_name)
@@ -117,18 +117,18 @@ class GolfPlayerInitCase(unittest.TestCase):
 
 class GolfPlayerDictCase(unittest.TestCase):
   def test_toDict(self):
-    for dct in GolfPlayerTestData:
+    for dct in GolfPlayers:
       player = GolfPlayer(dct=dct) 
       self.assertEqual(player.toDict(), dct)
     
   def test_fromDict(self):
-    for dct in GolfPlayerTestData:
+    for dct in GolfPlayers:
       player = GolfPlayer()
       player.fromDict(dct)
       self.assertEqual(player.toDict(), dct)
 
   def test_equalOperator(self):
-    for dct in GolfPlayerTestData:
+    for dct in GolfPlayers:
       player1 = GolfPlayer(dct=dct)
       player2 = GolfPlayer(dct=player1.toDict())
       self.assertEqual(player1, player2)
@@ -145,7 +145,7 @@ class GolfScoreInitCase(unittest.TestCase):
     self.assertEqual(player.gross, [])
 
   def test_init_from_dict(self):
-    for dct in GolfScoreTestData:
+    for dct in CanyonLake_Players:
       score = GolfScore(dct=dct)
       self.assertEqual(dct['player'], score.player.toDict())
       self.assertEqual(dct['gross'], score.gross)

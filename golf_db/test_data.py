@@ -171,7 +171,7 @@ delta_view_tees = [
   {'gender': 'mens',   'name': 'White', 'rating': 68.3, 'slope': 125 },
 ]
 
-GolfCourseTestData = [
+GolfCourses = [
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'Santa Jose Muni', 'holes': sj_muni_holes, 'tees': sj_muni_tees},
   {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
@@ -180,44 +180,44 @@ GolfCourseTestData = [
   {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
 ]
 
-GolfPlayerTestData = [
+GolfPlayers = [
   {'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
   {'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
   {'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
   {'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
 ]
 
-GolfScoreTestData = [
-  {'player': GolfPlayerTestData[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]},
-  {'player': GolfPlayerTestData[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8]},
-  {'player': GolfPlayerTestData[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6]},
-  {'player': GolfPlayerTestData[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7]},
+CanyonLake_Players = [
+  {'player': GolfPlayers[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]},
+  {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8]},
+  {'player': GolfPlayers[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6]},
+  {'player': GolfPlayers[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7]},
 ]
 
 LakeChabot_Players = [
-  {'player': GolfPlayerTestData[0], 'gross': [5,6,6,6,6,5,4,5,5, 6,6,3,8,5,3,6,4,7]},
-  {'player': GolfPlayerTestData[1], 'gross': [6,4,6,7,5,5,4,5,4, 6,5,4,5,6,5,6,4,7]},
-  {'player': GolfPlayerTestData[2], 'gross': [6,4,7,5,4,4,5,6,3, 5,5,4,6,5,7,8,4,5]},
-  {'player': GolfPlayerTestData[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6]},
+  {'player': GolfPlayers[0], 'gross': [5,6,6,6,6,5,4,5,5, 6,6,3,8,5,3,6,4,7]},
+  {'player': GolfPlayers[1], 'gross': [6,4,6,7,5,5,4,5,4, 6,5,4,5,6,5,6,4,7]},
+  {'player': GolfPlayers[2], 'gross': [6,4,7,5,4,4,5,6,3, 5,5,4,6,5,7,8,4,5]},
+  {'player': GolfPlayers[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6]},
 ]
 
 DeltaView_Players = [
-  {'player': GolfPlayerTestData[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8]},
-  {'player': GolfPlayerTestData[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6]},
-  {'player': GolfPlayerTestData[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5]},
+  {'player': GolfPlayers[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8]},
+  {'player': GolfPlayers[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6]},
+  {'player': GolfPlayers[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5]},
 ]
 
-GolfRoundTestData = [
+GolfRounds = [
   { 'date': datetime.datetime(2017, 3, 7), 
-    'course': GolfCourseTestData[0],
-    'players': GolfScoreTestData,
+    'course': GolfCourses[0],
+    'players': CanyonLake_Players,
   },
   { 'date': datetime.datetime(2016, 6, 8), 
-    'course': GolfCourseTestData[4],
+    'course': GolfCourses[4],
     'players': LakeChabot_Players,
   },
   { 'date': datetime.datetime(2016, 10, 1), 
-    'course': GolfCourseTestData[5],
+    'course': GolfCourses[5],
     'players': DeltaView_Players,
   },
 ]

@@ -7,7 +7,7 @@ import traceback
 import threading
 #import time,datetime,re,os,traceback,pdb
 
-from golf_db.test_data import GolfCourseTestData, GolfPlayerTestData, GolfRoundTestData
+from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds
 from golf_db.course import GolfPlayer, GolfCourse, GolfHole, GolfRound
 from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException
@@ -78,9 +78,9 @@ class GolfMenu(Menu):
     db_name = self.lstCmd[1]
     with self.db as session:
       self.db.drop_database(db_name)
-      self.db.insert_many(db_name, 'players', GolfPlayerTestData)
-      self.db.insert_many(db_name, 'courses', GolfCourseTestData)
-      self.db.insert_many(db_name, 'rounds', GolfRoundTestData)
+      self.db.insert_many(db_name, 'players', GolfPlayers)
+      self.db.insert_many(db_name, 'courses', GolfCourses)
+      self.db.insert_many(db_name, 'rounds', GolfRounds)
 
   def _useDatabase(self):
     if len(self.lstCmd) < 2:

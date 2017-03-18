@@ -126,24 +126,30 @@ class GolfScore(object):
     super(GolfScore, self).__init__()
     self.player = GolfPlayer()
     self.gross = []
+    self.net = []
+    self.course_handicap = 0
     if dct:
       self.fromDict(dct)
       
   def toDict(self):
     dct['player'] = self.player.toDict()
     dct['gross'] = self.gross
+    dct['net'] = self.net
+    dct['course_handicap'] = self.course_handicap
     return dct
   
   def fromDict(self, dct):
     self.player.fromDict(dct['player'])
     self.gross = dct.get('gross', [])
+    self.net = dct.get('net', [])
+    self.course_handicap = dct.get('course_handicap', 0)
     
   def __str__(self):
-    return '{} - gross:{}'.format(self.player.nick_name, self.gross)
+    return '{} - course_handicap:{} gross:{} net:{}'.format(
+      self.player.nick_name, self.course_handicap, self.gross, self.net)
   
   def __repr__(self):
     return 'GolfScore(dct={})'.format(self.toDict())
-
 
 class GolfRound(object):
   def __init__(self, dct):
@@ -159,7 +165,6 @@ class GolfRound(object):
     self.date = dct.get('date')
     self.scores = [GolfScore(player_dct) for player_dct in dct['players']]
     
-  
   def toDict(self):
     return { 'course': self.course.toDict(),
              'date': self.date,
@@ -192,8 +197,6 @@ class GolfRound(object):
     return dct_scorecard
   
   def __str__(self):
-    for pl in self.scores:
-      print pl.player
-    return '{} - {} - {}'.format(self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]))
+    return '{} - {:<25} - {}'.format(self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]))
   
     
