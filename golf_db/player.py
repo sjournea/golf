@@ -15,7 +15,7 @@ class GolfPlayer(Doc):
   fields = ['email', 'first_name', 'last_name', 'nick_name', 'handicap']
 
   def __str__(self):
-    return '{} - {} {} ({}) handicap {}'.format(self.email, self.first_name, self.last_name, self.nick_name, self.handicap)
+    return '{:<15} - {:<6} {:<10} ({:<6}) handicap {:.1f}'.format(self.email, self.first_name, self.last_name, self.nick_name, self.handicap)
   
   def __repr__(self):
     return 'GolfPlayer(dct={})'.format(self.toDict())
