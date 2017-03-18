@@ -259,7 +259,7 @@ fall_river_tees = [
 
 GolfCourses = [
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
-  {'name': 'Santa Jose Muni', 'holes': sj_muni_holes, 'tees': sj_muni_tees},
+  {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
   {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
   {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
   {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},

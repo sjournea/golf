@@ -8,7 +8,9 @@ import threading
 #import time,datetime,re,os,traceback,pdb
 
 from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds
-from golf_db.course import GolfPlayer, GolfCourse, GolfHole, GolfRound
+from golf_db.player import GolfPlayer
+from golf_db.course import GolfCourse
+from golf_db.round import GolfRound
 from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException
 from util.tl_logger import TLLog,logOptions
