@@ -1,22 +1,5 @@
-"""course.py - simple golf course class."""
 from .doc import Doc
-
-class GolfHole(Doc):
-  """Golf hole
-  
-  Members:
-    par      - Int - Usually 3, 4, or 5.
-    handicap - Int - 1 to 18.
-  """
-  fields = ['par', 'handicap']
-  def __init__(self, dct=None):
-    super(GolfHole, self).__init__(dct)
-
-  def __str__(self):
-    return 'par {} handicap {}'.format(self.par, self.handicap)
-  
-  def __repr__(self):
-    return 'GolfHole(dct={})'.format(self.toDict())
+from .hole import GolfHole
 
 
 class GolfCourse(object):
@@ -43,7 +26,7 @@ class GolfCourse(object):
     self.name = dct.get('name')
     self.holes = dct.get('holes', [])
     if self.holes:
-      self.holes = [GolfHole(hole_dct) for hole_dct in dct['holes']]
+      self.holes = [GolfHole(dct=hole_dct) for hole_dct in dct['holes']]
     self.tees = dct.get('tees', [])
   
   def toDict(self):
@@ -144,6 +127,10 @@ class GolfScore(object):
     self.net = dct.get('net', [])
     self.course_handicap = dct.get('course_handicap', 0)
     
+  def calcCourseHandicap(self, slope):
+    """Course Handicap = Handicap Index * Slope rating / 113."""
+    self.course_handicap = round(self.player.handicap * slope / 113)
+
   def __str__(self):
     return '{} - course_handicap:{} gross:{} net:{}'.format(
       self.player.nick_name, self.course_handicap, self.gross, self.net)
