@@ -10,18 +10,23 @@ class DB(object):
   def put(self, collection):
     collection.save(self.toDict(), safe=True)
 
+class DocValidateFail(Exception):
+  pass
 
 class Doc(object):
   """Abstract fields MUST be defined."""
   fields = []
-  def __init__(self, dct=None):
+  def __init__(self, **kwargs):
     super(Doc, self).__init__()
-    # initiaze all fields to None
+    # initialize all fields tfrom keywords or None
     for field in self.fields:
-      setattr(self, field, None)
+      setattr(self, field, kwargs.get(field))
     # initialize from dictionary
-    if dct:
-      self.fromDict(dct)
+    if kwargs.get('dct'):
+      self.fromDict(kwargs.get('dct'))
+  
+  def validate(self):
+    pass
   
   def fromDict(self, dct):
     for field in self.fields:
