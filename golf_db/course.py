@@ -1,7 +1,5 @@
 from .doc import DocValidateFail
 from .hole import GolfHole
-from .player import GolfPlayer
-from .score import GolfScore
 
 class GolfCourse(object):
   """Golf course object
