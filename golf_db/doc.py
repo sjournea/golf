@@ -1,14 +1,15 @@
-"""doc.py"""
+"""doc.py - base class for document objects.
+  
+Simple design can be improved.
 
-class DB(object):
-  """Abstract - fields MUST be defined."""
-  def __init__(self, dct=None):
-    super(DB, self).__init__()
-    # Add _id field
-    self.fields.append('_id')
-
-  def put(self, collection):
-    collection.save(self.toDict(), safe=True)
+class Doc 
+  member fields - list of attributes to use with class.
+                  Must be defined. Default is empty list.
+  toDict()      - convert all members to a dictionary.
+  fromDict()    - load all members from a dictionar.
+  validate()    - Validate the object. Default is just a pass.
+                  Raise DocValidateFail for validation failures.
+"""
 
 class DocValidateFail(Exception):
   pass
