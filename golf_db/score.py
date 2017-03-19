@@ -28,6 +28,15 @@ class GolfScore(object):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = round(self.player.handicap * slope / 113)
 
+  def __eq__(self, other):
+    return (self.player == other.player and
+            self.gross == other.gross and
+            self.net == other.net and
+            self.course_handicap == other.course_handicap)
+
+  def __ne__(self, other):
+    return not self == other
+
   def __str__(self):
     return '{} - course_handicap:{} gross:{} net:{}'.format(
       self.player.nick_name, self.course_handicap, self.gross, self.net)

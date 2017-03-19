@@ -3,11 +3,11 @@ from .score import GolfScore
 
 
 class GolfRound(object):
-  def __init__(self, dct):
+  def __init__(self, dct=None):
     super(GolfRound, self).__init__()
     self.course = None
     self.date = None
-    self.scores = None
+    self.scores = []
     self.tee = None
     if dct:
       self.fromDict(dct)
@@ -24,6 +24,16 @@ class GolfRound(object):
              'players': [player.toDict() for player in self.scores],
              'tee': self.tee,
            }
+
+  def __eq__(self, other):
+    return (self.course == other.course and
+            self.date == other.date and
+            self.scores == other.scores and
+            self.tee == other.tee)
+
+  def __ne__(self, other):
+    return not self == other
+
   
   def getScorecard(self):
     """Scorecard with all players."""
