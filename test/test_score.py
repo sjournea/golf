@@ -3,7 +3,7 @@ import unittest
 from golf_db.score import GolfScore
 from golf_db.test_data import CanyonLake_Players
 
-class GolfScoreInitCase(unittest.TestCase):
+class GolfScoreTest(unittest.TestCase):
 
   def test_init_empty(self):
     # check default parameters
@@ -17,3 +17,7 @@ class GolfScoreInitCase(unittest.TestCase):
       self.assertEqual(dct['player'], score.player.toDict())
       self.assertEqual(dct['gross'], score.gross)
       
+  def test_calc_handicap(self):
+    for dct in CanyonLake_Players:
+      score = GolfScore(dct=dct)
+      score.calcCourseHandicap(133)

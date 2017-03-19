@@ -1,4 +1,4 @@
-from .doc import Doc
+from .doc import DocValidateFail
 from .hole import GolfHole
 from .player import GolfPlayer
 from .score import GolfScore
@@ -9,6 +9,7 @@ class GolfCourse(object):
   Members:
     name  - String - Golf course name
     holes - list of golf holes
+    tees  - list of tees on course
   """
   def __init__(self, dct=None):
     super(GolfCourse, self).__init__()
@@ -18,11 +19,6 @@ class GolfCourse(object):
     if dct:
       self.fromDict(dct)
    
-  def setStats(self):
-    self.out_tot = sum([hole.par for hole in self.holes[:9]])
-    self.in_tot  = sum([hole.par for hole in self.holes[9:]])
-    self.total   = self.in_tot + self.out_tot
-
   def fromDict(self, dct):
     self.name = dct.get('name')
     self.holes = dct.get('holes', [])
@@ -44,13 +40,27 @@ class GolfCourse(object):
   def __ne__(self, other):
     return not self == other
 
+  def validate(self):
+    if len(self.holes) != 18:
+      raise DocValidateFail('Course must have 18 golf holes.')
+    handicaps = [0 for n in range(len(self.holes))]
+    for hole in self.holes:
+      hole.validate()
+      handicaps[hole.handicap-1] += 1
+    for n,hdcp in enumerate(handicaps):
+      if hdcp == 0:
+        raise DocValidateFail('Handicap {} has not been set.'.format(n+1))
+      if hdcp > 1:
+        raise DocValidateFail('Handicap {} been set more then once.'.format(n+1))
+        
+  def setStats(self):
+    """Par totals."""
+    self.out_tot = sum([hole.par for hole in self.holes[:9]])
+    self.in_tot  = sum([hole.par for hole in self.holes[9:]])
+    self.total   = self.in_tot + self.out_tot
+
   def getScorecard(self):
-    """
-    <Name>    
-          1  2  3  4  5  6  7  8  9 Out  10 11 12 13 14 15 16 17 18 In Total
-    Par
-    Hdcp 
-    """
+    """Return hdr, par and hdcp lines for scorecard."""
     self.setStats()
     hdr  = 'Hole  '
     par  = 'Par   '

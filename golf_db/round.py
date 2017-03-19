@@ -8,6 +8,7 @@ class GolfRound(object):
     self.course = None
     self.date = None
     self.scores = None
+    self.tee = None
     if dct:
       self.fromDict(dct)
 
@@ -15,11 +16,13 @@ class GolfRound(object):
     self.course = GolfCourse(dct['course'])
     self.date = dct.get('date')
     self.scores = [GolfScore(player_dct) for player_dct in dct['players']]
-    
+    self.tee = dct.get('tee')
+
   def toDict(self):
     return { 'course': self.course.toDict(),
              'date': self.date,
-             'scores': [player.toDict() for player in self.players],
+             'players': [player.toDict() for player in self.scores],
+             'tee': self.tee,
            }
   
   def getScorecard(self):
@@ -48,4 +51,6 @@ class GolfRound(object):
     return dct_scorecard
   
   def __str__(self):
-    return '{} - {:<25} - {}'.format(self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]))
+    return '{} - {:<25} - {:<25} - tee:{}'.format(
+      self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]),
+      self.tee['name'] if self.tee else self.tee)
