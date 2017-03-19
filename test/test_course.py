@@ -27,7 +27,6 @@ class GolfCourseInitCase(unittest.TestCase):
       self.assertEqual(dct['holes'], course.holes)
       self.assertEqual(dct['tees'], course.tees)
       
-class GolfCourseDictCase(unittest.TestCase):
   def test_toDict(self):
     # check course name
     for dct in GolfCourses:
@@ -48,9 +47,7 @@ class GolfCourseDictCase(unittest.TestCase):
       course2.holes[0].par += 1
       self.assertNotEqual(course, course2)
 
-
-class GolfCourseValidate(unittest.TestCase):
-  def test_data(self):
+  def test_validate_good_data(self):
     # check course name
     for dct in GolfCourses:
       course = GolfCourse(dct=dct)
