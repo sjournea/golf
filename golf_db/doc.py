@@ -6,7 +6,7 @@ class Doc
   member fields - list of attributes to use with class.
                   Must be defined. Default is empty list.
   toDict()      - convert all members to a dictionary.
-  fromDict()    - load all members from a dictionar.
+  fromDict()    - load all members from a dictionary.
   validate()    - Validate the object. Default is just a pass.
                   Raise DocValidateFail for validation failures.
 """
