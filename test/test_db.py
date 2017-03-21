@@ -8,28 +8,34 @@ class DBTest(unittest.TestCase):
 
   def test_course_api(self):
     db = GolfDB()
-    print 'courses : {}'.format(db.courseCount())
+    cnt = db.courseCount()
+    #print 'courses : {}'.format(cnt)
     courses = db.courseList()
-    for course in courses:
-      print course
+    #for course in courses:
+      #print course
     c = db.courseFind(courses[1].name)
-    print c
+    #print c
     self.assertEqual(c, courses[1])
     
   def test_player_api(self):
     db = GolfDB()
-    print 'players : {}'.format(db.playerCount())
+    cnt = db.playerCount()
+    #print 'players : {}'.format(cnt)
     players = db.playerList()
-    for player in players:
-      print player
+    #for player in players:
+      #print player
+    p = db.playerFind(players[1].email)
+    #print r
+    self.assertEqual(p, players[1])
     
-  def test_player_api(self):
+  def test_round_api(self):
     db = GolfDB()
-    print 'rounds : {}'.format(db.roundCount())
+    cnt = db.roundCount()
+    #print 'rounds : {}'.format(cnt)
     rounds = db.roundList()
-    for r in rounds:
-      print r
+    #for r in rounds:
+      #print r
     r = db.roundFind(rounds[1].course.name)
-    print r
+    #print r
     self.assertEqual(r, rounds[1])
     

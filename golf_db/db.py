@@ -42,6 +42,10 @@ class GolfDB(object):
     """Return count of players."""
     return self._countCollection('players', **kwargs)
   
+  def playerFind(self, email):
+    """Return a matching player by email."""
+    return self._findOne('players', GolfPlayer, query={'email': { '$regex': email}})
+
   def roundList(self, **kwargs):
     """Return a list of all rounds."""
     return self._buildList('rounds', GolfRound, **kwargs)
