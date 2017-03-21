@@ -12,6 +12,9 @@ class DBTest(unittest.TestCase):
     courses = db.courseList()
     for course in courses:
       print course
+    c = db.courseFind(courses[1].name)
+    print c
+    self.assertEqual(c, courses[1])
     
   def test_player_api(self):
     db = GolfDB()
@@ -19,11 +22,14 @@ class DBTest(unittest.TestCase):
     players = db.playerList()
     for player in players:
       print player
-
+    
   def test_player_api(self):
     db = GolfDB()
     print 'rounds : {}'.format(db.roundCount())
     rounds = db.roundList()
     for r in rounds:
       print r
+    r = db.roundFind(rounds[1].course.name)
+    print r
+    self.assertEqual(r, rounds[1])
     

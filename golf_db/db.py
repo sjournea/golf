@@ -30,6 +30,10 @@ class GolfDB(object):
     """Return count of courses."""
     return self._countCollection('courses', **kwargs)
   
+  def courseFind(self, name):
+    """Return a matching course by name."""
+    return self._findOne('courses', GolfCourse, query={'name': { '$regex': name}})
+  
   def playerList(self, **kwargs):
     """Return a list of all players."""
     return self._buildList('players', GolfPlayer, **kwargs)
@@ -46,6 +50,10 @@ class GolfDB(object):
     """Return count of rounds."""
     return self._countCollection('rounds', **kwargs)
   
+  def roundFind(self, name):
+    """Return a matching round by course name."""
+    return self._findOne('rounds', GolfRound, query={'course.name': { '$regex': name}})
+
   def _buildList(self, collection, DBClass, **kwargs):
     """Return a list of all courses by name."""
     lst = []
@@ -58,6 +66,15 @@ class GolfDB(object):
         lst.append(DBClass(dct=dct))
     return lst
     
+  def _findOne(self, collection, DBClass, **kwargs):
+    """Return a list of all courses by name."""
+    query = kwargs.get('query', {})
+    with self.db as session:
+      db = session.conn[self.database]
+      co = db[collection]
+      dct = co.find_one(query)
+      return DBClass(dct=dct)
+
   def _countCollection(self, collection, **kwargs):
     """Return a list of all courses by name."""
     lst = []
