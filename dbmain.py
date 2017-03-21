@@ -60,25 +60,16 @@ class GolfMenu(Menu):
       print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
 
   def _dropDatabase(self):
-    if len(self.lstCmd) < 2:
-      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    with self.db as session:
-      self.db.drop_database(self.lstCmd[1])
+    self.gdb.remove()
 
   def _createGolfDatabase(self):
-    if len(self.lstCmd) < 2:
-      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    db_name = self.lstCmd[1]
-    with self.db as session:
-      self.db.drop_database(db_name)
-      self.db.insert_many(db_name, 'players', GolfPlayers)
-      self.db.insert_many(db_name, 'courses', GolfCourses)
-      self.db.insert_many(db_name, 'rounds', GolfRounds)
+    self.gdb.create()
 
   def _useDatabase(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     self.database = self.lstCmd[1]
+    self.gdb = GolfDB(self.database)
     self.updateHeader()
 
   def _listPlayers(self):
