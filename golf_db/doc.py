@@ -1,26 +1,33 @@
-"""doc.py"""
+"""doc.py - base class for document objects.
+  
+Simple design can be improved.
 
-class DB(object):
-  """Abstract - fields MUST be defined."""
-  def __init__(self, dct=None):
-    super(DB, self).__init__()
-    # Add _id field
-    self.fields.append('_id')
+class Doc 
+  member fields - list of attributes to use with class.
+                  Must be defined. Default is empty list.
+  toDict()      - convert all members to a dictionary.
+  fromDict()    - load all members from a dictionary.
+  validate()    - Validate the object. Default is just a pass.
+                  Raise DocValidateFail for validation failures.
+"""
 
-  def put(self, collection):
-    collection.save(self.toDict(), safe=True)
-
+class DocValidateFail(Exception):
+  pass
 
 class Doc(object):
   """Abstract fields MUST be defined."""
-  def __init__(self, dct=None):
+  fields = []
+  def __init__(self, **kwargs):
     super(Doc, self).__init__()
-    # initiaze all fields to None
+    # initialize all fields tfrom keywords or None
     for field in self.fields:
-      setattr(self, field, None)
+      setattr(self, field, kwargs.get(field))
     # initialize from dictionary
-    if dct:
-      self.fromDict(dct)
+    if kwargs.get('dct'):
+      self.fromDict(kwargs.get('dct'))
+  
+  def validate(self):
+    pass
   
   def fromDict(self, dct):
     for field in self.fields:
@@ -42,29 +49,3 @@ class Doc(object):
     return not self == other
 
 
-class Expand(object):
-  """Abstract fields MUST be defined."""
-  def __init__(self, dct=None):
-    super(Expand, self).__init__()
-    # initialize from dictionary
-    if dct:
-      self.fromDict(dct)
-  
-  def fromDict(self, dct):
-    for key,value in dct.iteritems():
-      setattr(self, key, value)
-  
-  #def toDict(self):
-    #dct = {}
-    #for field in self.fields:
-      #dct[field] = getattr(self, field)
-    #return dct
-    
-  #def __eq__(self, other):
-    #for field in self.fields:
-      #if getattr(self, field) != getattr(other, field):
-        #return False
-    #return True
-
-  def __ne__(self,other):
-    return not self == other

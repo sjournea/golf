@@ -129,6 +129,72 @@ delta_view_holes = [
   {'par': 4, 'handicap':   4},
 ]
 
+villages_men_holes = [
+  {'par': 4, 'handicap':  10},
+  {'par': 5, 'handicap':  16},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+  {'par': 3, 'handicap':  12},
+  {'par': 4, 'handicap':  14},
+  {'par': 4, 'handicap':   6},
+  {'par': 5, 'handicap':   8},
+
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':  15},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':  13},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   5},
+]
+
+skywest_mens_holes = [
+  {'par': 5, 'handicap':   5},
+  {'par': 4, 'handicap':  15},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':  11},
+  {'par': 3, 'handicap':   9},
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   3},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':  13},
+
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+  {'par': 5, 'handicap':  16},
+  {'par': 4, 'handicap':  14},
+  {'par': 3, 'handicap':   8},
+  {'par': 5, 'handicap':  12},
+  {'par': 4, 'handicap':   6},
+]
+
+fall_river_men_holes = [
+  {'par': 4, 'handicap':  15},
+  {'par': 4, 'handicap':   5},
+  {'par': 5, 'handicap':   1},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  11},
+  {'par': 5, 'handicap':   9},
+
+  {'par': 4, 'handicap':  12},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':   6},
+  {'par': 5, 'handicap':   2},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':  18},
+  {'par': 5, 'handicap':  10},
+]
+
 sj_muni_tees = [
   {'gender': 'mens', 'name': 'Gold',     'rating': 71.9, 'slope': 123 },
   {'gender': 'mens', 'name': 'Black',    'rating': 70.1, 'slope': 118 },
@@ -171,20 +237,43 @@ delta_view_tees = [
   {'gender': 'mens',   'name': 'White', 'rating': 68.3, 'slope': 125 },
 ]
 
+villages_tees = [
+  {'gender': 'mens',   'name': '55555', 'rating': 72.2, 'slope': 125 },
+  {'gender': 'mens',   'name': '4444',  'rating': 70.9, 'slope': 121 },
+  {'gender': 'mens',   'name': '333',   'rating': 69.3, 'slope': 118 },
+  {'gender': 'mens',   'name': '22',    'rating': 64.1, 'slope': 111 },
+  {'gender': 'mens',   'name': '1',     'rating': 60.7, 'slope':  97 },
+]
+
+skywest_tees = [
+  {'gender': 'mens', 'name': 'Blue',   'rating': 71.7, 'slope': 123 },
+  {'gender': 'mens', 'name': 'White',  'rating': 70.4, 'slope': 120 },
+  {'gender': 'mens', 'name': 'Yellow', 'rating': 68.3, 'slope': 116 },
+]
+
+fall_river_tees = [
+  {'gender': 'mens', 'name': 'Black', 'rating': 74.7, 'slope': 134 },
+  {'gender': 'mens', 'name': 'Blue',  'rating': 72.7, 'slope': 132 },
+  {'gender': 'mens', 'name': 'White', 'rating': 70.9, 'slope': 122 },
+]
+
 GolfCourses = [
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
-  {'name': 'Santa Jose Muni', 'holes': sj_muni_holes, 'tees': sj_muni_tees},
+  {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
   {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
   {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
   {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},
   {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
+  {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
+  {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
+  {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
 ]
 
 GolfPlayers = [
-  {'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
-  {'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
-  {'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.9},
-  {'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2},
+  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
 ]
 
 CanyonLake_Players = [
@@ -211,13 +300,16 @@ GolfRounds = [
   { 'date': datetime.datetime(2017, 3, 7), 
     'course': GolfCourses[0],
     'players': CanyonLake_Players,
+    'tee': GolfCourses[0]['tees'][0],
   },
   { 'date': datetime.datetime(2016, 6, 8), 
     'course': GolfCourses[4],
     'players': LakeChabot_Players,
+    'tee': GolfCourses[4]['tees'][0],
   },
   { 'date': datetime.datetime(2016, 10, 1), 
     'course': GolfCourses[5],
     'players': DeltaView_Players,
+    'tee': GolfCourses[5]['tees'][0],
   },
 ]

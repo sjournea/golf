@@ -103,13 +103,13 @@ class MongoDB(object):
   def __enter__(self):
     if self._conn is not None:
       raise RuntimeError('%s already connected.' % self.__class__.__name__)
-    try:
-      log.debug( '__enter__() - host:%s port:%s' % (self.host,self.port))
-      self._conn = MongoClient(host=self.host, port=self.port)
-    except ConnectionFailure,ex:
-      s = 'connect() fail - %s' % ex
-      log.error( s )
-      raise Exception( s )
+    #try:
+    log.debug( '__enter__() - host:%s port:%s' % (self.host,self.port))
+    self._conn = MongoClient(host=self.host, port=self.port)
+    #except ConnectionFailure,ex:
+      #s = 'connect() fail - %s' % ex
+      #log.error( s )
+      #raise Exception( s )
     return MongoSession(self._conn)
   
   def __exit__(self, ex_ty, ex_val, tb):

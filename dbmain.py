@@ -8,7 +8,10 @@ import threading
 #import time,datetime,re,os,traceback,pdb
 
 from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds
-from golf_db.course import GolfPlayer, GolfCourse, GolfHole, GolfRound
+from golf_db.player import GolfPlayer
+from golf_db.course import GolfCourse
+from golf_db.round import GolfRound
+from golf_db.db import GolfDB
 from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException
 from util.tl_logger import TLLog,logOptions
@@ -28,6 +31,7 @@ class GolfMenu(Menu):
     super(GolfMenu, self).__init__(cmdFile)
     self.db = mongo_db
     self.database = kwargs.get('database')
+    self.gdb = GolfDB(database=self.database)
     # add menu items
     self.addMenuItem( MenuItem( 'dl', '',             'Show databases.' ,                  self._showDatabases) )
     self.addMenuItem( MenuItem( 'dc', '<database>',   'create golf test data database.',   self._createGolfDatabase) )
@@ -40,17 +44,6 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
-    ##self.addMenuItem( MenuItem( 'f1', '',      'fetch one result', self._fetchone))
-    ##self.addMenuItem( MenuItem( 'fa', '',      'fetch all results', self._fetchall))
-    #self.addMenuItem( MenuItem( 'ta', '',      'Show tables', self._showTables))
-    #self.addMenuItem( MenuItem( 'qc', '<where clause> <limit int> <order clause>', 'query container table', self._dbSelectContainer))
-    #self.addMenuItem( MenuItem( 'qs', '<where clause> <limit int> <order clause>', 'query shipped table', self._dbSelectShipped))
-    #self.addMenuItem( MenuItem( 'qh', '<where clause> <limit int> <order clause>', 'query history table', self._dbSelectHistory))
-    #self.addMenuItem( MenuItem( 'uc', '<item label | cont_id id> <where clause> <limit int> <order clause>', 'update a container', self._dbUpdateContainer))
-    #self.addMenuItem( MenuItem( 'sc', '<item label | cont_id id> <ship_id id | ship_desc desc> <ship_date date>', 'ship a container', self._dbShipContainer))
-    #self.addMenuItem( MenuItem( 'ca', '', 'test adding a DB callback', self._dbExeCallbackAdd))
-    #self.addMenuItem( MenuItem( 'cr', '', 'test removing a DB callback', self._dbExeCallbackRemove))
-    #self.addMenuItem( MenuItem( 'va', '', 'validate database', self._dbValidate))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -89,31 +82,19 @@ class GolfMenu(Menu):
     self.updateHeader()
 
   def _listPlayers(self):
-    if self.database is None:
-      raise InputException( 'Database must be set with use command.')      
-    with self.db as session:
-      db = session.conn[self.database]
-      for dct in db.players.find():
-        player = GolfPlayer(dct=dct)
-        print player
+    players = self.gdb.playerList()
+    for n,player in enumerate(players):
+      print '{} - {}'.format(n,player)
       
   def _listCourses(self):
-    if self.database is None:
-      raise InputException( 'Database must be set with use command.')      
-    with self.db as session:
-      db = session.conn[self.database]
-      for dct in db.courses.find():
-        course = GolfCourse(dct=dct)
-        print course
+    courses = self.gdb.courseList()
+    for n,course in enumerate(courses):
+      print '{} - {}'.format(n,course)
       
   def _listRounds(self):
-    if self.database is None:
-      raise InputException( 'Database must be set with use command.')      
-    with self.db as session:
-      db = session.conn[self.database]
-      for dct in db.rounds.find():
-        rnd = GolfRound(dct=dct)
-        print rnd
+    rounds = self.gdb.roundList()
+    for n,r in enumerate(rounds):
+      print '{} - {}'.format(n,r)
       
   def _execute(self):
     if self.database is None:
@@ -142,269 +123,35 @@ class GolfMenu(Menu):
       player.put(db.players)
 
   def _courseGetScorecard(self):
-    if self.database is None:
-      raise InputException( 'Database must be set with use command.')      
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    with self.db as session:
-      db = session.conn[self.database]
-      dct = db.courses.find_one({'name': { '$regex': self.lstCmd[1]}})
-      course = GolfCourse(dct=dct)
-      print course
-      dct = course.getScorecard()
-      print dct['hdr']
-      print dct['par']
-      print dct['hdcp']
+    course = self.gdb.courseFind(self.lstCmd[1])
+    print course
+    dct = course.getScorecard()
+    print dct['hdr']
+    print dct['par']
+    print dct['hdcp']
 
   def _roundGetScorecard(self):
-    if self.database is None:
-      raise InputException( 'Database must be set with use command.')      
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    with self.db as session:
-      db = session.conn[self.database]
-      dct = db.rounds.find_one({'course.name': { '$regex': self.lstCmd[1]}})
-      rnd = GolfRound(dct=dct)
-      print rnd
-      dct = rnd.getScorecard()
-      print dct['hdr']
-      print dct['par']
-      print dct['hdcp']
-      if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
-      if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
-      if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
-      if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
-
-  #def _disconnect(self):
-    #self.db.close()
-    #self.updateHeader()
-
-
-  #def _commit(self):
-    #self.db.commit()
-
-  #def _fetchone(self):
-    #resp = self.db.fetchone()
-    #print resp
-
-  #def _fetchall(self):
-    #lst = self.db.fetchall()
-    #for resp in lst:
-      #print resp
-
-  #def _showTables(self):
-    #lstTables = self.db.showTables()
-    #for tbl in lstTables:
-      #print tbl
-
-  #def _dbSelectTbl(self, tbl):
-    #""" select on table and return Record objects """
-    #lstWhere = []
-    #order = None
-    #limit = None
-    #where = None
-    #for n,cmd in enumerate(self.lstCmd[1:]):
-      #if cmd == 'limit':
-        #limit = int(self.lstCmd[n+2])
-      #elif cmd == 'where':
-        #lstWhere.append(self.lstCmd[n+2])
-      #elif cmd == 'order':
-        #order = self.lstCmd[n+2]
-    ## select the jobs from Job table
-    #if lstWhere:
-      #where = ' and '.join(lstWhere)
-    #return tbl.select(self.db,where=where,order=order,limit=limit)
-
-  ##def _dbSelect(self, dbSelectFunc):
-    ##""" select on table and return Record objects """
-    ##lstWhere = []
-    ##order = None
-    ##limit = None
-    ##where = None
-    ##for n,cmd in enumerate(self.lstCmd[1:]):
-      ##if cmd == 'limit':
-        ##limit = int(self.lstCmd[n+2])
-      ##elif cmd == 'where':
-        ##lstWhere.append(self.lstCmd[n+2])
-      ##elif cmd == 'order':
-        ##order = self.lstCmd[n+2]
-    ### select the jobs from Job table
-    ##if lstWhere:
-      ##where = ' and '.join(lstWhere)
-    ##return dbSelectFunc(where=where,order=order,limit=limit)
-
-  #def _dbSelectContainer(self):
-    #""" select on container table and return ContainerRecord records """
-    #show = False
-    #for n,cmd in enumerate(self.lstCmd[1:]):
-      #if cmd == 'show':
-        #show = True
-
-    #lstRecs = self._dbSelectTbl( self.master.tblContainer ) 
-    #print 'Total records selected : %d' % len(lstRecs)
-    #for n,rec in enumerate(lstRecs):
-      #if show:
-        #lstConts = self.master.tblContainer.select(self.db, where='cont=%d' % rec.id)
-        #print '%5d : %d items -- %s' % (n+1, len(lstCounts),rec)
-        #for i,recCont in enumerate(lstConts):
-          #print '    %3d : %s' % (i+1,recCont)
-      #else:
-        #lstDBFields,lstCounts = self.master.tblContainer.count(self.db, where='cont=%d' % rec.id)
-        #cnt = lstCounts[0][0]
-        #print '%5d : %3d items -- %s' % (n+1, cnt ,rec)
-
-  #def _dbSelectShipped(self):
-    #""" select on container table and return ContainerRecord records """
-    #lstRecs = self._dbSelectTbl( self.master.tblShipping ) 
-    #print 'Total records selected : %d' % len(lstRecs)
-    #for n,rec in enumerate(lstRecs):
-      #print '%5d : %s' % (n+1,rec)
-
-  #def _dbSelectHistory(self):
-    #""" select on container table and return ContainerRecord records """
-    #lstRecs = self._dbSelectTbl( self.master.tblHistory ) 
-    #print 'Total records selected : %d' % len(lstRecs)
-    #for n,rec in enumerate(lstRecs):
-      #print '%5d : %5d %s %s %-10s %s' % (n+1, rec.id, rec.label_code, rec.trans_date, rec.trans_action, rec.trans_desc)
-
-  #def _dbUpdateContainer(self):
-    #""" Update container locations in the container table 
-          #uc <item label | cont_id id> <where clause> <limit int> <order clause> update
-        #item or id MUST be set, will use last set. 
-    #"""
-    #where = None
-    #update = False
-    #for n,cmd in enumerate(self.lstCmd[1:]):
-      #if cmd == 'item':
-        #where = "label_code = '%s'" % self.lstCmd[n+2]
-      #elif cmd == 'cont_id':
-        #where = 'id = %d' % int(self.lstCmd[n+2])
-      #elif cmd == 'update':
-        #update = True
-    ## 1st, get the target container
-    #if not where:
-      #raise InputException( 'item or cont_id MUST be used to select a target container')
-    #recCont = self.master.tblContainer.get(self.db, where=where)
-
-    ## 2nd, get containers using where, limit and order clauses
-    #lstRecs = self._dbSelectTbl( self.master.tblContainer )
-    #if not lstRecs:
-      #raise InputException('No containers records selected to put into target container')
-
-    #print 'Target Container : %s' % recCont
-    #print 'Containers to Move : %d' % len(lstRecs)
-    #for n,rec in enumerate(lstRecs):
-      #print '  %5d : %s' % (n+1,rec)
-
-    ## update all containers
-    #if update:
-      #for rec in lstRecs:
-        #self.master.dbUpdateContainer(rec.label_code, recCont, commit=False)
-      #self.db.commit()
-    #else:
-      #print 'Container update NOT PERFORMED'
-
-  #def _dbShipContainer(self):
-    #""" Ship a container to a shipping location 
-          #sc <item label | id cont_id> <ship_id id | ship_desc desc> update
-        #item or id MUST be set, will use last set. 
-    #"""
-    #where = None
-    #update = False
-    #ship_id = None
-    #ship_desc = None
-    #ship_date = None
-    #for n,cmd in enumerate(self.lstCmd[1:]):
-      #if cmd == 'item':
-        #where = "label_code = '%s'" % self.lstCmd[n+2]
-      #elif cmd == 'cont_id':
-        #where = 'id = %d' % int(self.lstCmd[n+2])
-      #elif cmd == 'ship_id':
-        #ship_id = int(self.lstCmd[n+2])
-      #elif cmd == 'ship_desc':
-        #ship_desc = self.lstCmd[n+2]
-      #elif cmd == 'ship_date':
-        #ship_date = parseTimeString( self.lstCmd[n+2] )
-      #elif cmd == 'update':
-        #update = True
-    ## 1st, get the shipping record
-    #if ship_id is not None:
-      #recShip = self.master.tblShipping.get( self.db, where='id=%d' % ship_id)
-    #elif ship_desc is not None:
-      #ship_id = self.master.dbInsertShipping( ship_desc, None, shipDate=ship_date )
-      #recShip = self.master.tblShipping.get( self.db, where='id=%d' % ship_id)
-    #else:
-      #raise InputException( 'ship_id or ship_desc MUST be used to select a shipping container')
-
-    ## 2nd, get the target container
-    #if not where:
-      #raise InputException( 'item or cont_id MUST be used to select the container to be shipped')
-    #recCont = self.master.tblContainer.get(self.db, where=where)
-
-    #print 'recCont : %s' % recCont
-    #print 'recShip : %s' % recShip
-
-    #if update:
-      #self.master.dbUpdateShipping( recCont.id, recShip.id)
-
-  #def _dbExeCallback1(self, sql, params):
-    #print('CB1 sql:%s' % sql )
-    #if params:
-      #print('CB1 params:%s' % params )
-
-  #def _dbExeCallback2(self, sql, params):
-    #print('CB2 sql:%s' % sql )
-    #if params:
-      #print('CB2 params:%s' % params )
-
-  #def _dbExeCallback3(self, sql, params):
-    #print('CB3 sql:%s' % sql )
-    #if params:
-      #print('CB3 params:%s' % params )
-
-  #def _dbExeCallbackAdd(self):
-    #if len(self.lstCmd) < 2:
-      #raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    #func = None
-    #if self.lstCmd[1] == '1':
-      #func = self._dbExeCallback1
-    #elif self.lstCmd[1] == '2':
-      #func = self._dbExeCallback2
-    #elif self.lstCmd[1] == '3':
-      #func = self._dbExeCallback3
-
-    #if func:
-      #self.dbDef.ExecuteCallbackAdd(func) 
-
-  #def _dbExeCallbackRemove(self):
-    #if len(self.lstCmd) < 2:
-      #raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-
-    #func = None
-    #if self.lstCmd[1] == '1':
-      #func = self._dbExeCallback1
-    #elif self.lstCmd[1] == '2':
-      #func = self._dbExeCallback2
-    #elif self.lstCmd[1] == '3':
-      #func = self._dbExeCallback3
-
-    #if func:
-      #self.dbDef.ExecuteCallbackRemove(func) 
-
-  #def _dbValidate(self):
-    #""" va """
-    #updateTbl = False
-    #for n,cmd in enumerate(self.lstCmd[1:]):
-      #if cmd == 'update':
-        #updateTbl = True
-    #self.master.dbValidateTables(updateTables=updateTbl)
-
-DEF_LOG_ENABLE = 'dbmain'
-DEF_DB_HOST = MongoDB.DEF_HOST
-DEF_DB_PORT = MongoDB.DEF_PORT
-DEF_DATABASE = 'golf'
+    rnd = self.gdb.roundFind(self.lstCmd[1])
+    print rnd
+    dct = rnd.getScorecard()
+    print dct['hdr']
+    print dct['par']
+    print dct['hdcp']
+    if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
+    if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
+    if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
+    if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
 
 def main():
+  DEF_LOG_ENABLE = 'dbmain'
+  DEF_DB_HOST = MongoDB.DEF_HOST
+  DEF_DB_PORT = MongoDB.DEF_PORT
+  DEF_DATABASE = 'golf'
+
   # build the command line arguments
   from optparse import OptionParser
   parser = OptionParser()
