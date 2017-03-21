@@ -276,6 +276,13 @@ GolfPlayers = [
   {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
 ]
 
+TestGolfPlayers = [
+  {'email':'jlennon@beatles.com',   'first_name': 'John',   'last_name': 'Lennon',    'nick_name': 'JL', 'handicap': 20.4},
+  {'email':'pmccartn@beatles.com',  'first_name': 'Paul',   'last_name': 'McCartney', 'nick_name': 'PM', 'handicap': 17.9},
+  {'email':'gharriso@beatles.com',  'first_name': 'George', 'last_name': 'Harrison',  'nick_name': 'GH', 'handicap': 17.2},
+  {'email':'rstarr@beatles.com',    'first_name': 'Ringo',  'last_name': 'Starr',     'nick_name': 'RS', 'handicap': 22.0},
+]
+
 CanyonLake_Players = [
   {'player': GolfPlayers[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]},
   {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8]},

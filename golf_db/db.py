@@ -4,6 +4,9 @@
 from .course import GolfCourse
 from .player import GolfPlayer
 from .round import GolfRound
+from .test_data import GolfCourses, GolfPlayers, GolfRounds
+
+from pymongo import errors
 from util.db_mongo import MongoDB
 
 class GolfDBException(Exception):
@@ -19,9 +22,24 @@ class GolfDB(object):
     self.host = kwargs.get('host', MongoDB.DEF_HOST)
     self.port = kwargs.get('port', MongoDB.DEF_PORT)
     self.database = kwargs.get('database', self.DATABASE)
-
     self.db = MongoDB(self.host, self.port)
   
+  def create(self, **kwargs):
+    """Create all collections and indexes needed."""
+    with self.db as session:
+      self.db.drop_database(self.database)
+      self.db.insert_many(self.database, 'players', GolfPlayers)
+      self.db.insert_many(self.database, 'courses', GolfCourses)
+      self.db.insert_many(self.database, 'rounds', GolfRounds)
+      # create index on player email
+      db = session.conn[self.database]
+      db.players.create_index('email', unique=True, background=True)
+      
+  def remove(self, **kwargs):
+    """Remove database."""
+    with self.db as session:
+      self.db.drop_database(self.database)
+
   def courseList(self, **kwargs):
     """Return a list of courses."""
     return self._buildList('courses', GolfCourse, **kwargs)
@@ -45,6 +63,10 @@ class GolfDB(object):
   def playerFind(self, email):
     """Return a matching player by email."""
     return self._findOne('players', GolfPlayer, query={'email': { '$regex': email}})
+
+  def playerSave(self, player):
+    """Return a matching player by email."""
+    return self._save('players', player.toDict())
 
   def roundList(self, **kwargs):
     """Return a list of all rounds."""
@@ -86,4 +108,15 @@ class GolfDB(object):
       db = session.conn[self.database]
       co = db[collection]
       return co.count()
-  
+
+  def _save(self, collection, dct):
+    """Return a list of all courses by name."""
+    try:
+      lst = []
+      with self.db as session:
+        db = session.conn[self.database]
+        co = db[collection]
+        co.save(dct)
+    except errors.DuplicateKeyError, ex:
+      raise GolfDBException('Duplicate key error')
+      
