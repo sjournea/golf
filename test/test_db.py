@@ -10,10 +10,23 @@ class DBTestInit(unittest.TestCase):
   def test_create(self):
     db = GolfDB(database='golf_test')
     db.create()
-    
-  def test_remove(self):
-    db = GolfDB(database='golf_test')
+    with db.db as session:
+      dctDatabases = db.db.databases()
+    #for database, tables in dctDatabases.items():
+      #print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
+    self.assertIn('golf_test', dctDatabases)
+    collections = dctDatabases['golf_test']
+    expected_collections = [u'courses', u'players',u'rounds']
+    self.assertEqual(len(collections), len(expected_collections))
+    for exp in expected_collections:
+      self.assertIn(exp, collections)
+    # test remove
     db.remove()
+    with db.db as session:
+      dctDatabases = db.db.databases()
+    #for database, tables in dctDatabases.items():
+      #print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
+    self.assertNotIn('golf_test', dctDatabases)
     
 class DBTestAPI(unittest.TestCase):
 
