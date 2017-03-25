@@ -1,0 +1,8 @@
+# create a round and add players scores
+gcr
+gad sjournea Blue
+gad snake Blue
+gad spanky Blue
+gad rock Blue
+gst
+gps

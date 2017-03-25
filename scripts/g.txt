@@ -1,0 +1,16 @@
+# database
+dl
+# courses
+col
+cos Canyon
+cos Poppy
+cos Chabot
+cos Diablo
+cos Delta
+# players
+pll
+# Rounds
+rol
+ros Canyon
+ros Chabot
+ros Delta

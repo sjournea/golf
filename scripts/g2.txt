@@ -1,0 +1,3 @@
+# rebuild and run
+dc golf
+< scripts/g.txt
