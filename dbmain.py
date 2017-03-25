@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """ dbmain.py - simple query test program for database """ 
+import datetime
 #import sys
 import logging
 #import ConfigParser
@@ -32,6 +33,7 @@ class GolfMenu(Menu):
     self.db = mongo_db
     self.database = kwargs.get('database')
     self.gdb = GolfDB(database=self.database)
+    self.golf_round = None
     # add menu items
     self.addMenuItem( MenuItem( 'dl', '',             'Show databases.' ,                  self._showDatabases) )
     self.addMenuItem( MenuItem( 'dc', '<database>',   'create golf test data database.',   self._createGolfDatabase) )
@@ -44,6 +46,7 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
+    self.addMenuItem( MenuItem( 'gst', '',            'Start a Round of Golf',             self._startRound))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -136,6 +139,24 @@ class GolfMenu(Menu):
     if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
     if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
     if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+
+  def _startRound(self):
+    self.golf_round = GolfRound()
+    self.golf_round.course = self.gdb.courseFind('Canyon Lakes')
+    self.golf_round.date = datetime.datetime(2017, 3, 23)
+    self.golf_round.tee = self.golf_round.course.getTee('Blue')
+    print self.golf_round
+    #lst = self.db.playerList()
+    #for pl in lst:
+      #print pl
+    #pl = self.db.playerFind('sjourea')
+    #print pl
+    #r.addPlayer(pl)
+    ##r.addPlayer(lst[1])
+    #print r
+    #dct = r.getScorecard()
+    #for key,value in dct.items():
+      #print '{:<15} - {}'.format(key, value)    
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'
