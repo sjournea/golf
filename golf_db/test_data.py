@@ -281,25 +281,31 @@ DBGolfCourses = (
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
 )
 
-GolfPlayers = [
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
-  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
-  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2},
-  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
-]
+GolfPlayers = (
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4, 'gender': 'man'},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9, 'gender': 'man'},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2, 'gender': 'man'},
+  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0, 'gender': 'man'},
+  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
+  {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frenchie', 'handicap': 11.2, 'gender': 'woman'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+)
 
-DBGolfPlayers = [
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
-  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
-  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2},
-  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
-]
+DBGolfPlayers = (
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4, 'gender': 'man'},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9, 'gender': 'man'},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2, 'gender': 'man'},
+  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0, 'gender': 'man'},
+  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
+  {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frenchie', 'handicap': 11.2, 'gender': 'woman'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+)
 
 TestGolfPlayers = [
-  {'email':'jlennon@beatles.com',   'first_name': 'John',   'last_name': 'Lennon',    'nick_name': 'JL', 'handicap': 20.4},
-  {'email':'pmccartn@beatles.com',  'first_name': 'Paul',   'last_name': 'McCartney', 'nick_name': 'PM', 'handicap': 17.9},
-  {'email':'gharriso@beatles.com',  'first_name': 'George', 'last_name': 'Harrison',  'nick_name': 'GH', 'handicap': 17.2},
-  {'email':'rstarr@beatles.com',    'first_name': 'Ringo',  'last_name': 'Starr',     'nick_name': 'RS', 'handicap': 22.0},
+  {'email':'jlennon@beatles.com',   'first_name': 'John',   'last_name': 'Lennon',    'nick_name': 'JL', 'handicap': 20.4, 'gender': 'man'},
+  {'email':'pmccartn@beatles.com',  'first_name': 'Paul',   'last_name': 'McCartney', 'nick_name': 'PM', 'handicap': 17.9, 'gender': 'man'},
+  {'email':'gharriso@beatles.com',  'first_name': 'George', 'last_name': 'Harrison',  'nick_name': 'GH', 'handicap': 17.2, 'gender': 'man'},
+  {'email':'rstarr@beatles.com',    'first_name': 'Ringo',  'last_name': 'Starr',     'nick_name': 'RS', 'handicap': 22.0, 'gender': 'man'},
 ]
 
 CanyonLake_Players = [
