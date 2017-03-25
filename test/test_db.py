@@ -12,8 +12,6 @@ class DBTestInit(unittest.TestCase):
     db.create()
     with db.db as session:
       dctDatabases = db.db.databases()
-    #for database, tables in dctDatabases.items():
-      #print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
     self.assertIn('golf_test', dctDatabases)
     collections = dctDatabases['golf_test']
     expected_collections = [u'courses', u'players',u'rounds']
@@ -24,8 +22,6 @@ class DBTestInit(unittest.TestCase):
     db.remove()
     with db.db as session:
       dctDatabases = db.db.databases()
-    #for database, tables in dctDatabases.items():
-      #print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
     self.assertNotIn('golf_test', dctDatabases)
     
 class DBTestAPI(unittest.TestCase):

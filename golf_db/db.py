@@ -4,7 +4,7 @@
 from .course import GolfCourse
 from .player import GolfPlayer
 from .round import GolfRound
-from .test_data import GolfCourses, GolfPlayers, GolfRounds
+from .test_data import DBGolfCourses, DBGolfPlayers, DBGolfRounds
 
 from pymongo import errors
 from util.db_mongo import MongoDB
@@ -26,11 +26,12 @@ class GolfDB(object):
   
   def create(self, **kwargs):
     """Create all collections and indexes needed."""
+    # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
     with self.db as session:
       self.db.drop_database(self.database)
-      self.db.insert_many(self.database, 'players', GolfPlayers)
-      self.db.insert_many(self.database, 'courses', GolfCourses)
-      self.db.insert_many(self.database, 'rounds', GolfRounds)
+      self.db.insert_many(self.database, 'players', DBGolfPlayers)
+      self.db.insert_many(self.database, 'courses', DBGolfCourses)
+      self.db.insert_many(self.database, 'rounds', DBGolfRounds)
       # create index on player email
       db = session.conn[self.database]
       db.players.create_index('email', unique=True, background=True)
@@ -99,7 +100,7 @@ class GolfDB(object):
       db = session.conn[self.database]
       co = db[collection]
       dct = co.find_one(query)
-      return DBClass(dct=dct)
+      return DBClass(dct=dct) if dct else None
 
   def _countCollection(self, collection, **kwargs):
     """Return a list of all courses by name."""

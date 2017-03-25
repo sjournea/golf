@@ -257,7 +257,7 @@ fall_river_tees = [
   {'gender': 'mens', 'name': 'White', 'rating': 70.9, 'slope': 122 },
 ]
 
-GolfCourses = [
+GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
   {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
@@ -267,9 +267,28 @@ GolfCourses = [
   {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
-]
+)
+
+DBGolfCourses = (
+  {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
+  {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
+  {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
+  {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
+  {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},
+  {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
+  {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
+  {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
+  {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
+)
 
 GolfPlayers = [
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2},
+  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
+]
+
+DBGolfPlayers = [
   {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2},
@@ -304,6 +323,24 @@ DeltaView_Players = [
 ]
 
 GolfRounds = [
+  { 'date': datetime.datetime(2017, 3, 7), 
+    'course': GolfCourses[0],
+    'players': CanyonLake_Players,
+    'tee': GolfCourses[0]['tees'][0],
+  },
+  { 'date': datetime.datetime(2016, 6, 8), 
+    'course': GolfCourses[4],
+    'players': LakeChabot_Players,
+    'tee': GolfCourses[4]['tees'][0],
+  },
+  { 'date': datetime.datetime(2016, 10, 1), 
+    'course': GolfCourses[5],
+    'players': DeltaView_Players,
+    'tee': GolfCourses[5]['tees'][0],
+  },
+]
+
+DBGolfRounds = [
   { 'date': datetime.datetime(2017, 3, 7), 
     'course': GolfCourses[0],
     'players': CanyonLake_Players,
