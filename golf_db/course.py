@@ -1,4 +1,4 @@
-from .doc import DocValidateFail
+from .exceptions import DocValidateFail
 from .hole import GolfHole
 from .exceptions import GolfException
 

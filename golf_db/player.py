@@ -1,5 +1,6 @@
 """player.py -- GolfPlayer class."""
-from .doc import Doc, DocValidateFail
+from .doc import Doc
+from .exceptions import DocValidateFail
 
 
 class GolfPlayer(Doc):
