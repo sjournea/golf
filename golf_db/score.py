@@ -12,11 +12,11 @@ class GolfScore(object):
       self.fromDict(dct)
       
   def toDict(self):
-    dct['player'] = self.player.toDict()
-    dct['gross'] = self.gross
-    dct['net'] = self.net
-    dct['course_handicap'] = self.course_handicap
-    return dct
+    return {'player': self.player.toDict(),
+            'gross':self.gross,
+            'net': self.net,
+            'course_handicap': self.course_handicap,
+          }
   
   def fromDict(self, dct):
     self.player.fromDict(dct['player'])
