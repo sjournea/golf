@@ -27,9 +27,9 @@ class GolfScore(object):
     self.tee = dct.get('tee')
     self.course_handicap = dct.get('course_handicap', 0)
     
-  def calcCourseHandicap(self, slope):
+  def calcCourseHandicap(self):
     """Course Handicap = Handicap Index * Slope rating / 113."""
-    self.course_handicap = round(self.player.handicap * slope / 113)
+    self.course_handicap = round(self.player.handicap * self.tee['slope'] / 113)
 
   def __eq__(self, other):
     return (self.player == other.player and

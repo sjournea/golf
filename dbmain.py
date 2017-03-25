@@ -46,10 +46,11 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
-    self.addMenuItem( MenuItem( 'gst', '',            'Start a Round of Golf',             self._startRound))
 
-    self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._addPlayerToRound))
-    self.addMenuItem( MenuItem( 'gps', '',              'Print Round Scorecard',             self._printRoundScorecard))
+    self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
+    self.addMenuItem( MenuItem( 'gps', '',              'Print Round Scorecard',             self._roundScorecard))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -143,14 +144,14 @@ class GolfMenu(Menu):
     if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
     if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
 
-  def _startRound(self):
+  def _roundCreate(self):
     self.golf_round = GolfRound()
     self.golf_round.course = self.gdb.courseFind('Canyon Lakes')
     self.golf_round.date = datetime.datetime(2017, 3, 23)
     self.golf_round.tee = self.golf_round.course.getTee('Blue')
     print self.golf_round
 
-  def _addPlayerToRound(self):
+  def _roundAddPlayer(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     if len(self.lstCmd) < 3:
@@ -161,7 +162,12 @@ class GolfMenu(Menu):
     self.golf_round.addPlayer(player, tee_name=self.lstCmd[2])
     print self.golf_round
 
-  def _printRoundScorecard(self):
+  def _roundStart(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    self.golf_round.start()
+    
+  def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     dct = self.golf_round.getScorecard()

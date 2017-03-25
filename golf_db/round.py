@@ -36,9 +36,15 @@ class GolfRound(object):
     gs.player = player
     gender = 'mens' if gs.player.gender == 'man' else 'womens'
     gs.tee = self.course.getTee(tee_name, gender=gender )
-    gs.gross = [0 for _ in range(len(self.course.holes))]
     self.scores.append(gs)
 
+  def start(self):
+    """Start round. Reset scores."""
+    for gs in self.scores:
+      gs.calcCourseHandicap()
+      gs.gross = [0 for _ in range(len(self.course.holes))]
+      gs.net = [0 for _ in range(len(self.course.holes))]
+      
   def getScorecard(self):
     """Scorecard with all players."""
     dct_scorecard = self.course.getScorecard()
