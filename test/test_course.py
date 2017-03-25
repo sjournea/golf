@@ -4,9 +4,10 @@ from golf_db.course import GolfCourse
 from golf_db.hole import GolfHole
 from golf_db.doc import DocValidateFail
 from golf_db.test_data import GolfCourses
+from golf_db.db import GolfDB
+from golf_db.exceptions import GolfException
 
-
-class GolfCourseInitCase(unittest.TestCase):
+class GolfCourseTestCase(unittest.TestCase):
   lstDicts = [
     {'name': 'Canyon Lakes', 'holes':[], 'tees':[]},
     {'name': 'Santa Clara', 'holes':[], 'tees':[]},
@@ -77,14 +78,44 @@ class GolfCourseInitCase(unittest.TestCase):
     ]
     
     course = GolfCourse()
+    # validate fail, no holes
     with self.assertRaises(DocValidateFail):
       course.validate()
+    # validate pass after adding holes
     course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
     course.validate()
-    # forse a bad handicap 
+    # force a bad handicap so validate fails
+    old_handicap = course.holes[0].handicap
     course.holes[0].handicap = 10
     with self.assertRaises(DocValidateFail):
       course.validate()
+    course.holes[0].handicap = old_handicap
+    # force a bad par value so validate fails
+    old_par = course.holes[0].par
+    for bad_par in [0, 1, 2, 7, 8]:
+      course.holes[0].par = bad_par
+      with self.assertRaises(DocValidateFail):
+        course.validate()
+    course.holes[0].par = old_par
+    
+  def test_get_tee(self):
+    # Find Lake Chabot 
+    db = GolfDB(database='golf_test')
+    db.create()
+    course = db.courseFind('Lake Chabot')
+    # test get tee by nme and gender, default gender is "mens"
+    tee = course.getTee('Blue')
+    self.assertDictEqual(tee, {'gender':'mens', 'name':'Blue', 'rating': 68.9, 'slope': 119})
+    tee = course.getTee('Blue', gender='mens')
+    self.assertDictEqual(tee, {'gender':'mens', 'name':'Blue', 'rating': 68.9, 'slope': 119})
+    with self.assertRaises(GolfException):
+      tee = course.getTee('Blue', gender='womens')
+    tee = course.getTee('White')
+    self.assertDictEqual(tee, {'gender':'mens', 'name':'White', 'rating': 67.4, 'slope': 116})
+    with self.assertRaises(GolfException):
+      tee = course.getTee('Red')
+    tee = course.getTee('Red', gender='womens')
+    self.assertDictEqual(tee, {'gender':'womens', 'name':'Red', 'rating': 70.1, 'slope': 116})
     
     
     

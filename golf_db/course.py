@@ -1,5 +1,7 @@
 from .doc import DocValidateFail
 from .hole import GolfHole
+from .exceptions import GolfException
+
 
 class GolfCourse(object):
   """Golf course object
@@ -57,6 +59,14 @@ class GolfCourse(object):
     self.in_tot  = sum([hole.par for hole in self.holes[9:]])
     self.total   = self.in_tot + self.out_tot
 
+  def getTee(self, name, gender='mens'):
+    """Return the matching tee dictionary or None."""
+    for dct in self.tees:
+      if dct['name'] == name and dct['gender'] == gender:
+        return dct
+    else:
+      raise GolfException('course getTee() fail - name:{} gender:{} not found'.format(name, gender)) 
+  
   def getScorecard(self):
     """Return hdr, par and hdcp lines for scorecard."""
     self.setStats()
