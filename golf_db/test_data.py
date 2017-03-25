@@ -309,23 +309,23 @@ TestGolfPlayers = [
 ]
 
 CanyonLake_Players = [
-  {'player': GolfPlayers[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]},
-  {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8]},
-  {'player': GolfPlayers[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6]},
-  {'player': GolfPlayers[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7]},
+  {'player': GolfPlayers[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5], 'tee':canyon_lake_tees[0]},
+  {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8], 'tee':canyon_lake_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6], 'tee':canyon_lake_tees[0]},
+  {'player': GolfPlayers[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7], 'tee':canyon_lake_tees[0]},
 ]
 
 LakeChabot_Players = [
-  {'player': GolfPlayers[0], 'gross': [5,6,6,6,6,5,4,5,5, 6,6,3,8,5,3,6,4,7]},
-  {'player': GolfPlayers[1], 'gross': [6,4,6,7,5,5,4,5,4, 6,5,4,5,6,5,6,4,7]},
-  {'player': GolfPlayers[2], 'gross': [6,4,7,5,4,4,5,6,3, 5,5,4,6,5,7,8,4,5]},
-  {'player': GolfPlayers[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6]},
+  {'player': GolfPlayers[0], 'gross': [5,6,6,6,6,5,4,5,5, 6,6,3,8,5,3,6,4,7], 'tee':lake_chabot_tees[0]},
+  {'player': GolfPlayers[1], 'gross': [6,4,6,7,5,5,4,5,4, 6,5,4,5,6,5,6,4,7], 'tee':lake_chabot_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [6,4,7,5,4,4,5,6,3, 5,5,4,6,5,7,8,4,5], 'tee':lake_chabot_tees[0]},
+  {'player': GolfPlayers[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6], 'tee':lake_chabot_tees[0]},
 ]
 
 DeltaView_Players = [
-  {'player': GolfPlayers[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8]},
-  {'player': GolfPlayers[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6]},
-  {'player': GolfPlayers[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5]},
+  {'player': GolfPlayers[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8], 'tee': delta_view_tees[0]},
+  {'player': GolfPlayers[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6], 'tee': delta_view_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5], 'tee': delta_view_tees[0]},
 ]
 
 GolfRounds = [

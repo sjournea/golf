@@ -8,7 +8,6 @@ class GolfRound(object):
     self.course = None
     self.date = None
     self.scores = []
-    self.tee = None
     if dct:
       self.fromDict(dct)
 
@@ -16,25 +15,30 @@ class GolfRound(object):
     self.course = GolfCourse(dct['course'])
     self.date = dct.get('date')
     self.scores = [GolfScore(player_dct) for player_dct in dct['players']]
-    self.tee = dct.get('tee')
 
   def toDict(self):
     return { 'course': self.course.toDict(),
              'date': self.date,
              'players': [player.toDict() for player in self.scores],
-             'tee': self.tee,
            }
 
   def __eq__(self, other):
     return (self.course == other.course and
             self.date == other.date and
-            self.scores == other.scores and
-            self.tee == other.tee)
+            self.scores == other.scores)
 
   def __ne__(self, other):
     return not self == other
 
-  
+  def addPlayer(self, player, tee_name):
+    """Add a player to this round."""
+    gs = GolfScore()
+    gs.player = player
+    gender = 'mens' if gs.player.gender == 'man' else 'womens'
+    gs.tee = self.course.getTee(tee_name, gender=gender )
+    gs.gross = [0 for _ in range(len(self.course.holes))]
+    self.scores.append(gs)
+
   def getScorecard(self):
     """Scorecard with all players."""
     dct_scorecard = self.course.getScorecard()
@@ -44,11 +48,11 @@ class GolfRound(object):
       gross_out = 0
       gross_in = 0
       for gross in score.gross[:9]:
-        gross_line += ' {:>3}'.format(gross)
+        gross_line += ' {:>3}'.format(gross) if gross > 0 else '    '
         gross_out += gross
       gross_line += ' {:>4}'.format(gross_out)
       for gross in score.gross[9:]:
-        gross_line += ' {:>3}'.format(gross)
+        gross_line += ' {:>3}'.format(gross) if gross > 0 else '    '
         gross_in += gross
       gross_tot = gross_out + gross_in
       gross_line += ' {:>4} {:>4}'.format(gross_in, gross_tot)
@@ -61,6 +65,5 @@ class GolfRound(object):
     return dct_scorecard
   
   def __str__(self):
-    return '{} - {:<25} - {:<25} - tee:{}'.format(
-      self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]),
-      self.tee['name'] if self.tee else self.tee)
+    return '{} - {:<25} - {:<25}'.format(
+      self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]))

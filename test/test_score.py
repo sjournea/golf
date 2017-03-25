@@ -1,6 +1,7 @@
 import unittest
 
 from golf_db.score import GolfScore
+from golf_db.player import GolfPlayer
 from golf_db.test_data import CanyonLake_Players
 
 class GolfScoreTest(unittest.TestCase):
@@ -8,8 +9,10 @@ class GolfScoreTest(unittest.TestCase):
   def test_init_empty(self):
     # check default parameters
     score = GolfScore()
-    self.assertIsNone(score.player.nick_name)
+    self.assertIsInstance(score.player, GolfPlayer)
     self.assertEqual(score.gross, [])
+    self.assertEqual(score.net, [])
+    self.assertEqual(score.tee, None)
 
   def test_init_from_dict(self):
     for dct in CanyonLake_Players:

@@ -13,7 +13,6 @@ class GolfRoundTest(unittest.TestCase):
     self.assertIsNone(r.course)
     self.assertIsNone(r.date)
     self.assertEqual(r.scores, [])
-    self.assertIsNone(r.tee)
 
   def test_init_from_dict(self):
     for dct in GolfRounds:
@@ -32,15 +31,11 @@ class PlayRoundTest(unittest.TestCase):
     r = GolfRound()
     r.course = self.db.courseFind('Canyon Lakes')
     r.date = datetime.datetime(2017, 3, 23)
-    r.tee = r.course.getTee('Blue')
-    #print r
-    lst = self.db.playerList()
-    #for pl in lst:
-      #print pl
-    #pl = self.db.playerFind('sjourea')
-    #print pl
-    r.addPlayer(lst[0])
-    r.addPlayer(lst[1])
+    tee = r.course.getTee('Blue')
+    pl1 = self.db.playerFind('sjournea')
+    r.addPlayer(pl1, tee)
+    pl2 = self.db.playerFind('snake')
+    r.addPlayer(pl2, tee)
     #print r
     dct = r.getScorecard()
     #for key,value in dct.items():

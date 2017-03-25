@@ -5,6 +5,7 @@ class GolfScore(object):
   def __init__(self, dct=None):
     super(GolfScore, self).__init__()
     self.player = GolfPlayer()
+    self.tee = None
     self.gross = []
     self.net = []
     self.course_handicap = 0
@@ -15,6 +16,7 @@ class GolfScore(object):
     return {'player': self.player.toDict(),
             'gross':self.gross,
             'net': self.net,
+            'tee': self.tee,
             'course_handicap': self.course_handicap,
           }
   
@@ -22,6 +24,7 @@ class GolfScore(object):
     self.player.fromDict(dct['player'])
     self.gross = dct.get('gross', [])
     self.net = dct.get('net', [])
+    self.tee = dct.get('tee')
     self.course_handicap = dct.get('course_handicap', 0)
     
   def calcCourseHandicap(self, slope):
@@ -32,14 +35,15 @@ class GolfScore(object):
     return (self.player == other.player and
             self.gross == other.gross and
             self.net == other.net and
-            self.course_handicap == other.course_handicap)
+            self.course_handicap == other.course_handicap and
+            self.tee == other.tee)
 
   def __ne__(self, other):
     return not self == other
 
   def __str__(self):
-    return '{} - course_handicap:{} gross:{} net:{}'.format(
-      self.player.nick_name, self.course_handicap, self.gross, self.net)
+    return '{} - course_handicap:{} tee:{} gross:{} net:{} tee:{}'.format(
+      self.player.nick_name, self.course_handicap, self.gross, self.net, self.tee['name'])
   
   def __repr__(self):
     return 'GolfScore(dct={})'.format(self.toDict())

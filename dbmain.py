@@ -47,6 +47,9 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
     self.addMenuItem( MenuItem( 'gst', '',            'Start a Round of Golf',             self._startRound))
+
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._addPlayerToRound))
+    self.addMenuItem( MenuItem( 'gps', '',              'Print Round Scorecard',             self._printRoundScorecard))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -146,17 +149,29 @@ class GolfMenu(Menu):
     self.golf_round.date = datetime.datetime(2017, 3, 23)
     self.golf_round.tee = self.golf_round.course.getTee('Blue')
     print self.golf_round
-    #lst = self.db.playerList()
-    #for pl in lst:
-      #print pl
-    #pl = self.db.playerFind('sjourea')
-    #print pl
-    #r.addPlayer(pl)
-    ##r.addPlayer(lst[1])
-    #print r
-    #dct = r.getScorecard()
-    #for key,value in dct.items():
-      #print '{:<15} - {}'.format(key, value)    
+
+  def _addPlayerToRound(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    player = self.gdb.playerFind(email=self.lstCmd[1])
+    if player is None:
+      raise InputException( 'Player "%s" not found in database.' % self.lstCmd[0] )
+    self.golf_round.addPlayer(player, tee_name=self.lstCmd[2])
+    print self.golf_round
+
+  def _printRoundScorecard(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    dct = self.golf_round.getScorecard()
+    print dct['hdr']
+    print dct['par']
+    print dct['hdcp']
+    if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
+    if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
+    if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
+    if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'
