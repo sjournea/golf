@@ -1,6 +1,10 @@
 from .course import GolfCourse
 from .score import GolfScore
+from .exceptions import GolfException
 
+from util.tl_logger import TLLog
+
+log = TLLog.getLogger('round')
 
 class GolfRound(object):
   def __init__(self, dct=None):
@@ -44,6 +48,20 @@ class GolfRound(object):
       gs.calcCourseHandicap()
       gs.gross = [0 for _ in range(len(self.course.holes))]
       gs.net = [0 for _ in range(len(self.course.holes))]
+      
+  def addScores(self, hole, lstGross):
+    """Add some scores for this round.
+    
+    Args:
+      hole : hole number, 1-18.
+      lstGross : gross score for each player.
+    """
+    if hole < 1 or hole > len(self.course.holes):
+      raise GolfException('hole number must be in 1-{}'.format(len(self.course.holes)))
+    if len(lstGross) != len(self.scores):
+      raise GolfException('gross scores do not match number of players')
+    for gs, gross in zip(self.scores, lstGross):
+      gs.updateGross(hole, gross)
       
   def getScorecard(self):
     """Scorecard with all players."""

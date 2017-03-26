@@ -23,4 +23,4 @@ class GolfScoreTest(unittest.TestCase):
   def test_calc_handicap(self):
     for dct in CanyonLake_Players:
       score = GolfScore(dct=dct)
-      score.calcCourseHandicap(133)
+      score.calcCourseHandicap()

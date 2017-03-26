@@ -28,15 +28,21 @@ class PlayRoundTest(unittest.TestCase):
     
   def test_play(self):
     # check default parameters
+    course_name = 'Canyon Lakes'
+    tee_name = 'Blue'
+    date_of_round = datetime.datetime(2017, 3, 23)
+    lstPlayers = ['sjournea', 'snake']
+    
     r = GolfRound()
-    r.course = self.db.courseFind('Canyon Lakes')
-    r.date = datetime.datetime(2017, 3, 23)
-    tee = r.course.getTee('Blue')
-    pl1 = self.db.playerFind('sjournea')
-    r.addPlayer(pl1, tee)
-    pl2 = self.db.playerFind('snake')
-    r.addPlayer(pl2, tee)
-    #print r
+    r.course = self.db.courseFind(course_name)
+    r.date = date_of_round
+    for email in lstPlayers:
+      pl = self.db.playerFind('sjournea')
+      r.addPlayer(pl, tee_name)
+      
+    r.start()
+    
+    r.addScores(1, [4,4])
     dct = r.getScorecard()
     #for key,value in dct.items():
       #print '{:<15} - {}'.format(key, value)

@@ -17,13 +17,7 @@ from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException
 from util.tl_logger import TLLog,logOptions
 
-TLLog.config( 'logs\\dbmain.log', defLogLevel=logging.INFO )
-
-#from SNTrack.const import *
-#from SNTrack.master import Master
-#from util.db_postgres import DBException
-#from util.common import parseTimeString
-#from util.common import toInt,flatten
+TLLog.config('logs/dbmain.log', defLogLevel=logging.INFO )
 
 log = TLLog.getLogger( 'dbmain' )
 
@@ -51,6 +45,7 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
     self.addMenuItem( MenuItem( 'gps', '',              'Print Round Scorecard',             self._roundScorecard))
+    self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -166,6 +161,15 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     self.golf_round.start()
+    
+  def _roundAddScore(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < len(self.golf_round.scores) + 1:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    hole = int(self.lstCmd[1])
+    lstGross = [int(gross) for gross in self.lstCmd[2:]]
+    self.golf_round.addScores(hole, lstGross)
     
   def _roundScorecard(self):
     if self.golf_round is None:

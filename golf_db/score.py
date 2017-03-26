@@ -31,6 +31,11 @@ class GolfScore(object):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = round(self.player.handicap * self.tee['slope'] / 113)
 
+  def updateGross(self, hole, gross):
+    """Add a gross score."""
+    index = hole - 1
+    self.gross[index] = gross
+    
   def __eq__(self, other):
     return (self.player == other.player and
             self.gross == other.gross and
