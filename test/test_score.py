@@ -13,6 +13,7 @@ class GolfScoreTest(unittest.TestCase):
     self.assertEqual(score.gross, {})
     self.assertEqual(score.net, {})
     self.assertEqual(score.tee, None)
+    self.assertEqual(score.course_handicap, 0)
 
   def test_init_from_dict(self):
     for dct in CanyonLake_Players:

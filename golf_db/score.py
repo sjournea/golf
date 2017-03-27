@@ -34,20 +34,20 @@ class GolfScore(object):
     self.gross['out'] = 0
     self.gross['total'] = 0
     # net start
-    self.calcCourseHandicap()
+    self.course_handicap = self.calcCourseHandicap()
     self.net['score'] = [0 for _ in range(len(course.holes))]
+    self.net['bump'] = [0 for _ in range(len(course.holes))]
 
   def calcCourseHandicap(self):
     """Course Handicap = Handicap Index * Slope rating / 113."""
-    self.course_handicap = round(self.player.handicap * self.tee['slope'] / 113)
+    return round(self.player.handicap * self.tee['slope'] / 113)
 
   def updateGross(self, hole, gross):
     """Add a gross score."""
     index = hole - 1
-    score = self.gross['score']
-    score[index] = gross
-    self.gross['out'] = sum(score[:9])
-    self.gross['in'] = sum(score[9:])
+    self.gross['score'][index] = gross
+    self.gross['out'] = sum(self.gross['score'][:9])
+    self.gross['in'] = sum(self.gross['score'][9:])
     self.gross['total'] = self.gross['in'] + self.gross['out']
 
   def __eq__(self, other):

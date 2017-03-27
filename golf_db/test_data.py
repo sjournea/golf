@@ -309,7 +309,8 @@ TestGolfPlayers = [
 ]
 
 CanyonLake_Players = [
-  {'player': GolfPlayers[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5], 'tee':canyon_lake_tees[0]},
+  {'player': GolfPlayers[0], 'tee':canyon_lake_tees[0],
+   'gross': { 'score': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]}},
   {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8], 'tee':canyon_lake_tees[0]},
   {'player': GolfPlayers[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6], 'tee':canyon_lake_tees[0]},
   {'player': GolfPlayers[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7], 'tee':canyon_lake_tees[0]},

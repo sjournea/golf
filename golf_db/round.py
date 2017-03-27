@@ -112,7 +112,7 @@ class GolfRound(object):
       for n,gross in enumerate(score.gross['score']):
         if gross == 0:
           break
-      score_dct['thru'] = n+1
+      score_dct['thru'] = n
       score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
         score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
       board.append(score_dct)

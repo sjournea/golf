@@ -40,6 +40,7 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
+    self.addMenuItem( MenuItem( 'rob', '',            'Round leaderboard'  ,               self._roundGetLeaderboard))
 
     self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
@@ -139,6 +140,16 @@ class GolfMenu(Menu):
     if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
     if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
     if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+
+  def _roundGetLeaderboard(self):
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    rnd = self.gdb.roundFind(self.lstCmd[1])
+    print rnd
+    dctLeaderboard = rnd.getLeaderboard()
+    print dctLeaderboard['hdr']
+    for dct in dctLeaderboard['leaderboard']:
+      print dct['line']
 
   def _roundCreate(self):
     self.golf_round = GolfRound()
