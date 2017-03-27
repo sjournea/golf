@@ -43,11 +43,14 @@ class GolfRound(object):
     self.scores.append(gs)
 
   def start(self):
-    """Start round. Reset scores."""
+    """Start round.
+    
+    For each player:
+      set course handicap.
+      set 0's for gross and net.
+    """
     for gs in self.scores:
-      gs.calcCourseHandicap()
-      gs.gross = [0 for _ in range(len(self.course.holes))]
-      gs.net = [0 for _ in range(len(self.course.holes))]
+      gs.start(self.course)
       
   def addScores(self, hole, lstGross):
     """Add some scores for this round.
@@ -69,24 +72,52 @@ class GolfRound(object):
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
       gross_line = '{:<6}'.format(score.player.nick_name)
-      gross_out = 0
-      gross_in = 0
-      for gross in score.gross[:9]:
+      for gross in score.gross['score'][:9]:
         gross_line += ' {:>3}'.format(gross) if gross > 0 else '    '
-        gross_out += gross
-      gross_line += ' {:>4}'.format(gross_out)
-      for gross in score.gross[9:]:
+      gross_line += ' {:>4}'.format(score.gross['out'])
+      for gross in score.gross['score'][9:]:
         gross_line += ' {:>3}'.format(gross) if gross > 0 else '    '
-        gross_in += gross
-      gross_tot = gross_out + gross_in
-      gross_line += ' {:>4} {:>4}'.format(gross_in, gross_tot)
+      gross_line += ' {:>4} {:>4}'.format(score.gross['in'], score.gross['total'])
       dct['gross_line'] = gross_line
-      dct['gross_in'] = gross_in
-      dct['gross_out'] = gross_out
-      dct['gross_tot'] = gross_tot
+      dct['gross_in'] = score.gross['in']
+      dct['gross_out'] = score.gross['out']
+      dct['gross_tot'] = score.gross['total']
       dct_scorecard['player_%d_gross' % n] = dct
       
     return dct_scorecard
+  
+  def getLeaderboard(self, game='gross'):
+    """Return selected leaderboard.
+    
+    Args:
+      game: game for leaderboard.
+    Returns:
+      dictionary of leaderboard current values.
+    """
+    dct = { 'hdr': 'Pos Name   Gross Thru' }
+    board = []
+    scores = sorted(self.scores, key=lambda score: score.gross['total'])
+    pos = 1
+    prev_total = None
+    for score in scores:
+      score_dct = {
+        'player': score.player,
+        'total' : score.gross['total'],
+      }
+      if prev_total != None and score_dct['total'] > prev_total:
+        pos += 1
+
+      prev_total = score_dct['total']
+      score_dct['pos'] = pos
+      for n,gross in enumerate(score.gross['score']):
+        if gross == 0:
+          break
+      score_dct['thru'] = n+1
+      score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
+        score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
+      board.append(score_dct)
+    dct['leaderboard'] = board
+    return dct 
   
   def __str__(self):
     return '{} - {:<25} - {:<25}'.format(

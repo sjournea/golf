@@ -45,6 +45,7 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
     self.addMenuItem( MenuItem( 'gps', '',              'Print Round Scorecard',             self._roundScorecard))
+    self.addMenuItem( MenuItem( 'gpl', '',              'Print Round Leaderboard',           self._roundLeaderboard))
     self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
     self.updateHeader()
 
@@ -182,6 +183,14 @@ class GolfMenu(Menu):
     if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
     if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
     if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+
+  def _roundLeaderboard(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    dctLeaderboard = self.golf_round.getLeaderboard()
+    print dctLeaderboard['hdr']
+    for dct in dctLeaderboard['leaderboard']:
+      print dct['line']
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'

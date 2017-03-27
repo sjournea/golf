@@ -6,8 +6,8 @@ class GolfScore(object):
     super(GolfScore, self).__init__()
     self.player = GolfPlayer()
     self.tee = None
-    self.gross = []
-    self.net = []
+    self.gross = {}
+    self.net = {}
     self.course_handicap = 0
     if dct:
       self.fromDict(dct)
@@ -22,11 +22,21 @@ class GolfScore(object):
   
   def fromDict(self, dct):
     self.player.fromDict(dct['player'])
-    self.gross = dct.get('gross', [])
-    self.net = dct.get('net', [])
+    self.gross = dct.get('gross', {})
+    self.net = dct.get('net', {})
     self.tee = dct.get('tee')
     self.course_handicap = dct.get('course_handicap', 0)
     
+  def start(self, course):
+    # gross start
+    self.gross['score'] = [0 for _ in range(len(course.holes))]
+    self.gross['in'] = 0
+    self.gross['out'] = 0
+    self.gross['total'] = 0
+    # net start
+    self.calcCourseHandicap()
+    self.net['score'] = [0 for _ in range(len(course.holes))]
+
   def calcCourseHandicap(self):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = round(self.player.handicap * self.tee['slope'] / 113)
@@ -34,8 +44,12 @@ class GolfScore(object):
   def updateGross(self, hole, gross):
     """Add a gross score."""
     index = hole - 1
-    self.gross[index] = gross
-    
+    score = self.gross['score']
+    score[index] = gross
+    self.gross['out'] = sum(score[:9])
+    self.gross['in'] = sum(score[9:])
+    self.gross['total'] = self.gross['in'] + self.gross['out']
+
   def __eq__(self, other):
     return (self.player == other.player and
             self.gross == other.gross and

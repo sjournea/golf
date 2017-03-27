@@ -22,12 +22,12 @@ class GolfRoundTest(unittest.TestCase):
       self.assertEqual(r, r2)
       
 class PlayRoundTest(unittest.TestCase):
-  def setUp(self):
-    self.db = GolfDB(database='golf_round_test')
-    self.db.create()
+  @classmethod
+  def setUp(cls):
+    cls.db = GolfDB(database='golf_round_test')
+    cls.db.create()
     
-  def test_play(self):
-    # check default parameters
+  def test_add_players(self):
     course_name = 'Canyon Lakes'
     tee_name = 'Blue'
     date_of_round = datetime.datetime(2017, 3, 23)
@@ -37,12 +37,41 @@ class PlayRoundTest(unittest.TestCase):
     r.course = self.db.courseFind(course_name)
     r.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind('sjournea')
+      pl = self.db.playerFind(email)
       r.addPlayer(pl, tee_name)
-      
+    self.assertEqual(len(r.scores), 2)
+    
+  def test_start(self):
+    course_name = 'Canyon Lakes'
+    tee_name = 'Blue'
+    date_of_round = datetime.datetime(2017, 3, 23)
+    lstPlayers = ['sjournea', 'snake']
+    
+    r = GolfRound()
+    r.course = self.db.courseFind(course_name)
+    r.date = date_of_round
+    for email in lstPlayers:
+      pl = self.db.playerFind(email)
+      r.addPlayer(pl, tee_name)
+
+    r.start()
+
+  def test_add_scores(self):
+    course_name = 'Canyon Lakes'
+    tee_name = 'Blue'
+    date_of_round = datetime.datetime(2017, 3, 23)
+    lstPlayers = ['sjournea', 'snake']
+    
+    r = GolfRound()
+    r.course = self.db.courseFind(course_name)
+    r.date = date_of_round
+    for email in lstPlayers:
+      pl = self.db.playerFind(email)
+      r.addPlayer(pl, tee_name)
+
     r.start()
     
     r.addScores(1, [4,4])
     dct = r.getScorecard()
-    #for key,value in dct.items():
-      #print '{:<15} - {}'.format(key, value)
+    dct = r.getLeaderboard()
+  

@@ -10,8 +10,8 @@ class GolfScoreTest(unittest.TestCase):
     # check default parameters
     score = GolfScore()
     self.assertIsInstance(score.player, GolfPlayer)
-    self.assertEqual(score.gross, [])
-    self.assertEqual(score.net, [])
+    self.assertEqual(score.gross, {})
+    self.assertEqual(score.net, {})
     self.assertEqual(score.tee, None)
 
   def test_init_from_dict(self):
