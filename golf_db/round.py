@@ -73,21 +73,24 @@ class GolfRound(object):
     dct_scorecard = self.course.getScorecard()
     dct_scorecard['header'] = game.capitalize()
     if game == 'gross':
+      lstPlayers = []
       for n,score in enumerate(self.scores):
         dct = {'player': score.player }
-        gross_line = '{:<6}'.format(score.player.nick_name)
+        line = '{:<6}'.format(score.player.nick_name)
         for gross in score.gross['score'][:9]:
-          gross_line += ' {:>3}'.format(gross) if gross > 0 else '    '
-        gross_line += ' {:>4}'.format(score.gross['out'])
+          line += ' {:>3}'.format(gross) if gross > 0 else '    '
+        line += ' {:>4}'.format(score.gross['out'])
         for gross in score.gross['score'][9:]:
-          gross_line += ' {:>3}'.format(gross) if gross > 0 else '    '
-        gross_line += ' {:>4} {:>4}'.format(score.gross['in'], score.gross['total'])
-        dct['gross_line'] = gross_line
-        dct['gross_in'] = score.gross['in']
-        dct['gross_out'] = score.gross['out']
-        dct['gross_tot'] = score.gross['total']
-        dct_scorecard['player_%d_gross' % n] = dct
+          line += ' {:>3}'.format(gross) if gross > 0 else '    '
+        line += ' {:>4} {:>4}'.format(score.gross['in'], score.gross['total'])
+        dct['line'] = line
+        dct['in'] = score.gross['in']
+        dct['out'] = score.gross['out']
+        dct['total'] = score.gross['total']
+        lstPlayers.append(dct)
+      dct_scorecard['gross'] = lstPlayers
     elif game == 'net':
+      lstPlayers = []
       for n,score in enumerate(self.scores):
         dct = {'player': score.player }
         line = '{:<6}'.format(score.player.nick_name)
@@ -99,11 +102,12 @@ class GolfRound(object):
           nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
           line += ' {:>3}'.format(nets)
         line += ' {:>4} {:>4}'.format(score.net['in'], score.net['total'])
-        dct['net_line'] = line
-        dct['net_in'] = score.net['in']
-        dct['net_out'] = score.net['out']
-        dct['net_tot'] = score.net['total']
-        dct_scorecard['player_%d_net' % n] = dct
+        dct['line'] = line
+        dct['in'] = score.net['in']
+        dct['out'] = score.net['out']
+        dct['total'] = score.net['total']
+        lstPlayers.append(dct)
+      dct_scorecard['net'] = lstPlayers
     else:
       raise GolfException('game "{}" not supported'.format(game))
     return dct_scorecard

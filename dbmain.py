@@ -130,24 +130,24 @@ class GolfMenu(Menu):
   def _roundGetScorecard(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
     rnd = self.gdb.roundFind(self.lstCmd[1])
     print rnd
-    dct = rnd.getScorecard()
+    dct = rnd.getScorecard(game)
     print dct['header']
     print dct['hdr']
     print dct['par']
     print dct['hdcp']
-    if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
-    if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
-    if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
-    if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+    for player in dct[game]:
+      print player['line']
 
   def _roundGetLeaderboard(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
     rnd = self.gdb.roundFind(self.lstCmd[1])
     print rnd
-    dctLeaderboard = rnd.getLeaderboard()
+    dctLeaderboard = rnd.getLeaderboard(game)
     print dctLeaderboard['hdr']
     for dct in dctLeaderboard['leaderboard']:
       print dct['line']
@@ -193,16 +193,8 @@ class GolfMenu(Menu):
     print dct['hdr']
     print dct['par']
     print dct['hdcp']
-    if game == 'gross':
-      if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
-      if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
-      if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
-      if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
-    elif game == 'net':
-      if 'player_0_net' in dct: print dct['player_0_net']['net_line']
-      if 'player_1_net' in dct: print dct['player_1_net']['net_line']
-      if 'player_2_net' in dct: print dct['player_2_net']['net_line']
-      if 'player_3_net' in dct: print dct['player_3_net']['net_line']
+    for player in dct[game]:
+      print player['line']
 
   def _roundLeaderboard(self):
     if self.golf_round is None:
