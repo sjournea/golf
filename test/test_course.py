@@ -116,5 +116,45 @@ class GolfCourseTestCase(unittest.TestCase):
     tee = course.getTee('Red', gender='womens')
     self.assertDictEqual(tee, {'gender':'womens', 'name':'Red', 'rating': 70.1, 'slope': 116})
     
+  def test_calcBumps(self):
+    fall_river_men_holes = [
+      {'par': 4, 'handicap':  15},
+      {'par': 4, 'handicap':   5},
+      {'par': 5, 'handicap':   1},
+      {'par': 3, 'handicap':  13},
+      {'par': 4, 'handicap':  17},
+      {'par': 4, 'handicap':   3},
+      {'par': 4, 'handicap':   7},
+      {'par': 3, 'handicap':  11},
+      {'par': 5, 'handicap':   9},
     
+      {'par': 4, 'handicap':  12},
+      {'par': 3, 'handicap':  14},
+      {'par': 4, 'handicap':   8},
+      {'par': 4, 'handicap':   6},
+      {'par': 5, 'handicap':   2},
+      {'par': 3, 'handicap':  16},
+      {'par': 4, 'handicap':   4},
+      {'par': 4, 'handicap':  18},
+      {'par': 5, 'handicap':  10},
+    ]
+    # build handicap list
+    handicap_index = []
+    for num in xrange(1, 19, 1):
+      for n,dct in enumerate(fall_river_men_holes):
+        hdcp = dct['handicap']
+        if num == hdcp:
+          handicap_index.append(n)
+          break
+    #print handicap_index
+    
+    course = GolfCourse()
+    course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
+    expected_bumps = 18*[0]
+    for handicap in xrange(38):
+      bumps = course.calcBumps(handicap)
+      #print '    bumps:{}'.format(bumps)
+      #print 'exp_bumps:{}'.format(expected_bumps)
+      self.assertListEqual(bumps, expected_bumps, 'handicap == {} fail'.format(handicap))
+      expected_bumps[handicap_index[handicap % 18]] += 1
     

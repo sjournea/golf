@@ -91,6 +91,28 @@ class GolfCourse(object):
              'hdcp': hdcp,
            }
       
+  def calcBumps(self, handicap):
+    """Determine bumps basid in this handicap.
+    
+    Args:
+      handicap: course handicap.
+    Returns:
+      list of bumps for each hole.
+    """
+    bumps = [0 for _ in range(len(self.holes))]
+    # handicap > 18 will bump all holes
+    while handicap > 17:
+      bumps = [x+1 for x in bumps]
+      handicap -= 18
+    # now handicaps < 18
+    if handicap > 0:
+      for bp in xrange(handicap % 18, 0, -1):
+        for n,hole in enumerate(self.holes):
+          if hole.handicap == bp:
+            bumps[n] += 1
+            break
+    return bumps
+
   def __str__(self):
     return '{:<20} - {} holes - {} tees'.format(self.name, len(self.holes), len(
       self.tees))
