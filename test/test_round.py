@@ -72,6 +72,8 @@ class PlayRoundTest(unittest.TestCase):
     r.start()
     
     r.addScores(1, [4,4])
-    dct = r.getScorecard()
-    dct = r.getLeaderboard()
+    dct = r.getScorecard('gross')
+    dct = r.getScorecard('net')
+    dct = r.getLeaderboard('gross')
+    dct = r.getLeaderboard('net')
   

@@ -45,8 +45,8 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
-    self.addMenuItem( MenuItem( 'gps', '',              'Print Round Scorecard',             self._roundScorecard))
-    self.addMenuItem( MenuItem( 'gpl', '',              'Print Round Leaderboard',           self._roundLeaderboard))
+    self.addMenuItem( MenuItem( 'gps', '<gross|net>',   'Print Round Scorecard',             self._roundScorecard))
+    self.addMenuItem( MenuItem( 'gpl', '<gross|net>',   'Print Round Leaderboard',           self._roundLeaderboard))
     self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
     self.updateHeader()
 
@@ -133,6 +133,7 @@ class GolfMenu(Menu):
     rnd = self.gdb.roundFind(self.lstCmd[1])
     print rnd
     dct = rnd.getScorecard()
+    print dct['header']
     print dct['hdr']
     print dct['par']
     print dct['hdcp']
@@ -186,19 +187,28 @@ class GolfMenu(Menu):
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    dct = self.golf_round.getScorecard()
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
+    dct = self.golf_round.getScorecard(game)
+    print dct['header']
     print dct['hdr']
     print dct['par']
     print dct['hdcp']
-    if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
-    if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
-    if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
-    if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+    if game == 'gross':
+      if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
+      if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
+      if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
+      if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+    elif game == 'net':
+      if 'player_0_net' in dct: print dct['player_0_net']['net_line']
+      if 'player_1_net' in dct: print dct['player_1_net']['net_line']
+      if 'player_2_net' in dct: print dct['player_2_net']['net_line']
+      if 'player_3_net' in dct: print dct['player_3_net']['net_line']
 
   def _roundLeaderboard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    dctLeaderboard = self.golf_round.getLeaderboard()
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
+    dctLeaderboard = self.golf_round.getLeaderboard(game)
     print dctLeaderboard['hdr']
     for dct in dctLeaderboard['leaderboard']:
       print dct['line']

@@ -27,20 +27,28 @@ class GolfScore(object):
     self.tee = dct.get('tee')
     self.course_handicap = dct.get('course_handicap', 0)
     
-  def start(self, course):
+  def start(self, course, min_handicap):
+    """Start a round initialization.
+    
+    Args:
+      course: GolfCourse
+      min_handicap: minumum handicap from all players.
+    """
     # gross start
     self.gross['score'] = [0 for _ in range(len(course.holes))]
     self.gross['in'] = 0
     self.gross['out'] = 0
     self.gross['total'] = 0
     # net start
-    self.course_handicap = self.calcCourseHandicap()
     self.net['score'] = [0 for _ in range(len(course.holes))]
-    self.net['bump'] = [0 for _ in range(len(course.holes))]
+    self.net['bump'] = course.calcBumps(self.course_handicap - min_handicap)
+    self.net['in'] = 0
+    self.net['out'] = 0
+    self.net['total'] = 0
 
   def calcCourseHandicap(self):
     """Course Handicap = Handicap Index * Slope rating / 113."""
-    return round(self.player.handicap * self.tee['slope'] / 113)
+    self.course_handicap = int(round(self.player.handicap * self.tee['slope'] / 113))
 
   def updateGross(self, hole, gross):
     """Add a gross score."""
@@ -49,6 +57,11 @@ class GolfScore(object):
     self.gross['out'] = sum(self.gross['score'][:9])
     self.gross['in'] = sum(self.gross['score'][9:])
     self.gross['total'] = self.gross['in'] + self.gross['out']
+
+    self.net['score'][index] = gross - self.net['bump'][index]
+    self.net['out'] = sum(self.net['score'][:9])
+    self.net['in'] = sum(self.net['score'][9:])
+    self.net['total'] = self.net['in'] + self.net['out']
 
   def __eq__(self, other):
     return (self.player == other.player and

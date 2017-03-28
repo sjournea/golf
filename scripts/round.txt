@@ -5,77 +5,115 @@ gad snake Blue
 gad spanky Blue
 gad rock Blue
 gst
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 1
 gac 1 4 5 6 5
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 2
 gac 2 8 6 5 8
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 3
 gac 3 3 4 6 4
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 4
 gac 4 6 5 6 7
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 5
 gac 5 3 5 4 4
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 6
 gac 6 5 4 4 4
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 7
 gac 7 5 6 6 7
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 8
 gac 8 6 5 4 6
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 9
 gac 9 6 5 6 7
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 10
 gac 10 5 3 3 4
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 11
 gac 11 4 4 5 6
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 12
 gac 12 6 4 3 6
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 13
 gac 13 4 3 3 4
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 14
 gac 14 8 5 6 8
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 15
 gac 15 4 4 4 4
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 16
 gac 16 6 5 5 6
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 17
 gac 17 7 6 6 6
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
 # hole 18
 gac 18 4 6 5 6
-gps
-gpl
+gps gross
+gps net
+gpl gross
+gpl net
