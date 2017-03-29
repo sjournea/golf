@@ -7,11 +7,14 @@ from util.tl_logger import TLLog
 log = TLLog.getLogger('round')
 
 class GolfRound(object):
+  legalGames = ('skins')
+  
   def __init__(self, dct=None):
     super(GolfRound, self).__init__()
     self.course = None
     self.date = None
     self.scores = []
+    self.games = {}
     if dct:
       self.fromDict(dct)
 
@@ -19,17 +22,20 @@ class GolfRound(object):
     self.course = GolfCourse(dct['course'])
     self.date = dct.get('date')
     self.scores = [GolfScore(player_dct) for player_dct in dct['players']]
+    self.games = dct.get('games', {})
 
   def toDict(self):
     return { 'course': self.course.toDict(),
              'date': self.date,
              'players': [player.toDict() for player in self.scores],
+             'games': self.games,
            }
 
   def __eq__(self, other):
     return (self.course == other.course and
             self.date == other.date and
-            self.scores == other.scores)
+            self.scores == other.scores and
+            self.games == other.games)
 
   def __ne__(self, other):
     return not self == other
@@ -43,6 +49,19 @@ class GolfRound(object):
     gs.calcCourseHandicap()
     self.scores.append(gs)
 
+  def addGame(self, game, options):
+    """Add a game to this round.
+    
+    Args:
+      game: Game to add.
+      options: dictionary of game options.
+    """
+    if game not in self.legalGames:
+      raise GolfException('Game {} not supported.'.format(game))
+    self.games[game] = { 'options': options }
+    for score in self.scores:
+      score.addGame(game)
+    
   def start(self):
     """Start round.
     
@@ -53,6 +72,9 @@ class GolfRound(object):
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for gs in self.scores:
       gs.start(self.course, min_handicap)
+    for key, dct in self.games.items():
+      if key == 'skins':
+        dct['carryover'] = 1
 
   def addScores(self, hole, lstGross):
     """Add some scores for this round.
@@ -67,6 +89,29 @@ class GolfRound(object):
       raise GolfException('gross scores do not match number of players')
     for gs, gross in zip(self.scores, lstGross):
       gs.updateGross(hole, gross)
+    # update all games
+    for key, dct in self.games.items():
+      if key == 'skins':
+        # Find net winner on this hole
+        index = hole - 1
+        net_scores = [sc.net['score'][index] for sc in self.scores]
+        net_scores.sort()
+        print 'net_scores', net_scores
+        if net_scores[0] < net_scores[1]:
+          # we have a winner
+          carryover = dct['carryover']
+          for sc in self.scores:
+            skins = sc.games['skins']
+            if sc.net['score'][index] == net_scores[0]:
+              win = carryover * (len(self.scores)-1)
+              skins['skin'][index] += win
+            else:
+              skins['skin'][index] -= carryover
+          dct['carryover'] = 1
+        else:
+          dct['carryover'] += 1
+    for gs in self.scores:
+      gs.updateGames()
 
   def getScorecard(self, game='gross'):
     """Scorecard with all players."""
@@ -108,6 +153,26 @@ class GolfRound(object):
         dct['total'] = score.net['total']
         lstPlayers.append(dct)
       dct_scorecard['net'] = lstPlayers
+    elif game == 'skins':
+      lstPlayers = []
+      for n,score in enumerate(self.scores):
+        dct = {'player': score.player }
+        line = '{:<6}'.format(score.player.nick_name)
+        skins = score.games['skins']
+        for skin in skins['skin'][:9]:
+          sk = '{:+d}'.format(skin) if skin != 0 else ''
+          line += ' {:>3}'.format(sk)
+        line += ' {:>+4d}'.format(skins['out'])
+        for skin in skins['skin'][9:]:
+          sk = skin if skin != 0 else ''
+          line += ' {:>3}'.format(sk)
+        line += ' {:>+4d} {:>+4d}'.format(skins['in'], skins['total'])
+        dct['line'] = line
+        dct['in'] = skins['in']
+        dct['out'] = skins['out']
+        dct['total'] = skins['total']
+        lstPlayers.append(dct)
+      dct_scorecard['skins'] = lstPlayers
     else:
       raise GolfException('game "{}" not supported'.format(game))
     return dct_scorecard
@@ -177,5 +242,7 @@ class GolfRound(object):
     return dct 
   
   def __str__(self):
-    return '{} - {:<25} - {:<25}'.format(
-      self.date.date(), self.course.name, ','.join([score.player.nick_name for score in self.scores]))
+    return '{} - {:<25} - {:<25} - {}'.format(
+      self.date.date(), self.course.name,
+      ','.join([score.player.nick_name for score in self.scores]),
+      ','.join(self.games.keys()))

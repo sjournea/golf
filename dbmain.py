@@ -44,6 +44,7 @@ class GolfMenu(Menu):
 
     self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gag', '<game>',        'Add game to Round of Golf',         self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
     self.addMenuItem( MenuItem( 'gps', '<gross|net>',   'Print Round Scorecard',             self._roundScorecard))
     self.addMenuItem( MenuItem( 'gpl', '<gross|net>',   'Print Round Leaderboard',           self._roundLeaderboard))
@@ -168,6 +169,15 @@ class GolfMenu(Menu):
     if player is None:
       raise InputException( 'Player "%s" not found in database.' % self.lstCmd[0] )
     self.golf_round.addPlayer(player, tee_name=self.lstCmd[2])
+    print self.golf_round
+
+  def _roundAddGame(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game = self.lstCmd[1]
+    self.golf_round.addGame(game, {})
     print self.golf_round
 
   def _roundStart(self):

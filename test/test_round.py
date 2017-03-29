@@ -13,6 +13,7 @@ class GolfRoundTest(unittest.TestCase):
     self.assertIsNone(r.course)
     self.assertIsNone(r.date)
     self.assertEqual(r.scores, [])
+    self.assertEqual(r.games, {})
 
   def test_init_from_dict(self):
     for dct in GolfRounds:
@@ -21,6 +22,14 @@ class GolfRoundTest(unittest.TestCase):
       r2.fromDict(dct)
       self.assertEqual(r, r2)
       
+  def test_add_games(self):
+    # check default parameters
+    r = GolfRound()
+    r.addGame('skins', {})
+    self.assertIn('skins', r.games)
+    self.assertEqual(r.games['skins'], { 'options': {}})
+
+
 class PlayRoundTest(unittest.TestCase):
   @classmethod
   def setUp(cls):
@@ -41,6 +50,22 @@ class PlayRoundTest(unittest.TestCase):
       r.addPlayer(pl, tee_name)
     self.assertEqual(len(r.scores), 2)
     
+  def test_add_games(self):
+    course_name = 'Canyon Lakes'
+    tee_name = 'Blue'
+    date_of_round = datetime.datetime(2017, 3, 23)
+    lstPlayers = ['sjournea', 'snake']
+    
+    r = GolfRound()
+    r.course = self.db.courseFind(course_name)
+    r.date = date_of_round
+    for email in lstPlayers:
+      pl = self.db.playerFind(email)
+      r.addPlayer(pl, tee_name)
+    
+    r.addGame('skins', {})
+    self.assertEqual((r.games), {'skins': {'options': {}}})
+
   def test_start(self):
     course_name = 'Canyon Lakes'
     tee_name = 'Blue'
@@ -54,6 +79,7 @@ class PlayRoundTest(unittest.TestCase):
       pl = self.db.playerFind(email)
       r.addPlayer(pl, tee_name)
 
+    r.addGame('skins', {})
     r.start()
 
   def test_add_scores(self):
@@ -69,6 +95,7 @@ class PlayRoundTest(unittest.TestCase):
       pl = self.db.playerFind(email)
       r.addPlayer(pl, tee_name)
 
+    r.addGame('skins', {})
     r.start()
     
     r.addScores(1, [4,4])

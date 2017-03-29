@@ -4,39 +4,47 @@ gad sjournea Blue
 gad snake Blue
 gad spanky Blue
 gad rock Blue
+gag skins
 gst
 gps gross
 gps net
+gps skins
 gpl gross
 gpl net
 # hole 1
 gac 1 4 5 6 5
 gps gross
 gps net
+gps skins
 gpl gross
 gpl net
 # hole 2
 gac 2 8 6 5 8
 gps gross
 gps net
+gps skins
 gpl gross
 gpl net
 # hole 3
 gac 3 3 4 6 4
 gps gross
 gps net
+gps skins
 gpl gross
 gpl net
 # hole 4
 gac 4 6 5 6 7
 gps gross
 gps net
+gps skins
 gpl gross
 gpl net
 # hole 5
 gac 5 3 5 4 4
 gps gross
 gps net
+gps skins
+x
 gpl gross
 gpl net
 # hole 6
