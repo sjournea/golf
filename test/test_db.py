@@ -1,41 +1,85 @@
 import unittest
 
 from golf_db.db import GolfDB, GolfDBException
+from golf_db.player import GolfPlayer
 
-class DBTest(unittest.TestCase):
+class DBTestInit(unittest.TestCase):
   def test_init(self):
-    db = GolfDB()
+    db = GolfDB(database='golf_test')
 
+  def test_create(self):
+    db = GolfDB(database='golf_test')
+    db.create()
+    with db.db as session:
+      dctDatabases = db.db.databases()
+    self.assertIn('golf_test', dctDatabases)
+    collections = dctDatabases['golf_test']
+    expected_collections = [u'courses', u'players',u'rounds']
+    self.assertEqual(len(collections), len(expected_collections))
+    for exp in expected_collections:
+      self.assertIn(exp, collections)
+    # test remove
+    db.remove()
+    with db.db as session:
+      dctDatabases = db.db.databases()
+    self.assertNotIn('golf_test', dctDatabases)
+    
+class DBTestAPI(unittest.TestCase):
+
+  @classmethod
+  def setUpClass(cls):
+    cls.db = GolfDB(database='golf_test')
+    cls.db.create()
+      
   def test_course_api(self):
-    db = GolfDB()
-    cnt = db.courseCount()
+    cnt = self.db.courseCount()
     #print 'courses : {}'.format(cnt)
-    courses = db.courseList()
+    courses = self.db.courseList()
     #for course in courses:
       #print course
-    c = db.courseFind(courses[1].name)
+    c = self.db.courseFind(courses[1].name)
     #print c
     self.assertEqual(c, courses[1])
     
   def test_player_api(self):
-    db = GolfDB()
-    cnt = db.playerCount()
+    cnt = self.db.playerCount()
     #print 'players : {}'.format(cnt)
-    players = db.playerList()
+    players = self.db.playerList()
     #for player in players:
       #print player
-    p = db.playerFind(players[1].email)
+    p = self.db.playerFind(players[1].email)
     #print r
     self.assertEqual(p, players[1])
     
+  def test_player_save(self):
+    beatle = GolfPlayer()
+    beatle.email = 'jlennon@beatles.com'
+    beatle.first_name = 'John'
+    beatle.last_name = 'Lennon'
+    beatle.handicap = 18.4
+    beatle.nick_name = 'NoReligion'
+    
+    # add and verify count
+    cnt0 = self.db.playerCount()
+    self.db.playerSave(beatle)
+    cnt = self.db.playerCount()
+    self.assertEqual(cnt0+1, cnt)
+
+    # find and verify equal
+    p = self.db.playerFind(beatle.email)
+    self.assertEqual(p, beatle)
+
+    # save again and verify fails
+    with self.assertRaises(GolfDBException):
+      self.db.playerSave(beatle)
+    
   def test_round_api(self):
-    db = GolfDB()
-    cnt = db.roundCount()
+    cnt = self.db.roundCount()
     #print 'rounds : {}'.format(cnt)
-    rounds = db.roundList()
+    rounds = self.db.roundList()
     #for r in rounds:
       #print r
-    r = db.roundFind(rounds[1].course.name)
+    r = self.db.roundFind(rounds[1].course.name)
     #print r
     self.assertEqual(r, rounds[1])
     

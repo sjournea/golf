@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """ dbmain.py - simple query test program for database """ 
+import datetime
 #import sys
 import logging
 #import ConfigParser
@@ -16,13 +17,7 @@ from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException
 from util.tl_logger import TLLog,logOptions
 
-TLLog.config( 'logs\\dbmain.log', defLogLevel=logging.INFO )
-
-#from SNTrack.const import *
-#from SNTrack.master import Master
-#from util.db_postgres import DBException
-#from util.common import parseTimeString
-#from util.common import toInt,flatten
+TLLog.config('logs/dbmain.log', defLogLevel=logging.INFO )
 
 log = TLLog.getLogger( 'dbmain' )
 
@@ -32,6 +27,7 @@ class GolfMenu(Menu):
     self.db = mongo_db
     self.database = kwargs.get('database')
     self.gdb = GolfDB(database=self.database)
+    self.golf_round = None
     # add menu items
     self.addMenuItem( MenuItem( 'dl', '',             'Show databases.' ,                  self._showDatabases) )
     self.addMenuItem( MenuItem( 'dc', '<database>',   'create golf test data database.',   self._createGolfDatabase) )
@@ -44,6 +40,14 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
+    self.addMenuItem( MenuItem( 'rob', '',            'Round leaderboard'  ,               self._roundGetLeaderboard))
+
+    self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
+    self.addMenuItem( MenuItem( 'gps', '<gross|net>',   'Print Round Scorecard',             self._roundScorecard))
+    self.addMenuItem( MenuItem( 'gpl', '<gross|net>',   'Print Round Leaderboard',           self._roundLeaderboard))
+    self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -60,25 +64,16 @@ class GolfMenu(Menu):
       print '{:<15} : {}'.format(str(database), ','.join([str(tbl) for tbl in tables]))
 
   def _dropDatabase(self):
-    if len(self.lstCmd) < 2:
-      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    with self.db as session:
-      self.db.drop_database(self.lstCmd[1])
+    self.gdb.remove()
 
   def _createGolfDatabase(self):
-    if len(self.lstCmd) < 2:
-      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    db_name = self.lstCmd[1]
-    with self.db as session:
-      self.db.drop_database(db_name)
-      self.db.insert_many(db_name, 'players', GolfPlayers)
-      self.db.insert_many(db_name, 'courses', GolfCourses)
-      self.db.insert_many(db_name, 'rounds', GolfRounds)
+    self.gdb.create()
 
   def _useDatabase(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     self.database = self.lstCmd[1]
+    self.gdb = GolfDB(self.database)
     self.updateHeader()
 
   def _listPlayers(self):
@@ -135,16 +130,80 @@ class GolfMenu(Menu):
   def _roundGetScorecard(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
     rnd = self.gdb.roundFind(self.lstCmd[1])
     print rnd
-    dct = rnd.getScorecard()
+    dct = rnd.getScorecard(game)
+    print dct['header']
     print dct['hdr']
     print dct['par']
     print dct['hdcp']
-    if 'player_0_gross' in dct: print dct['player_0_gross']['gross_line']
-    if 'player_1_gross' in dct: print dct['player_1_gross']['gross_line']
-    if 'player_2_gross' in dct: print dct['player_2_gross']['gross_line']
-    if 'player_3_gross' in dct: print dct['player_3_gross']['gross_line']
+    for player in dct[game]:
+      print player['line']
+
+  def _roundGetLeaderboard(self):
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
+    rnd = self.gdb.roundFind(self.lstCmd[1])
+    print rnd
+    dctLeaderboard = rnd.getLeaderboard(game)
+    print dctLeaderboard['hdr']
+    for dct in dctLeaderboard['leaderboard']:
+      print dct['line']
+
+  def _roundCreate(self):
+    self.golf_round = GolfRound()
+    self.golf_round.course = self.gdb.courseFind('Canyon Lakes')
+    self.golf_round.date = datetime.datetime(2017, 3, 23)
+    self.golf_round.tee = self.golf_round.course.getTee('Blue')
+    print self.golf_round
+
+  def _roundAddPlayer(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    player = self.gdb.playerFind(email=self.lstCmd[1])
+    if player is None:
+      raise InputException( 'Player "%s" not found in database.' % self.lstCmd[0] )
+    self.golf_round.addPlayer(player, tee_name=self.lstCmd[2])
+    print self.golf_round
+
+  def _roundStart(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    self.golf_round.start()
+    
+  def _roundAddScore(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < len(self.golf_round.scores) + 1:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    hole = int(self.lstCmd[1])
+    lstGross = [int(gross) for gross in self.lstCmd[2:]]
+    self.golf_round.addScores(hole, lstGross)
+    
+  def _roundScorecard(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
+    dct = self.golf_round.getScorecard(game)
+    print dct['header']
+    print dct['hdr']
+    print dct['par']
+    print dct['hdcp']
+    for player in dct[game]:
+      print player['line']
+
+  def _roundLeaderboard(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
+    dctLeaderboard = self.golf_round.getLeaderboard(game)
+    print dctLeaderboard['hdr']
+    for dct in dctLeaderboard['leaderboard']:
+      print dct['line']
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'

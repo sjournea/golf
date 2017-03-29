@@ -1,5 +1,6 @@
 """hole.py - simple golf hole class."""
-from .doc import Doc, DocValidateFail
+from .doc import Doc
+from .exceptions import DocValidateFail
 
 class GolfHole(Doc):
   """Golf hole

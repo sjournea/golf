@@ -1,7 +1,7 @@
 import unittest
 
 from golf_db.hole import GolfHole
-from golf_db.doc import DocValidateFail
+from golf_db.exceptions import DocValidateFail
 
 class GolfHoleTest(unittest.TestCase):
   lst_legal_golf_holes = [

@@ -1,6 +1,7 @@
 import unittest
 
-from golf_db.doc import Doc, DocValidateFail
+from golf_db.doc import Doc
+from golf_db.exceptions import DocValidateFail
 
 class DocBaseCase(unittest.TestCase):
   def test_init_empty(self):

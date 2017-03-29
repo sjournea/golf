@@ -257,7 +257,7 @@ fall_river_tees = [
   {'gender': 'mens', 'name': 'White', 'rating': 70.9, 'slope': 122 },
 ]
 
-GolfCourses = [
+GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
   {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
@@ -267,36 +267,87 @@ GolfCourses = [
   {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
-]
+)
 
-GolfPlayers = [
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4},
-  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9},
-  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2},
-  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0},
+DBGolfCourses = (
+  {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
+  {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
+  {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
+  {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
+  {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},
+  {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
+  {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
+  {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
+  {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
+)
+
+GolfPlayers = (
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4, 'gender': 'man'},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9, 'gender': 'man'},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2, 'gender': 'man'},
+  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0, 'gender': 'man'},
+  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
+  {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frenchie', 'handicap': 11.2, 'gender': 'woman'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+)
+
+DBGolfPlayers = (
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.4, 'gender': 'man'},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.9, 'gender': 'man'},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.2, 'gender': 'man'},
+  {'email':'rock@tl.com',     'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Rock',   'handicap': 22.0, 'gender': 'man'},
+  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
+  {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frog',   'handicap': 11.2, 'gender': 'woman'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+)
+
+TestGolfPlayers = [
+  {'email':'jlennon@beatles.com',   'first_name': 'John',   'last_name': 'Lennon',    'nick_name': 'JL', 'handicap': 20.4, 'gender': 'man'},
+  {'email':'pmccartn@beatles.com',  'first_name': 'Paul',   'last_name': 'McCartney', 'nick_name': 'PM', 'handicap': 17.9, 'gender': 'man'},
+  {'email':'gharriso@beatles.com',  'first_name': 'George', 'last_name': 'Harrison',  'nick_name': 'GH', 'handicap': 17.2, 'gender': 'man'},
+  {'email':'rstarr@beatles.com',    'first_name': 'Ringo',  'last_name': 'Starr',     'nick_name': 'RS', 'handicap': 22.0, 'gender': 'man'},
 ]
 
 CanyonLake_Players = [
-  {'player': GolfPlayers[0], 'gross': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]},
-  {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8]},
-  {'player': GolfPlayers[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6]},
-  {'player': GolfPlayers[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7]},
+  {'player': GolfPlayers[0], 'tee':canyon_lake_tees[0],
+   'gross': { 'score': [4,8,5,11,4,7,7,5,6, 6,4,7,5,10,4,6,8,5]}},
+  {'player': GolfPlayers[1], 'gross': [5,8,7,4,4,6,6,5,7,  4,4,7,6,6,5,6,7,8], 'tee':canyon_lake_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [6,7,4,7,3,4,7,6,5,  5,5,7,4,6,4,6,6,6], 'tee':canyon_lake_tees[0]},
+  {'player': GolfPlayers[3], 'gross': [7,8,7,7,7,6,8,7,6,  5,7,7,5,8,5,6,7,7], 'tee':canyon_lake_tees[0]},
 ]
 
 LakeChabot_Players = [
-  {'player': GolfPlayers[0], 'gross': [5,6,6,6,6,5,4,5,5, 6,6,3,8,5,3,6,4,7]},
-  {'player': GolfPlayers[1], 'gross': [6,4,6,7,5,5,4,5,4, 6,5,4,5,6,5,6,4,7]},
-  {'player': GolfPlayers[2], 'gross': [6,4,7,5,4,4,5,6,3, 5,5,4,6,5,7,8,4,5]},
-  {'player': GolfPlayers[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6]},
+  {'player': GolfPlayers[0], 'gross': [5,6,6,6,6,5,4,5,5, 6,6,3,8,5,3,6,4,7], 'tee':lake_chabot_tees[0]},
+  {'player': GolfPlayers[1], 'gross': [6,4,6,7,5,5,4,5,4, 6,5,4,5,6,5,6,4,7], 'tee':lake_chabot_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [6,4,7,5,4,4,5,6,3, 5,5,4,6,5,7,8,4,5], 'tee':lake_chabot_tees[0]},
+  {'player': GolfPlayers[3], 'gross': [5,6,7,6,5,6,3,6,6, 6,6,7,6,8,6,7,5,6], 'tee':lake_chabot_tees[0]},
 ]
 
 DeltaView_Players = [
-  {'player': GolfPlayers[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8]},
-  {'player': GolfPlayers[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6]},
-  {'player': GolfPlayers[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5]},
+  {'player': GolfPlayers[0], 'gross': [7,7,4,6,6,4,6,5,6, 6,8,7,4,6,5,5,6,8], 'tee': delta_view_tees[0]},
+  {'player': GolfPlayers[1], 'gross': [6,7,4,5,8,3,5,4,6, 6,5,6,4,6,6,6,5,6], 'tee': delta_view_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5], 'tee': delta_view_tees[0]},
 ]
 
 GolfRounds = [
+  { 'date': datetime.datetime(2017, 3, 7), 
+    'course': GolfCourses[0],
+    'players': CanyonLake_Players,
+    'tee': GolfCourses[0]['tees'][0],
+  },
+  { 'date': datetime.datetime(2016, 6, 8), 
+    'course': GolfCourses[4],
+    'players': LakeChabot_Players,
+    'tee': GolfCourses[4]['tees'][0],
+  },
+  { 'date': datetime.datetime(2016, 10, 1), 
+    'course': GolfCourses[5],
+    'players': DeltaView_Players,
+    'tee': GolfCourses[5]['tees'][0],
+  },
+]
+
+DBGolfRounds = [
   { 'date': datetime.datetime(2017, 3, 7), 
     'course': GolfCourses[0],
     'players': CanyonLake_Players,

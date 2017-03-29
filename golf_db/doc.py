@@ -10,9 +10,7 @@ class Doc
   validate()    - Validate the object. Default is just a pass.
                   Raise DocValidateFail for validation failures.
 """
-
-class DocValidateFail(Exception):
-  pass
+from .exceptions import DocValidateFail
 
 class Doc(object):
   """Abstract fields MUST be defined."""

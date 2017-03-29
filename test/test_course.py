@@ -2,11 +2,11 @@ import unittest
 
 from golf_db.course import GolfCourse
 from golf_db.hole import GolfHole
-from golf_db.doc import DocValidateFail
 from golf_db.test_data import GolfCourses
+from golf_db.db import GolfDB
+from golf_db.exceptions import GolfException,DocValidateFail
 
-
-class GolfCourseInitCase(unittest.TestCase):
+class GolfCourseTestCase(unittest.TestCase):
   lstDicts = [
     {'name': 'Canyon Lakes', 'holes':[], 'tees':[]},
     {'name': 'Santa Clara', 'holes':[], 'tees':[]},
@@ -77,14 +77,84 @@ class GolfCourseInitCase(unittest.TestCase):
     ]
     
     course = GolfCourse()
+    # validate fail, no holes
     with self.assertRaises(DocValidateFail):
       course.validate()
+    # validate pass after adding holes
     course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
     course.validate()
-    # forse a bad handicap 
+    # force a bad handicap so validate fails
+    old_handicap = course.holes[0].handicap
     course.holes[0].handicap = 10
     with self.assertRaises(DocValidateFail):
       course.validate()
+    course.holes[0].handicap = old_handicap
+    # force a bad par value so validate fails
+    old_par = course.holes[0].par
+    for bad_par in [0, 1, 2, 7, 8]:
+      course.holes[0].par = bad_par
+      with self.assertRaises(DocValidateFail):
+        course.validate()
+    course.holes[0].par = old_par
     
+  def test_get_tee(self):
+    # Find Lake Chabot 
+    db = GolfDB(database='golf_test')
+    db.create()
+    course = db.courseFind('Lake Chabot')
+    # test get tee by nme and gender, default gender is "mens"
+    tee = course.getTee('Blue')
+    self.assertDictEqual(tee, {'gender':'mens', 'name':'Blue', 'rating': 68.9, 'slope': 119})
+    tee = course.getTee('Blue', gender='mens')
+    self.assertDictEqual(tee, {'gender':'mens', 'name':'Blue', 'rating': 68.9, 'slope': 119})
+    with self.assertRaises(GolfException):
+      tee = course.getTee('Blue', gender='womens')
+    tee = course.getTee('White')
+    self.assertDictEqual(tee, {'gender':'mens', 'name':'White', 'rating': 67.4, 'slope': 116})
+    with self.assertRaises(GolfException):
+      tee = course.getTee('Red')
+    tee = course.getTee('Red', gender='womens')
+    self.assertDictEqual(tee, {'gender':'womens', 'name':'Red', 'rating': 70.1, 'slope': 116})
     
+  def test_calcBumps(self):
+    fall_river_men_holes = [
+      {'par': 4, 'handicap':  15},
+      {'par': 4, 'handicap':   5},
+      {'par': 5, 'handicap':   1},
+      {'par': 3, 'handicap':  13},
+      {'par': 4, 'handicap':  17},
+      {'par': 4, 'handicap':   3},
+      {'par': 4, 'handicap':   7},
+      {'par': 3, 'handicap':  11},
+      {'par': 5, 'handicap':   9},
+    
+      {'par': 4, 'handicap':  12},
+      {'par': 3, 'handicap':  14},
+      {'par': 4, 'handicap':   8},
+      {'par': 4, 'handicap':   6},
+      {'par': 5, 'handicap':   2},
+      {'par': 3, 'handicap':  16},
+      {'par': 4, 'handicap':   4},
+      {'par': 4, 'handicap':  18},
+      {'par': 5, 'handicap':  10},
+    ]
+    # build handicap list
+    handicap_index = []
+    for num in xrange(1, 19, 1):
+      for n,dct in enumerate(fall_river_men_holes):
+        hdcp = dct['handicap']
+        if num == hdcp:
+          handicap_index.append(n)
+          break
+    #print handicap_index
+    
+    course = GolfCourse()
+    course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
+    expected_bumps = 18*[0]
+    for handicap in xrange(38):
+      bumps = course.calcBumps(handicap)
+      #print '    bumps:{}'.format(bumps)
+      #print 'exp_bumps:{}'.format(expected_bumps)
+      self.assertListEqual(bumps, expected_bumps, 'handicap == {} fail'.format(handicap))
+      expected_bumps[handicap_index[handicap % 18]] += 1
     

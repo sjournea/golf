@@ -1,5 +1,7 @@
-from .doc import DocValidateFail
+from .exceptions import DocValidateFail
 from .hole import GolfHole
+from .exceptions import GolfException
+
 
 class GolfCourse(object):
   """Golf course object
@@ -57,6 +59,14 @@ class GolfCourse(object):
     self.in_tot  = sum([hole.par for hole in self.holes[9:]])
     self.total   = self.in_tot + self.out_tot
 
+  def getTee(self, name, gender='mens'):
+    """Return the matching tee dictionary or None."""
+    for dct in self.tees:
+      if dct['name'] == name and dct['gender'] == gender:
+        return dct
+    else:
+      raise GolfException('course getTee() fail - name:{} gender:{} not found'.format(name, gender)) 
+  
   def getScorecard(self):
     """Return hdr, par and hdcp lines for scorecard."""
     self.setStats()
@@ -81,6 +91,28 @@ class GolfCourse(object):
              'hdcp': hdcp,
            }
       
+  def calcBumps(self, handicap):
+    """Determine bumps basid in this handicap.
+    
+    Args:
+      handicap: course handicap.
+    Returns:
+      list of bumps for each hole.
+    """
+    bumps = [0 for _ in range(len(self.holes))]
+    # handicap > 18 will bump all holes
+    while handicap > 17:
+      bumps = [x+1 for x in bumps]
+      handicap -= 18
+    # now handicaps < 18
+    if handicap > 0:
+      for bp in xrange(handicap % 18, 0, -1):
+        for n,hole in enumerate(self.holes):
+          if hole.handicap == bp:
+            bumps[n] += 1
+            break
+    return bumps
+
   def __str__(self):
     return '{:<20} - {} holes - {} tees'.format(self.name, len(self.holes), len(
       self.tees))
