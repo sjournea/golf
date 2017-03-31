@@ -197,23 +197,25 @@ class GolfMenu(Menu):
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
-    dct = self.golf_round.getScorecard(game)
-    print dct['header']
-    print dct['hdr']
-    print dct['par']
-    print dct['hdcp']
-    for player in dct[game]:
-      print player['line']
+    lstGames = self.lstCmd[1:]
+    for game in lstGames:
+      dct = self.golf_round.getScorecard(game)
+      print dct['header']
+      print dct['hdr']
+      print dct['par']
+      print dct['hdcp']
+      for player in dct[game]:
+        print player['line']
 
   def _roundLeaderboard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
-    dctLeaderboard = self.golf_round.getLeaderboard(game)
-    print dctLeaderboard['hdr']
-    for dct in dctLeaderboard['leaderboard']:
-      print dct['line']
+    lstGames = self.lstCmd[1:]
+    for game in lstGames:
+      dctLeaderboard = self.golf_round.getLeaderboard(game)
+      print dctLeaderboard['hdr']
+      for dct in dctLeaderboard['leaderboard']:
+        print dct['line']
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'

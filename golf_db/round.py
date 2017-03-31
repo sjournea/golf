@@ -116,7 +116,7 @@ class GolfRound(object):
   def getScorecard(self, game='gross'):
     """Scorecard with all players."""
     dct_scorecard = self.course.getScorecard()
-    dct_scorecard['header'] = game.capitalize()
+    dct_scorecard['header'] = '***** ' + game.capitalize()+ ' *****'
     if game == 'gross':
       lstPlayers = []
       for n,score in enumerate(self.scores):
@@ -164,7 +164,7 @@ class GolfRound(object):
           line += ' {:>3}'.format(sk)
         line += ' {:>+4d}'.format(skins['out'])
         for skin in skins['skin'][9:]:
-          sk = skin if skin != 0 else ''
+          sk = '{:+d}'.format(skin) if skin != 0 else ''
           line += ' {:>3}'.format(sk)
         line += ' {:>+4d} {:>+4d}'.format(skins['in'], skins['total'])
         dct['line'] = line
@@ -222,6 +222,31 @@ class GolfRound(object):
           'total' : score.net['total'],
         }
         if prev_total != None and score_dct['total'] > prev_total:
+          pos += 1
+  
+        prev_total = score_dct['total']
+        score_dct['pos'] = pos
+        for n,net in enumerate(score.net['score']):
+          if net == 0:
+            break
+        else:
+          n += 1
+        score_dct['thru'] = n
+        score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
+          score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
+        board.append(score_dct)
+    elif game == 'skins':
+      dct = { 'hdr': 'Pos Name   Skins Thru' }
+      board = []
+      scores = sorted(self.scores, key=lambda score: score.games['skins']['total'], reverse=True)
+      pos = 1
+      prev_total = None
+      for score in scores:
+        score_dct = {
+          'player': score.player,
+          'total' : score.games['skins']['total'],
+        }
+        if prev_total != None and score_dct['total'] < prev_total:
           pos += 1
   
         prev_total = score_dct['total']
