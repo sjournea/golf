@@ -177,7 +177,7 @@ class GolfMenu(Menu):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     game = self.lstCmd[1]
-    self.golf_round.addGame(game, {})
+    self.golf_round.addGame(game)
     print self.golf_round
 
   def _roundStart(self):

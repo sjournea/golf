@@ -31,24 +31,14 @@ class GolfGame(object):
     pass
 
 
-class MedalGame(GolfGame):
-  """Basic gross and net game."""
+class GrossGame(GolfGame):
+  """Basic gross game. Man's golf."""
   def start(self):
     """Start the game."""
-    # find min handicap in all players
-    min_handicap = min([gs.course_handicap for gs in self.scores])
     for pl in self.scores:
       # gross start
       pl.gross = {
         'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
-        'in' : 0,
-        'out':  0,
-        'total': 0,
-      }
-      # net start
-      pl.net = {
-        'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
-        'bump': self.golf_round.course.calcBumps(pl.course_handicap - min_handicap),
         'in' : 0,
         'out':  0,
         'total': 0,
@@ -67,6 +57,84 @@ class MedalGame(GolfGame):
       gs.gross['out'] = sum(gs.gross['score'][:9])
       gs.gross['in'] = sum(gs.gross['score'][9:])
       gs.gross['total'] = gs.gross['in'] + gs.gross['out']
+
+  def complete(self):
+    """a game is complete."""
+    pass
+
+  def getScorecard(self, **kwargs):
+    """Scorecard with all players."""
+    dct_scorecard = {'header': '{0:*^93}'.format(' Gross ')}
+    lstPlayers = []
+    for n,score in enumerate(self.scores):
+      dct = {'player': score.player }
+      line = '{:<6}'.format(score.player.nick_name)
+      for gross in score.gross['score'][:9]:
+        line += ' {:>3}'.format(gross) if gross > 0 else '    '
+      line += ' {:>4}'.format(score.gross['out'])
+      for gross in score.gross['score'][9:]:
+        line += ' {:>3}'.format(gross) if gross > 0 else '    '
+      line += ' {:>4} {:>4}'.format(score.gross['in'], score.gross['total'])
+      dct['line'] = line
+      dct['in'] = score.gross['in']
+      dct['out'] = score.gross['out']
+      dct['total'] = score.gross['total']
+      lstPlayers.append(dct)
+    dct_scorecard['gross'] = lstPlayers
+    return dct_scorecard
+
+  def getLeaderboard(self, **kwargs):
+    """Scorecard with all players."""
+    dct = { 'hdr': 'Pos Name   Gross Thru' }
+    board = []
+    scores = sorted(self.scores, key=lambda score: score.gross['total'])
+    pos = 1
+    prev_total = None
+    for score in scores:
+      score_dct = {
+        'player': score.player,
+        'total' : score.gross['total'],
+      }
+      if prev_total != None and score_dct['total'] > prev_total:
+        pos += 1
+      prev_total = score_dct['total']
+      score_dct['pos'] = pos
+      for n,gross in enumerate(score.gross['score']):
+        if gross == 0:
+          break
+      else:
+        n += 1
+      score_dct['thru'] = n
+      score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
+        score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
+      board.append(score_dct)
+    dct['leaderboard'] = board
+    return dct 
+
+class NetGame(GolfGame):
+  """Basic net golf game. For us weekenders."""
+  def start(self):
+    """Start the game."""
+    # find min handicap in all players
+    min_handicap = min([gs.course_handicap for gs in self.scores])
+    for pl in self.scores:
+      # net start
+      pl.net = {
+        'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
+        'bump': self.golf_round.course.calcBumps(pl.course_handicap - min_handicap),
+        'in' : 0,
+        'out':  0,
+        'total': 0,
+      }
+
+  def addScore(self, index, lstGross):
+    """add scores for a hole.
+    
+    Args:
+      index: hole index [0..holes-1]
+      lstGross: list of gross scores for all players.
+    """
+    for gs, gross in zip(self.scores, lstGross):
       # update net
       gs.net['score'][index] = gross - gs.net['bump'][index]
       gs.net['out'] = sum(gs.net['score'][:9])
@@ -79,101 +147,52 @@ class MedalGame(GolfGame):
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    game = kwargs.get('game', 'gross')
-    dct_scorecard = {'header': '{0:*^60}'.format(' '+ game.capitalize()+ ' ')}
-    if game == 'gross':
-      lstPlayers = []
-      for n,score in enumerate(self.scores):
-        dct = {'player': score.player }
-        line = '{:<6}'.format(score.player.nick_name)
-        for gross in score.gross['score'][:9]:
-          line += ' {:>3}'.format(gross) if gross > 0 else '    '
-        line += ' {:>4}'.format(score.gross['out'])
-        for gross in score.gross['score'][9:]:
-          line += ' {:>3}'.format(gross) if gross > 0 else '    '
-        line += ' {:>4} {:>4}'.format(score.gross['in'], score.gross['total'])
-        dct['line'] = line
-        dct['in'] = score.gross['in']
-        dct['out'] = score.gross['out']
-        dct['total'] = score.gross['total']
-        lstPlayers.append(dct)
-      dct_scorecard['gross'] = lstPlayers
-    elif game == 'net':
-      lstPlayers = []
-      for n,score in enumerate(self.scores):
-        dct = {'player': score.player }
-        line = '{:<6}'.format(score.player.nick_name)
-        for net,bump in zip(score.net['score'][:9], score.net['bump'][:9]):
-          nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
-          line += ' {:>3}'.format(nets)
-        line += ' {:>4}'.format(score.net['out'])
-        for net,bump in zip(score.net['score'][9:], score.net['bump'][9:]):
-          nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
-          line += ' {:>3}'.format(nets)
-        line += ' {:>4} {:>4}'.format(score.net['in'], score.net['total'])
-        dct['line'] = line
-        dct['in'] = score.net['in']
-        dct['out'] = score.net['out']
-        dct['total'] = score.net['total']
-        lstPlayers.append(dct)
-      dct_scorecard['net'] = lstPlayers
-    else:
-      raise GolfException('Scorecard "{}" not supported in {}'.format(game, self.__class__.__name__))
+    dct_scorecard = {'header': '{0:*^93}'.format(' Net ')}
+    lstPlayers = []
+    for n,score in enumerate(self.scores):
+      dct = {'player': score.player }
+      line = '{:<6}'.format(score.player.nick_name)
+      for net,bump in zip(score.net['score'][:9], score.net['bump'][:9]):
+        nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
+        line += ' {:>3}'.format(nets)
+      line += ' {:>4}'.format(score.net['out'])
+      for net,bump in zip(score.net['score'][9:], score.net['bump'][9:]):
+        nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
+        line += ' {:>3}'.format(nets)
+      line += ' {:>4} {:>4}'.format(score.net['in'], score.net['total'])
+      dct['line'] = line
+      dct['in'] = score.net['in']
+      dct['out'] = score.net['out']
+      dct['total'] = score.net['total']
+      lstPlayers.append(dct)
+    dct_scorecard['net'] = lstPlayers
     return dct_scorecard
 
   def getLeaderboard(self, **kwargs):
     """Scorecard with all players."""
-    game = kwargs.get('game', 'gross')
-    if game == 'gross':
-      dct = { 'hdr': 'Pos Name   Gross Thru' }
-      board = []
-      scores = sorted(self.scores, key=lambda score: score.gross['total'])
-      pos = 1
-      prev_total = None
-      for score in scores:
-        score_dct = {
-          'player': score.player,
-          'total' : score.gross['total'],
-        }
-        if prev_total != None and score_dct['total'] > prev_total:
-          pos += 1
-        prev_total = score_dct['total']
-        score_dct['pos'] = pos
-        for n,gross in enumerate(score.gross['score']):
-          if gross == 0:
-            break
-        else:
-          n += 1
-        score_dct['thru'] = n
-        score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
-          score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
-        board.append(score_dct)
-    elif game == 'net':
-      dct = { 'hdr': 'Pos Name     Net Thru' }
-      board = []
-      scores = sorted(self.scores, key=lambda score: score.net['total'])
-      pos = 1
-      prev_total = None
-      for score in scores:
-        score_dct = {
-          'player': score.player,
-          'total' : score.net['total'],
-        }
-        if prev_total != None and score_dct['total'] > prev_total:
-          pos += 1
-        prev_total = score_dct['total']
-        score_dct['pos'] = pos
-        for n,net in enumerate(score.net['score']):
-          if net == 0:
-            break
-        else:
-          n += 1
-        score_dct['thru'] = n
-        score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
-          score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
-        board.append(score_dct)
-    else:
-      raise GolfException('Leaderboard "{}" not supported in {}'.format(game, self.__class__.__name__))
+    dct = { 'hdr': 'Pos Name     Net Thru' }
+    board = []
+    scores = sorted(self.scores, key=lambda score: score.net['total'])
+    pos = 1
+    prev_total = None
+    for score in scores:
+      score_dct = {
+        'player': score.player,
+        'total' : score.net['total'],
+      }
+      if prev_total != None and score_dct['total'] > prev_total:
+        pos += 1
+      prev_total = score_dct['total']
+      score_dct['pos'] = pos
+      for n,net in enumerate(score.net['score']):
+        if net == 0:
+          break
+      else:
+        n += 1
+      score_dct['thru'] = n
+      score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
+        score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
+      board.append(score_dct)
     dct['leaderboard'] = board
     return dct 
 
@@ -235,14 +254,16 @@ class SkinsGame(GolfGame):
           sc.skins['skin'][index] += win
         else:
           sc.skins['skin'][index] -= self.carryover
+        sc.skins['out'] = sum(sc.skins['skin'][:9])
+        sc.skins['in'] = sum(sc.skins['skin'][9:])
+        sc.skins['total'] = sc.skins['in'] + sc.skins['out']
       self.carryover = 1
     else:
       self.carryover += 1
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    game = 'skins'
-    dct_scorecard = {'header': '{0:*^60}'.format(' '+game.capitalize()+' ') }
+    dct_scorecard = {'header': '{0:*^93}'.format(' Skins ') }
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -298,8 +319,9 @@ class SkinsGame(GolfGame):
 
 
 dctGames = { 
-  'medal': MedalGame,
   'skins': SkinsGame,
+  'gross': GrossGame,
+  'net': NetGame,
 }
 
 def GolfGameFactory(game):

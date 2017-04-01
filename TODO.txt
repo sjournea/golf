@@ -1,23 +1,15 @@
 Golf game TODO 3/30/17
   Python prototype
-    * Abstract GolfGame class
-      * game class contains ALL information for game
-        - players (GolfScore), subset or all from round players
-        - gross/net/extras
-        - course handicap
-      Metal
-        gross and net
+    More Games
       Match
       Skins
-      SixPoint
-        - 3 player game
-      EightyOne
-        - 3 player game
+      SixPoint - 3 player game
+      EightyOne - 3 player game
       Nassau
-    * AddPlayer
-    * Mongo DB working
-      - Remove database from GolfGame class for now
-      - GolfCourse, GolfPlayers, GolfRound (no games)
+  * AddPlayer
+  * Mongo DB working
+    - Remove database from GolfGame class for now
+    - GolfCourse, GolfPlayers, GolfRound (no games)
     
   iPhone - Swift
     * move python into folder, including venv.
@@ -30,3 +22,13 @@ Golf game TODO 3/30/17
           xcode
      
      
+Completed:
+  * Abstract GolfGame class
+    * game class contains ALL information for game
+      - players (GolfScore), subset or all from round players
+      - gross/net/extras
+      - course handicap
+    * Games
+      GrossGame
+      NetGame
+      SkinsGame
