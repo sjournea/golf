@@ -195,6 +195,28 @@ fall_river_men_holes = [
   {'par': 5, 'handicap':  10},
 ]
 
+monarch_bay_men_holes = [
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  17},
+  {'par': 5, 'handicap':  11},
+  {'par': 4, 'handicap':  13},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':   1},
+
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':   6},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':  16},
+  {'par': 4, 'handicap':   8},
+  {'par': 5, 'handicap':   2},
+  {'par': 3, 'handicap':  10},
+  {'par': 4, 'handicap':  14},
+]
+
 sj_muni_tees = [
   {'gender': 'mens', 'name': 'Gold',     'rating': 71.9, 'slope': 123 },
   {'gender': 'mens', 'name': 'Black',    'rating': 70.1, 'slope': 118 },
@@ -257,6 +279,17 @@ fall_river_tees = [
   {'gender': 'mens', 'name': 'White', 'rating': 70.9, 'slope': 122 },
 ]
 
+monarch_bay_tees = [
+  {'gender': 'mens',   'name': 'Professional', 'rating': 73.9, 'slope': 126 },
+  {'gender': 'mens',   'name': 'Tournament',   'rating': 73.5, 'slope': 125 },
+  {'gender': 'mens',   'name': 'Championship', 'rating': 71.8, 'slope': 122 },
+  {'gender': 'mens',   'name': 'Member',       'rating': 69.1, 'slope': 118 },
+  {'gender': 'mens',   'name': 'Resort',       'rating': 66.6, 'slope': 112 },
+  {'gender': 'womens', 'name': 'Member',       'rating': 74.4, 'slope': 128 },
+  {'gender': 'womens', 'name': 'Resort',       'rating': 70.8, 'slope': 119 },
+  {'gender': 'womens', 'name': 'Forward',      'rating': 69.2, 'slope': 115 },
+]
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -267,6 +300,7 @@ GolfCourses = (
   {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
+  {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
 )
 
 DBGolfCourses = (
@@ -279,6 +313,7 @@ DBGolfCourses = (
   {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
+  {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
 )
 
 GolfPlayers = (
