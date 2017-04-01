@@ -1,0 +1,34 @@
+Golf game TODO 3/30/17
+  Python prototype
+    More Games
+      Match
+      Skins
+      SixPoint - 3 player game
+      EightyOne - 3 player game
+      Nassau
+  * AddPlayer
+  * Mongo DB working
+    - Remove database from GolfGame class for now
+    - GolfCourse, GolfPlayers, GolfRound (no games)
+    
+  iPhone - Swift
+    * move python into folder, including venv.
+      create folder structure.
+      platforms
+        shared
+        python
+          venv
+        swift
+          xcode
+     
+     
+Completed:
+  * Abstract GolfGame class
+    * game class contains ALL information for game
+      - players (GolfScore), subset or all from round players
+      - gross/net/extras
+      - course handicap
+    * Games
+      GrossGame
+      NetGame
+      SkinsGame

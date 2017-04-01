@@ -44,6 +44,7 @@ class GolfMenu(Menu):
 
     self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gag', '<game>',        'Add game to Round of Golf',         self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
     self.addMenuItem( MenuItem( 'gps', '<gross|net>',   'Print Round Scorecard',             self._roundScorecard))
     self.addMenuItem( MenuItem( 'gpl', '<gross|net>',   'Print Round Leaderboard',           self._roundLeaderboard))
@@ -170,6 +171,15 @@ class GolfMenu(Menu):
     self.golf_round.addPlayer(player, tee_name=self.lstCmd[2])
     print self.golf_round
 
+  def _roundAddGame(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game = self.lstCmd[1]
+    self.golf_round.addGame(game)
+    print self.golf_round
+
   def _roundStart(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
@@ -187,23 +197,25 @@ class GolfMenu(Menu):
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
-    dct = self.golf_round.getScorecard(game)
-    print dct['header']
-    print dct['hdr']
-    print dct['par']
-    print dct['hdcp']
-    for player in dct[game]:
-      print player['line']
+    lstGames = self.lstCmd[1:]
+    for game in lstGames:
+      dct = self.golf_round.getScorecard(game)
+      print dct['header']
+      print dct['hdr']
+      print dct['par']
+      print dct['hdcp']
+      for player in dct[game]:
+        print player['line']
 
   def _roundLeaderboard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    game = self.lstCmd[1] if len(self.lstCmd) > 1 else 'gross'
-    dctLeaderboard = self.golf_round.getLeaderboard(game)
-    print dctLeaderboard['hdr']
-    for dct in dctLeaderboard['leaderboard']:
-      print dct['line']
+    lstGames = self.lstCmd[1:]
+    for game in lstGames:
+      dctLeaderboard = self.golf_round.getLeaderboard(game)
+      print dctLeaderboard['hdr']
+      for dct in dctLeaderboard['leaderboard']:
+        print dct['line']
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'
