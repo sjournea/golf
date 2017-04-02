@@ -87,9 +87,7 @@ class GolfRound(object):
   
   def getScorecard(self, game, **kwargs):
     """Scorecard for all games."""
-    dct_scorecard = self.course.getScorecard()
-    dct_scorecard.update(self.getGame(game).getScorecard(**kwargs))
-    return dct_scorecard
+    return self.getGame(game).getScorecard(**kwargs)
   
   def getLeaderboard(self, game, **kwargs):
     """Leaderboard for all games."""

@@ -42,7 +42,7 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
     self.addMenuItem( MenuItem( 'rob', '',            'Round leaderboard'  ,               self._roundGetLeaderboard))
 
-    self.addMenuItem( MenuItem( 'gcr', '',              'Create a Round of Golf',            self._roundCreate))
+    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>', 'Create a Round of Golf',    self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
     self.addMenuItem( MenuItem( 'gag', '<game>',        'Add game to Round of Golf',         self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
@@ -154,10 +154,13 @@ class GolfMenu(Menu):
       print dct['line']
 
   def _roundCreate(self):
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    course_name = self.lstCmd[1]
+    dtPlay = datetime.datetime.strptime(self.lstCmd[2], "%Y-%m-%d")
     self.golf_round = GolfRound()
-    self.golf_round.course = self.gdb.courseFind('Canyon Lakes')
-    self.golf_round.date = datetime.datetime(2017, 3, 23)
-    self.golf_round.tee = self.golf_round.course.getTee('Blue')
+    self.golf_round.course = self.gdb.courseFind(course_name)
+    self.golf_round.date = dtPlay
     print self.golf_round
 
   def _roundAddPlayer(self):
@@ -168,7 +171,8 @@ class GolfMenu(Menu):
     player = self.gdb.playerFind(email=self.lstCmd[1])
     if player is None:
       raise InputException( 'Player "%s" not found in database.' % self.lstCmd[0] )
-    self.golf_round.addPlayer(player, tee_name=self.lstCmd[2])
+    tee = self.lstCmd[2]
+    self.golf_round.addPlayer(player, tee)
     print self.golf_round
 
   def _roundAddGame(self):

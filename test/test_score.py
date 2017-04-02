@@ -10,8 +10,6 @@ class GolfScoreTest(unittest.TestCase):
     # check default parameters
     score = GolfScore()
     self.assertIsInstance(score.player, GolfPlayer)
-    self.assertEqual(score.gross, {})
-    self.assertEqual(score.net, {})
     self.assertEqual(score.tee, None)
     self.assertEqual(score.course_handicap, 0)
 
@@ -19,7 +17,6 @@ class GolfScoreTest(unittest.TestCase):
     for dct in CanyonLake_Players:
       score = GolfScore(dct=dct)
       self.assertEqual(dct['player'], score.player.toDict())
-      self.assertEqual(dct['gross'], score.gross)
       
   def test_calc_handicap(self):
     for dct in CanyonLake_Players:
