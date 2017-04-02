@@ -67,12 +67,13 @@ class GolfCourse(object):
     else:
       raise GolfException('course getTee() fail - name:{} gender:{} not found'.format(name, gender)) 
   
-  def getScorecard(self):
+  def getScorecard(self, **kwargs):
     """Return hdr, par and hdcp lines for scorecard."""
     self.setStats()
     hdr  = 'Hole  '
     par  = 'Par   '
     hdcp = 'Hdcp  '
+    ESC = kwargs.get('ESC', False)
     for n,hole in enumerate(self.holes[:9]):
       hdr += ' {:>3}'.format(n+1)
       par += ' {:>3}'.format(hole.par)
@@ -86,6 +87,9 @@ class GolfCourse(object):
       hdcp += '{:>3} '.format(hole.handicap)
     hdr += '  In  Tot'
     par += '{:>4} {:>4}'.format(self.in_tot, self.total)
+    if ESC:
+      hdr += '  ESC'
+      
     return { 'hdr': hdr,
              'par': par,
              'hdcp': hdcp,
@@ -112,6 +116,28 @@ class GolfCourse(object):
             bumps[n] += 1
             break
     return bumps
+
+  def calcESC(self, hole_index, gross, course_handicap):
+    """Determine ESC post value for this gross score."""
+    esc = gross
+    if course_handicap < 10:
+      # Max double bogey
+      max_gross = self.holes[hole_index].par + 2
+      esc = gross if gross < max_gross else max_gross
+    elif course_handicap < 20:
+      # Max value of 7
+      esc = gross if gross < 7 else 7
+    elif course_handicap < 30:
+      # Max value of 8
+      esc = gross if gross < 8 else 8
+    elif course_handicap < 40:
+      # Max value of 9
+      esc = gross if gross < 9 else 9
+    else:
+      # course_handicap >= 40
+      # Max value of 10
+      esc = gross if gross < 10 else 10
+    return esc
 
   def __str__(self):
     return '{:<20} - {} holes - {} tees'.format(self.name, len(self.holes), len(

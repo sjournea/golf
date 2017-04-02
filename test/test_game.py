@@ -87,6 +87,7 @@ class GolfGrossGameTest(unittest.TestCase):
       self.assertEquals(pl.gross['in'], 0)
       self.assertEquals(pl.gross['out'], 0)
       self.assertEquals(pl.gross['total'], 0)
+      self.assertEquals(pl.gross['esc'], 0)
       
   def test_game_add_score(self):
     g = GrossGame(self.gr, self.gr.scores)
@@ -189,10 +190,6 @@ class GolfSkinsGameTest(unittest.TestCase):
     g = SkinsGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl.gross['score'], 18*[0])
-      self.assertEquals(pl.gross['in'], 0)
-      self.assertEquals(pl.gross['out'], 0)
-      self.assertEquals(pl.gross['total'], 0)
       self.assertEquals(pl.net['score'], 18*[0])
       self.assertEquals(pl.net['in'], 0)
       self.assertEquals(pl.net['out'], 0)

@@ -21,9 +21,11 @@ class GolfGame(object):
     pass
 
   def getScorecard(self, **kwargs):
+    """Return scorecard dictionary for this game."""
     pass
   
   def getLeaderboard(self, **kwargs):
+    """Return leaderboard dictionary for this game."""
     pass
 
   def complete(self):
@@ -42,6 +44,7 @@ class GrossGame(GolfGame):
         'in' : 0,
         'out':  0,
         'total': 0,
+        'esc': 0,
       }
 
   def addScore(self, index, lstGross):
@@ -57,6 +60,8 @@ class GrossGame(GolfGame):
       gs.gross['out'] = sum(gs.gross['score'][:9])
       gs.gross['in'] = sum(gs.gross['score'][9:])
       gs.gross['total'] = gs.gross['in'] + gs.gross['out']
+      # update ESC score
+      gs.gross['esc'] += self.golf_round.course.calcESC(index, gross, gs.course_handicap)
 
   def complete(self):
     """a game is complete."""
@@ -64,7 +69,8 @@ class GrossGame(GolfGame):
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    dct_scorecard = {'header': '{0:*^93}'.format(' Gross ')}
+    dct_scorecard = self.golf_round.course.getScorecard(ESC=1)
+    dct_scorecard['header'] = '{0:*^98}'.format(' Gross ')
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -74,11 +80,12 @@ class GrossGame(GolfGame):
       line += ' {:>4}'.format(score.gross['out'])
       for gross in score.gross['score'][9:]:
         line += ' {:>3}'.format(gross) if gross > 0 else '    '
-      line += ' {:>4} {:>4}'.format(score.gross['in'], score.gross['total'])
+      line += ' {:>4} {:>4} {:>4}'.format(score.gross['in'], score.gross['total'], score.gross['esc'])
       dct['line'] = line
       dct['in'] = score.gross['in']
       dct['out'] = score.gross['out']
       dct['total'] = score.gross['total']
+      dct['esc'] = score.gross['esc']
       lstPlayers.append(dct)
     dct_scorecard['gross'] = lstPlayers
     return dct_scorecard
@@ -147,7 +154,8 @@ class NetGame(GolfGame):
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    dct_scorecard = {'header': '{0:*^93}'.format(' Net ')}
+    dct_scorecard = self.golf_round.course.getScorecard()
+    dct_scorecard['header'] = '{0:*^93}'.format(' Net ')
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -206,12 +214,6 @@ class SkinsGame(GolfGame):
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for pl in self.scores:
       # gross start
-      pl.gross = {
-        'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
-        'in' : 0,
-        'out':  0,
-        'total': 0,
-      }
       # net start
       pl.net = {
         'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
@@ -232,11 +234,6 @@ class SkinsGame(GolfGame):
   def addScore(self, index, lstGross):
     """add scores for a hole."""
     for gs, gross in zip(self.scores, lstGross):
-      # update gross
-      gs.gross['score'][index] = gross
-      gs.gross['out'] = sum(gs.gross['score'][:9])
-      gs.gross['in'] = sum(gs.gross['score'][9:])
-      gs.gross['total'] = gs.gross['in'] + gs.gross['out']
       # update net
       gs.net['score'][index] = gross - gs.net['bump'][index]
       gs.net['out'] = sum(gs.net['score'][:9])
@@ -263,7 +260,8 @@ class SkinsGame(GolfGame):
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    dct_scorecard = {'header': '{0:*^93}'.format(' Skins ') }
+    dct_scorecard = self.golf_round.course.getScorecard()
+    dct_scorecard['header'] = '{0:*^93}'.format(' Skins ')
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -307,7 +305,7 @@ class SkinsGame(GolfGame):
       else:
         n += 1
       score_dct['thru'] = n
-      score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
+      score_dct['line'] = '{:<3} {:<6} {:>+5} {:>4}'.format(
         score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
       board.append(score_dct)
     dct['leaderboard'] = board

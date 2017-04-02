@@ -158,3 +158,84 @@ class GolfCourseTestCase(unittest.TestCase):
       self.assertListEqual(bumps, expected_bumps, 'handicap == {} fail'.format(handicap))
       expected_bumps[handicap_index[handicap % 18]] += 1
     
+  def test_calcESC(self):
+    fall_river_men_holes = [
+      {'par': 4, 'handicap':  15},
+      {'par': 4, 'handicap':   5},
+      {'par': 5, 'handicap':   1},
+      {'par': 3, 'handicap':  13},
+      {'par': 4, 'handicap':  17},
+      {'par': 4, 'handicap':   3},
+      {'par': 4, 'handicap':   7},
+      {'par': 3, 'handicap':  11},
+      {'par': 5, 'handicap':   9},
+    
+      {'par': 4, 'handicap':  12},
+      {'par': 3, 'handicap':  14},
+      {'par': 4, 'handicap':   8},
+      {'par': 4, 'handicap':   6},
+      {'par': 5, 'handicap':   2},
+      {'par': 3, 'handicap':  16},
+      {'par': 4, 'handicap':   4},
+      {'par': 4, 'handicap':  18},
+      {'par': 5, 'handicap':  10},
+    ]
+    # build handicap list
+    course_handicaps = [n for n in range(45)]
+    gross_scores = [n for n in range(2, 15)]
+
+    course = GolfCourse()
+    course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
+    for index,hole in enumerate(course.holes):
+      for course_handicap in course_handicaps:
+        for gross in gross_scores:
+          esc = course.calcESC(index, gross, course_handicap)
+          if course_handicap < 10:
+            exp_esc = gross if gross < hole.par+2 else hole.par+2
+          elif course_handicap < 20:
+            exp_esc = gross if gross < 7 else 7
+          elif course_handicap < 30:
+            exp_esc = gross if gross < 8 else 8
+          elif course_handicap < 40:
+            exp_esc = gross if gross < 9 else 9
+          else: # course_handicap >= 40
+            exp_esc = gross if gross < 10 else 10
+          self.assertEqual(esc, exp_esc, 'hdcp:{} hole:{} par:{} gross:{} esc:{} exp_esc:{}'.format(
+              course_handicap, index+1, hole.par, gross, esc, exp_esc))
+            
+  def test_getScorecard(self):
+    fall_river_men_holes = [
+      {'par': 4, 'handicap':  15},
+      {'par': 4, 'handicap':   5},
+      {'par': 5, 'handicap':   1},
+      {'par': 3, 'handicap':  13},
+      {'par': 4, 'handicap':  17},
+      {'par': 4, 'handicap':   3},
+      {'par': 4, 'handicap':   7},
+      {'par': 3, 'handicap':  11},
+      {'par': 5, 'handicap':   9},
+    
+      {'par': 4, 'handicap':  12},
+      {'par': 3, 'handicap':  14},
+      {'par': 4, 'handicap':   8},
+      {'par': 4, 'handicap':   6},
+      {'par': 5, 'handicap':   2},
+      {'par': 3, 'handicap':  16},
+      {'par': 4, 'handicap':   4},
+      {'par': 4, 'handicap':  18},
+      {'par': 5, 'handicap':  10},
+    ]
+    course = GolfCourse()
+    course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
+    
+    dct = course.getScorecard()
+    self.assertEqual(len(dct), 3)
+    for key in ['hdr', 'par', 'hdcp']:
+      self.assertIn(key, dct)
+    self.assertNotIn('ESC', dct['hdr'])
+      
+    dct = course.getScorecard(ESC=1)
+    self.assertEqual(len(dct), 3)
+    for key in ['hdr', 'par', 'hdcp']:
+      self.assertIn(key, dct)
+    self.assertIn('ESC', dct['hdr'])
