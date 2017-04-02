@@ -4,7 +4,7 @@ import datetime
 from golf_db.round import GolfRound
 from golf_db.test_data import GolfRounds,GolfCourses, GolfPlayers
 from golf_db.db import GolfDB
-from golf_db.game import SkinsGame
+from golf_db.game_skins import SkinsGame
 from golf_db.game_gross import GrossGame
 from golf_db.game_net import NetGame
 

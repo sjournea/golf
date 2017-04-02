@@ -2,7 +2,7 @@ import unittest
 
 from golf_db.game_factory import GolfGameFactory
 from golf_db.exceptions import GolfException
-from golf_db.game import SkinsGame
+from golf_db.game_skins import SkinsGame
 from golf_db.game_net import NetGame
 from golf_db.game_gross import GrossGame
 

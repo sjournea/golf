@@ -2,7 +2,7 @@
 from .exceptions import GolfException
 from .game_gross import GrossGame
 from .game_net import NetGame
-from .game import SkinsGame
+from .game_skins import SkinsGame
 
 dctGames = { 
   'skins': SkinsGame,
