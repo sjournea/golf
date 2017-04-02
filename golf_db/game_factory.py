@@ -1,7 +1,7 @@
 """game_factory.py -- factory for games."""
 from .exceptions import GolfException
 from .game_gross import GrossGame
-from .game import NetGame
+from .game_net import NetGame
 from .game import SkinsGame
 
 dctGames = { 
