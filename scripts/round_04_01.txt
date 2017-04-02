@@ -1,84 +1,101 @@
 # create a round and add players scores
-gcr Canyon 2017-03-04
-gad sjournea Blue
-gad snake Blue
-gad spanky Blue
-gad reload Blue
+gcr Monarch 2017-04-01
+gad sjournea Tournament
+gad snake Tournament
+gad spanky Tournament
+gad reload Tournament
 gag gross
 gag net
 gag skins
 gst
 gps gross net skins
 gpl gross net skins
+pause
 # hole 1
-gac 1 4 5 6 5
+gac 1 5 7 5 4
 gps gross net skins
 gpl gross net skins
+pause
 # hole 2
-gac 2 8 6 5 8
+gac 2 6 6 6 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 3
-gac 3 3 4 6 4
+gac 3 5 5 8 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 4
-gac 4 6 5 6 7
+gac 4 4 4 4 4
 gps gross net skins
 gpl gross net skins
+pause
 # hole 5
-gac 5 3 5 4 4
+gac 5 6 7 5 7
 gps gross net skins
 gpl gross net skins
 # hole 6
-gac 6 5 4 4 4
+gac 6 7 6 6 6
 gps gross net skins
 gpl gross net skins
+pause
 # hole 7
-gac 7 5 6 6 7
+gac 7 4 4 7 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 8
-gac 8 6 5 4 6
+gac 8 9 5 6 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 9
-gac 9 6 5 6 7
+gac 9 5 5 5 5
 gps gross net skins
 gpl gross net skins
+pause enable
 # hole 10
-gac 10 5 3 3 4
+gac 10 3 5 2 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 11
-gac 11 4 4 5 6
+gac 11 5 6 5 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 12
-gac 12 6 4 3 6
+gac 12 9 8 9 8
 gps gross net skins
 gpl gross net skins
+pause
 # hole 13
-gac 13 4 3 3 4
+gac 13 7 5 6 6
 gps gross net skins
 gpl gross net skins
+pause
 # hole 14
-gac 14 8 5 6 8
+gac 14 4 5 5 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 15
-gac 15 4 4 4 4
+gac 15 6 5 5 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 16
-gac 16 6 5 5 6
+gac 16 8 7 7 7
 gps gross net skins
 gpl gross net skins
+pause
 # hole 17
-gac 17 7 6 6 6
+gac 17 4 4 4 5
 gps gross net skins
 gpl gross net skins
+pause
 # hole 18
-gac 18 4 6 5 6
+gac 18 8 7 5 5
 gps gross net skins
 gpl gross net skins
