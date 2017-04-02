@@ -4,7 +4,8 @@ import datetime
 from golf_db.round import GolfRound
 from golf_db.test_data import GolfRounds,GolfCourses, GolfPlayers
 from golf_db.db import GolfDB
-from golf_db.game import GrossGame, NetGame, SkinsGame
+from golf_db.game import NetGame, SkinsGame
+from golf_db.game_gross import GrossGame
 
 class GolfRoundTest(unittest.TestCase):
 
