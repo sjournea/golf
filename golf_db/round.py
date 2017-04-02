@@ -1,7 +1,7 @@
 from .course import GolfCourse
 from .score import GolfScore
 from .exceptions import GolfException
-from .game import GolfGameFactory
+from .game_factory import GolfGameFactory
 from util.tl_logger import TLLog
 
 log = TLLog.getLogger('round')
