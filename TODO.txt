@@ -33,3 +33,7 @@ Completed:
       - NetGame
       - SkinsGame
     * Add ESC to GrossGame
+    * split GolfGames into separate modules.
+      game_gross.py, game_net.py, game_skins.py
+    * Add exceptions for GolfGame abstract base methods
+      Or implement ABCMeta in python.
