@@ -337,10 +337,10 @@ DBGolfPlayers = (
 )
 
 TestGolfPlayers = [
-  {'email':'jlennon@beatles.com',   'first_name': 'John',   'last_name': 'Lennon',    'nick_name': 'JL', 'handicap': 20.4, 'gender': 'man'},
-  {'email':'pmccartn@beatles.com',  'first_name': 'Paul',   'last_name': 'McCartney', 'nick_name': 'PM', 'handicap': 17.9, 'gender': 'man'},
-  {'email':'gharriso@beatles.com',  'first_name': 'George', 'last_name': 'Harrison',  'nick_name': 'GH', 'handicap': 17.2, 'gender': 'man'},
-  {'email':'rstarr@beatles.com',    'first_name': 'Ringo',  'last_name': 'Starr',     'nick_name': 'RS', 'handicap': 22.0, 'gender': 'man'},
+  {'email':'jlennon@beatles.com',   'first_name': 'John',   'last_name': 'Lennon',    'nick_name': 'JL', 'handicap': 15, 'gender': 'man'},
+  {'email':'pmccartn@beatles.com',  'first_name': 'Paul',   'last_name': 'McCartney', 'nick_name': 'PM', 'handicap': 15, 'gender': 'man'},
+  {'email':'gharriso@beatles.com',  'first_name': 'George', 'last_name': 'Harrison',  'nick_name': 'GH', 'handicap': 15, 'gender': 'man'},
+  {'email':'rstarr@beatles.com',    'first_name': 'Ringo',  'last_name': 'Starr',     'nick_name': 'RS', 'handicap': 15, 'gender': 'man'},
 ]
 
 CanyonLake_Players = [
