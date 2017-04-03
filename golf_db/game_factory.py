@@ -3,11 +3,13 @@ from .exceptions import GolfException
 from .game_gross import GrossGame
 from .game_net import NetGame
 from .game_skins import SkinsGame
+from .game_six_point import SixPointGame
 
 dctGames = { 
   'skins': SkinsGame,
   'gross': GrossGame,
   'net': NetGame,
+  'six_point': SixPointGame, 
 }
 
 def GolfGameFactory(game):
