@@ -14,6 +14,13 @@ class SixPointGame(GolfGame):
     1,1,2  3,3,0
     1,1,1  2,2,2
   """
+  POINTS_WIN_1ST = 4
+  POINTS_TIE_1ST = 3
+  POINTS_WIN_2ND = 2
+  POINTS_TIE_2ND = 1
+  POINTS_ALL_TIE = 2
+  POINTS_3RD     = 0
+  
   def validate(self):
     if len(self.scores) != 3:
       raise GolfException('Six point game must have 3 players, {} found.'.format(len(self.scores)))
@@ -61,20 +68,22 @@ class SixPointGame(GolfGame):
     if rank.count(1) == 3:
       # 2,2,2
       for lst in net_scores:
-        lst[3] = 2
+        lst[3] = self.POINTS_ALL_TIE
     elif rank.count(1) == 2:
       # 3,3,0
       for lst in net_scores[:2]:
-        lst[3] = 3
+        lst[3] = self.POINTS_TIE_1ST
+      net_scores[2][3] = self.POINTS_3RD
     else:
       # 1 winner
-      net_scores[0][3] = 4
+      net_scores[0][3] = self.POINTS_WIN_1ST
       # tie for 2nd
       if rank.count(2) == 2:
         for lst in net_scores[1:]:
-          lst[3] = 1
+          lst[3] = self.POINTS_TIE_2ND
       else:
-        net_scores[1][3] = 2
+        net_scores[1][3] = self.POINTS_WIN_2ND
+        net_scores[2][3] = self.POINTS_3RD
     # put points
     for lst,sc in zip(net_scores, self.scores):
       #print lst
