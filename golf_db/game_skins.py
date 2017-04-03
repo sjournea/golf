@@ -25,6 +25,8 @@ class SkinsGame(GolfGame):
      }
     # skins carryover set to 1
     self.carryover = 1
+    self.dctScorecard['header'] = '{0:*^93}'.format(' Skins ')
+    self.dctLeaderboard['hdr'] = 'Pos Name   Skins Thru'
 
   def addScore(self, index, lstGross):
     """add scores for a hole."""
@@ -55,8 +57,6 @@ class SkinsGame(GolfGame):
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    dct_scorecard = self.golf_round.course.getScorecard()
-    dct_scorecard['header'] = '{0:*^93}'.format(' Skins ')
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -75,11 +75,10 @@ class SkinsGame(GolfGame):
       dct['out'] = skins['out']
       dct['total'] = skins['total']
       lstPlayers.append(dct)
-    dct_scorecard['skins'] = lstPlayers
-    return dct_scorecard
+    self.dctScorecard['skins'] = lstPlayers
+    return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
-    dct = { 'hdr': 'Pos Name   Skins Thru' }
     board = []
     scores = sorted(self.scores, key=lambda score: score.skins['total'], reverse=True)
     pos = 1
@@ -103,6 +102,6 @@ class SkinsGame(GolfGame):
       score_dct['line'] = '{:<3} {:<6} {:>+5} {:>4}'.format(
         score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
       board.append(score_dct)
-    dct['leaderboard'] = board
-    return dct 
+    self.dctLeaderboard['leaderboard'] = board
+    return self.dctLeaderboard
 

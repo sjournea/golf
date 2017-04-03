@@ -15,7 +15,11 @@ class GrossGame(GolfGame):
         'total': 0,
         'esc': 0,
       }
-
+    # add header to scorecard
+    self.dctScorecard['course'] = self.golf_round.course.getScorecard(ESC=1)
+    self.dctScorecard['header'] = '{0:*^98}'.format(' Gross ')
+    self.dctLeaderboard['hdr'] = 'Pos Name   Gross Thru'
+  
   def addScore(self, index, lstGross):
     """add scores for a hole.
     
@@ -34,8 +38,6 @@ class GrossGame(GolfGame):
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    dct_scorecard = self.golf_round.course.getScorecard(ESC=1)
-    dct_scorecard['header'] = '{0:*^98}'.format(' Gross ')
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -52,12 +54,11 @@ class GrossGame(GolfGame):
       dct['total'] = score.gross['total']
       dct['esc'] = score.gross['esc']
       lstPlayers.append(dct)
-    dct_scorecard['gross'] = lstPlayers
-    return dct_scorecard
+    self.dctScorecard['gross'] = lstPlayers
+    return self.dctScorecard
 
   def getLeaderboard(self, **kwargs):
     """Scorecard with all players."""
-    dct = { 'hdr': 'Pos Name   Gross Thru' }
     board = []
     scores = sorted(self.scores, key=lambda score: score.gross['total'])
     pos = 1
@@ -80,5 +81,5 @@ class GrossGame(GolfGame):
       score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
         score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
       board.append(score_dct)
-    dct['leaderboard'] = board
-    return dct 
+    self.dctLeaderboard['leaderboard'] = board
+    return self.dctLeaderboard

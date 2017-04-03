@@ -1,15 +1,18 @@
 """ game.py - GolfGame class."""
 from abc import ABCMeta, abstractmethod
 from .exceptions import GolfException
+from .score import GolfScore
 
 class GolfGame(object):
   """Base class for all golf games."""
   __metaclass__=ABCMeta
   def __init__(self, golf_round, scores, options=None):
     self.golf_round = golf_round
-    self.scores = scores
+    self.scores = [GolfScore(dct=sc.toDict()) for sc in scores]
     self.options = options if options else {}
-
+    self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
+    self.dctLeaderboard = {}
+    
   def validate(self):
     """Validate a game."""
     pass
