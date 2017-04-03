@@ -9,6 +9,10 @@ from golf_db.game_gross import GrossGame
 from golf_db.game_net import NetGame
 
 class GolfRoundTest(unittest.TestCase):
+  @classmethod
+  def setUp(cls):
+    cls.db = GolfDB(database='golf_round_test')
+    cls.db.create()
 
   def test_init_empty(self):
     # check default parameters
@@ -27,7 +31,12 @@ class GolfRoundTest(unittest.TestCase):
       
   def test_add_games(self):
     # check default parameters
+    course_name = 'Canyon Lakes'
+    tee_name = 'Blue'
+    date_of_round = datetime.datetime(2017, 3, 23)
     r = GolfRound()
+    r.course = self.db.courseFind(course_name)
+    r.date = date_of_round
     skins = r.addGame('skins')
     gross = r.addGame('gross')
     self.assertEqual(len(r.games), 2)

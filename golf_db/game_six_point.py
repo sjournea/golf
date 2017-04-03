@@ -20,6 +20,8 @@ class SixPointGame(GolfGame):
   POINTS_TIE_2ND = 1
   POINTS_ALL_TIE = 2
   POINTS_3RD     = 0
+  TITLE = 'Six Point'  
+  NAME = 'six_point'
   
   def validate(self):
     if len(self.scores) != 3:
@@ -44,7 +46,9 @@ class SixPointGame(GolfGame):
         'in': 0,
         'out': 0,
         'total': 0,
-     }
+      }
+    self.dctScorecard['header'] = '{0:*^93}'.format(' {} '.format(self.TITLE))
+    self.dctLeaderboard['hdr'] = 'Pos Name  Points Thru'
 
   def addScore(self, index, lstGross):
     """add scores for a hole."""
@@ -95,8 +99,6 @@ class SixPointGame(GolfGame):
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    dct_scorecard = self.golf_round.course.getScorecard()
-    dct_scorecard['header'] = '{0:*^93}'.format(' Six Points ')
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
@@ -113,11 +115,10 @@ class SixPointGame(GolfGame):
       dct['out'] = points['out']
       dct['total'] = points['total']
       lstPlayers.append(dct)
-    dct_scorecard['six_point'] = lstPlayers
-    return dct_scorecard
+    self.dctScorecard[self.NAME] = lstPlayers
+    return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
-    dct = { 'hdr': 'Pos Name  Points Thru' }
     board = []
     scores = sorted(self.scores, key=lambda score: score.points['total'], reverse=True)
     pos = 1
@@ -141,6 +142,6 @@ class SixPointGame(GolfGame):
       score_dct['line'] = '{:<3} {:<6} {:>+5} {:>4}'.format(
         score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
       board.append(score_dct)
-    dct['leaderboard'] = board
-    return dct 
+    self.dctLeaderboard['leaderboard'] = board
+    return self.dctLeaderboard
 

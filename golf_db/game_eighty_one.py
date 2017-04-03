@@ -20,9 +20,5 @@ class EightyOneGame(SixPointGame):
   POINTS_TIE_2ND = 2
   POINTS_ALL_TIE = 3
   POINTS_3RD     = 1
-
-  def getScorecard(self, **kwargs):
-    dct = super(EightyOneGame, self).getScorecard(**kwargs)
-    dct['header'] = '{0:*^93}'.format(' Eighty One ')
-    dct['eighty_one'] = dct['six_point']
-    return dct
+  TITLE = 'Eighty One'
+  NAME = 'eighty_one'

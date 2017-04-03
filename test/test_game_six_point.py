@@ -117,9 +117,7 @@ class GolfSixPointGameTest(unittest.TestCase):
     g = SixPointGame(self.gr, self.gr.scores)
     g.start()
     dct = g.getScorecard()
-    self.assertIn('hdr', dct)
-    self.assertIn('par', dct)
-    self.assertIn('hdcp', dct)
+    self.assertIn('course', dct)
     self.assertIn('header', dct)
     self.assertIn('six_point', dct)
     players = dct['six_point']
@@ -131,9 +129,7 @@ class GolfSixPointGameTest(unittest.TestCase):
       
     g.addScore(0, [4,4,4])
     dct = g.getScorecard()
-    self.assertIn('hdr', dct)
-    self.assertIn('par', dct)
-    self.assertIn('hdcp', dct)
+    self.assertIn('course', dct)
     self.assertIn('header', dct)
     self.assertIn('six_point', dct)
     for player in dct['six_point']:
@@ -144,9 +140,7 @@ class GolfSixPointGameTest(unittest.TestCase):
 
     g.addScore(1, [3,4,4])
     dct = g.getScorecard()
-    self.assertIn('hdr', dct)
-    self.assertIn('par', dct)
-    self.assertIn('hdcp', dct)
+    self.assertIn('course', dct)
     self.assertIn('header', dct)
     self.assertIn('six_point', dct)
     for player in dct['six_point']:

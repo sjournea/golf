@@ -205,9 +205,9 @@ class GolfMenu(Menu):
     for game in lstGames:
       dct = self.golf_round.getScorecard(game)
       print dct['header']
-      print dct['hdr']
-      print dct['par']
-      print dct['hdcp']
+      print dct['course']['hdr']
+      print dct['course']['par']
+      print dct['course']['hdcp']
       for player in dct[game]:
         print player['line']
 
