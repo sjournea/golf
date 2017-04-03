@@ -6,19 +6,20 @@ gad spanky Blue
 gag gross
 gag net
 gag six_point
+gag eighty_one
 gst
-gps gross net six_point
-gpl gross net six_point 
+gps gross net six_point eighty_one
+gpl gross net six_point eighty_one
 pause
 # hole 1
 gac 1 7 6 6
-gps gross net six_point
-gpl gross net six_point
+gps gross net six_point eighty_one
+gpl gross net six_point eighty_one
 pause
 # hole 2
 gac 2 7 7 7
-gps gross net six_point
-gpl gross net six_point
+gps gross net six_point eighty_one
+gpl gross net six_point eighty_one
 pause
 # hole 3
 gac 3 4 4 5
@@ -87,7 +88,7 @@ gpl gross net six_point
 pause
 # hole 16
 gac 16 5 6 5
-gps gross net six_point
+gps gross net six_point 
 gpl gross net six_point
 pause
 # hole 17
