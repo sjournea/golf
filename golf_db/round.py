@@ -86,12 +86,16 @@ class GolfRound(object):
     return self.games[game]
   
   def getScorecard(self, game, **kwargs):
-    """Scorecard for all games."""
+    """Scorecard for game."""
     return self.getGame(game).getScorecard(**kwargs)
   
   def getLeaderboard(self, game, **kwargs):
-    """Leaderboard for all games."""
+    """Leaderboard for game."""
     return self.getGame(game).getLeaderboard(**kwargs)
+  
+  def getStatus(self, game, **kwargs):
+    """Staus for game."""
+    return self.getGame(game).getStatus(**kwargs)
   
   def __str__(self):
     return '{} - {:<25} - {:<25} - {}'.format(

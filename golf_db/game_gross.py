@@ -9,7 +9,7 @@ class GrossGame(GolfGame):
     for pl in self.scores:
       # gross start
       pl.gross = {
-        'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
+        'score' : [None for _ in range(len(self.golf_round.course.holes))], 
         'in' : 0,
         'out':  0,
         'total': 0,
@@ -30,8 +30,8 @@ class GrossGame(GolfGame):
     for gs, gross in zip(self.scores, lstGross):
       # update gross
       gs.gross['score'][index] = gross
-      gs.gross['out'] = sum(gs.gross['score'][:9])
-      gs.gross['in'] = sum(gs.gross['score'][9:])
+      gs.gross['out'] = sum([sc for sc in gs.gross['score'][:9] if isinstance(sc, int)])
+      gs.gross['in'] = sum([sc for sc in gs.gross['score'][9:] if isinstance(sc, int)])
       gs.gross['total'] = gs.gross['in'] + gs.gross['out']
       # update ESC score
       gs.gross['esc'] += self.golf_round.course.calcESC(index, gross, gs.course_handicap)
@@ -73,7 +73,7 @@ class GrossGame(GolfGame):
       prev_total = score_dct['total']
       score_dct['pos'] = pos
       for n,gross in enumerate(score.gross['score']):
-        if gross == 0:
+        if gross is None:
           break
       else:
         n += 1
@@ -83,3 +83,23 @@ class GrossGame(GolfGame):
       board.append(score_dct)
     self.dctLeaderboard['leaderboard'] = board
     return self.dctLeaderboard
+
+  def getStatus(self, **kwargs):
+    """Scorecard with all players."""
+    for n,gross in enumerate(self.scores[0].gross['score']):
+      if gross is None:
+        self.dctStatus['next_hole'] = n+1
+        self.dctStatus['par'] = self.golf_round.course.holes[n].par
+        self.dctStatus['handicap'] = self.golf_round.course.holes[n].handicap
+        
+        self.dctStatus['line'] = 'Hole {} Par {} Hdcp {}'.format(
+          self.dctStatus['next_hole'], self.dctStatus['par'], self.dctStatus['handicap'])
+        break
+    else:
+      # round complete
+      self.dctStatus['next_hole'] = None
+      self.dctStatus['par'] = self.golf_round.course.total
+      self.dctStatus['handicap'] = None
+      self.dctStatus['line'] = 'Round complete'
+    
+    return self.dctStatus

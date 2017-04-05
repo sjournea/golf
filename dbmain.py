@@ -46,8 +46,9 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
     self.addMenuItem( MenuItem( 'gag', '<game>',        'Add game to Round of Golf',         self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
-    self.addMenuItem( MenuItem( 'gps', '<gross|net>',   'Print Round Scorecard',             self._roundScorecard))
-    self.addMenuItem( MenuItem( 'gpl', '<gross|net>',   'Print Round Leaderboard',           self._roundLeaderboard))
+    self.addMenuItem( MenuItem( 'gps', '<game>...',     'Print Game Scorecards',             self._roundScorecard))
+    self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',           self._roundLeaderboard))
+    self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Statuss',                self._roundStatus))
     self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
     self.updateHeader()
 
@@ -202,12 +203,13 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
-    for game in lstGames:
+    for n,game in enumerate(lstGames):
       dct = self.golf_round.getScorecard(game)
       print dct['header']
-      print dct['course']['hdr']
-      print dct['course']['par']
-      print dct['course']['hdcp']
+      if n == 0:
+        print dct['course']['hdr']
+        print dct['course']['par']
+        print dct['course']['hdcp']
       for player in dct[game]:
         print player['line']
 
@@ -220,6 +222,14 @@ class GolfMenu(Menu):
       print dctLeaderboard['hdr']
       for dct in dctLeaderboard['leaderboard']:
         print dct['line']
+
+  def _roundStatus(self):
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    lstGames = self.lstCmd[1:]
+    for game in lstGames:
+      dctStatus = self.golf_round.getStatus(game)
+      print dctStatus['line']
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'
