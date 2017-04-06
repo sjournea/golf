@@ -14,7 +14,7 @@ class NetGame(GolfGame):
     for pl in self.scores:
       # net start
       pl.net = {
-        'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
+        'score' : [None for _ in range(len(self.golf_round.course.holes))], 
         'bump': self.golf_round.course.calcBumps(pl.course_handicap - min_handicap),
         'in' : 0,
         'out':  0,
@@ -34,8 +34,8 @@ class NetGame(GolfGame):
     for gs, gross in zip(self.scores, lstGross):
       # update net
       gs.net['score'][index] = gross - gs.net['bump'][index]
-      gs.net['out'] = sum(gs.net['score'][:9])
-      gs.net['in'] = sum(gs.net['score'][9:])
+      gs.net['out'] = sum([sc for sc in gs.net['score'][:9] if isinstance(sc, int)])
+      gs.net['in'] = sum([sc for sc in gs.net['score'][9:] if isinstance(sc, int)])
       gs.net['total'] = gs.net['in'] + gs.net['out']
 
   def getScorecard(self, **kwargs):
@@ -87,3 +87,30 @@ class NetGame(GolfGame):
     self.dctLeaderboard['leaderboard'] = board
     return self.dctLeaderboard
 
+  def getStatus(self, **kwargs):
+    """."""
+    for n,net in enumerate(self.scores[0].net['score']):
+      if net is None:
+        self.dctStatus['next_hole'] = n+1
+        self.dctStatus['par'] = self.golf_round.course.holes[n].par
+        self.dctStatus['handicap'] = self.golf_round.course.holes[n].handicap
+        bumps = []
+        bump_line = []
+        for sc in self.scores:
+          if sc.net['bump'][n] > 0:
+            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+            bumps.append(dct)
+            bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
+        self.dctStatus['bumps'] = bumps
+        self.dctStatus['line'] = 'Hole {} Par {} Hdcp {}'.format(
+          self.dctStatus['next_hole'], self.dctStatus['par'], self.dctStatus['handicap'])
+        if bumps:
+          self.dctStatus['line'] += ' bumps: ' + ','.join(bump_line)
+        break
+    else:
+      # round complete
+      self.dctStatus['next_hole'] = None
+      self.dctStatus['par'] = self.golf_round.course.total
+      self.dctStatus['handicap'] = None
+      self.dctStatus['line'] = 'Round Complete'
+    return self.dctStatus

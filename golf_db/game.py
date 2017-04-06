@@ -12,6 +12,7 @@ class GolfGame(object):
     self.options = options if options else {}
     self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
     self.dctLeaderboard = {}
+    self.dctStatus = {}
     
   def validate(self):
     """Validate a game."""
@@ -35,6 +36,11 @@ class GolfGame(object):
   @abstractmethod
   def getLeaderboard(self, **kwargs):
     """Return leaderboard dictionary for this game."""
+    pass
+
+  @abstractmethod
+  def getStatus(self, **kwargs):
+    """Return simple status for state of game."""
     pass
 
   def complete(self):

@@ -36,7 +36,7 @@ class GolfGrossGameTest(unittest.TestCase):
     g = GrossGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl.gross['score'], 18*[0])
+      self.assertEquals(pl.gross['score'], 18*[None])
       self.assertEquals(pl.gross['in'], 0)
       self.assertEquals(pl.gross['out'], 0)
       self.assertEquals(pl.gross['total'], 0)
@@ -50,16 +50,44 @@ class GolfGrossGameTest(unittest.TestCase):
   def test_game_scorecard(self):
     g = GrossGame(self.gr, self.gr.scores)
     g.start()
-    g.addScore(1, [4,4])
-    dct = g.getScorecard()
-    self.assertIn('header', dct)
-    self.assertIn('gross', dct)
+    for index in range(18):
+      g.addScore(index, [4,4])
+      dct = g.getScorecard()
+      self.assertIn('header', dct)
+      self.assertIn('gross', dct)
 
   def test_game_leaderboard(self):
     g = GrossGame(self.gr, self.gr.scores)
     g.start()
-    g.addScore(1, [4,4])
-    dct = g.getLeaderboard()
-    self.assertIn('hdr', dct)
-    self.assertIn('leaderboard', dct)
+    for index in range(18):
+      g.addScore(index, [4,4])
+      dct = g.getLeaderboard()
+      self.assertIn('hdr', dct)
+      self.assertIn('leaderboard', dct)
 
+  def test_game_status(self):
+    g = GrossGame(self.gr, self.gr.scores)
+    g.start()
+    dct = g.getStatus()
+    self.assertIn('line', dct)
+    self.assertIn('next_hole', dct)
+    self.assertIn('par', dct)
+    self.assertIn('handicap', dct)
+    self.assertEqual(dct['next_hole'], 1)
+    self.assertEqual(dct['par'], self.gr.course.holes[0].par)
+    self.assertEqual(dct['handicap'], self.gr.course.holes[0].handicap)
+    for index in range(18):
+      g.addScore(index, [4,4])
+      dct = g.getStatus()
+      self.assertIn('line', dct)
+      self.assertIn('next_hole', dct)
+      self.assertIn('par', dct)
+      self.assertIn('handicap', dct)
+      if index < 17:
+        self.assertEqual(dct['next_hole'], index+2)
+        self.assertEqual(dct['par'], self.gr.course.holes[index+1].par)
+        self.assertEqual(dct['handicap'], self.gr.course.holes[index+1].handicap)
+      else:
+        self.assertIsNone(dct['next_hole'])
+        self.assertIsNone(dct['handicap'])
+        self.assertEqual(dct['par'], self.gr.course.total)

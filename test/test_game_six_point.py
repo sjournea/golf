@@ -84,7 +84,7 @@ class GolfSixPointGameTest(unittest.TestCase):
     g = SixPointGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl.net['score'], 18*[0])
+      self.assertEquals(pl.net['score'], 18*[None])
       self.assertEquals(pl.net['in'], 0)
       self.assertEquals(pl.net['out'], 0)
       self.assertEquals(pl.net['total'], 0)

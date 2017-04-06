@@ -35,7 +35,7 @@ class SixPointGame(GolfGame):
     for sc in self.scores:
       # net start
       sc.net = {
-        'score' : [0 for _ in range(len(self.golf_round.course.holes))], 
+        'score' : [None for _ in range(len(self.golf_round.course.holes))],
         'bump': self.golf_round.course.calcBumps(sc.course_handicap - min_handicap),
         'in' : 0,
         'out':  0,
@@ -145,3 +145,31 @@ class SixPointGame(GolfGame):
     self.dctLeaderboard['leaderboard'] = board
     return self.dctLeaderboard
 
+  def getStatus(self, **kwargs):
+    for n,net in enumerate(self.scores[0].net['score']):
+      if net is None:
+        self.dctStatus['next_hole'] = n+1
+        self.dctStatus['par'] = self.golf_round.course.holes[n].par
+        self.dctStatus['handicap'] = self.golf_round.course.holes[n].handicap
+        bumps = []
+        bump_line = []
+        for sc in self.scores:
+          if sc.net['bump'][n] > 0:
+            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+            bumps.append(dct)
+            bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
+        self.dctStatus['bumps'] = bumps
+        self.dctStatus['line'] = 'Hole {} Par {} Hdcp {}'.format(
+          self.dctStatus['next_hole'], self.dctStatus['par'], self.dctStatus['handicap'])
+        if bumps:
+          self.dctStatus['line'] += ' Bumps:{}'.format(','.join(bump_line))
+        self.dctStatus['line'] += ' Points:{},{},{}'.format(
+          self.POINTS_WIN_1ST, self.POINTS_WIN_2ND, self.POINTS_3RD)
+        break
+    else:
+      # round complete
+      self.dctStatus['next_hole'] = None
+      self.dctStatus['par'] = self.golf_round.course.total
+      self.dctStatus['handicap'] = None
+      self.dctStatus['line'] = 'Round Complete'
+    return self.dctStatus
