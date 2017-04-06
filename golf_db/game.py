@@ -38,10 +38,11 @@ class GolfGame(object):
     """Return leaderboard dictionary for this game."""
     pass
 
-  #@abstractmethod
+  @abstractmethod
   def getStatus(self, **kwargs):
     """Return simple status for state of game."""
-    return {'line': '** No line **'}
+    pass
+
   def complete(self):
     """Complete a game. Overload for process when a game is complete."""
     pass

@@ -34,7 +34,7 @@ class GolfSkinsGameTest(unittest.TestCase):
     g = SkinsGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl.net['score'], 18*[0])
+      self.assertEquals(pl.net['score'], 18*[None])
       self.assertEquals(pl.net['in'], 0)
       self.assertEquals(pl.net['out'], 0)
       self.assertEquals(pl.net['total'], 0)
@@ -64,3 +64,30 @@ class GolfSkinsGameTest(unittest.TestCase):
     dct = g.getLeaderboard()
     self.assertIn('hdr', dct)
     self.assertIn('leaderboard', dct)
+
+  def test_game_status(self):
+    g = SkinsGame(self.gr, self.gr.scores)
+    g.start()
+    dct = g.getStatus()
+    self.assertIn('line', dct)
+    self.assertIn('next_hole', dct)
+    self.assertIn('par', dct)
+    self.assertIn('handicap', dct)
+    self.assertEqual(dct['next_hole'], 1)
+    self.assertEqual(dct['par'], self.gr.course.holes[0].par)
+    self.assertEqual(dct['handicap'], self.gr.course.holes[0].handicap)
+    for index in range(18):
+      g.addScore(index, [4,4])
+      dct = g.getStatus()
+      self.assertIn('line', dct)
+      self.assertIn('next_hole', dct)
+      self.assertIn('par', dct)
+      self.assertIn('handicap', dct)
+      if index < 17:
+        self.assertEqual(dct['next_hole'], index+2)
+        self.assertEqual(dct['par'], self.gr.course.holes[index+1].par)
+        self.assertEqual(dct['handicap'], self.gr.course.holes[index+1].handicap)
+      else:
+        self.assertIsNone(dct['next_hole'])
+        self.assertIsNone(dct['handicap'])
+        self.assertEqual(dct['par'], self.gr.course.total)

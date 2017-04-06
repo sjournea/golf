@@ -88,7 +88,7 @@ class NetGame(GolfGame):
     return self.dctLeaderboard
 
   def getStatus(self, **kwargs):
-    """Scorecard with all players."""
+    """."""
     for n,net in enumerate(self.scores[0].net['score']):
       if net is None:
         self.dctStatus['next_hole'] = n+1

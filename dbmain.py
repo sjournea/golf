@@ -229,7 +229,7 @@ class GolfMenu(Menu):
     lstGames = self.lstCmd[1:]
     for game in lstGames:
       dctStatus = self.golf_round.getStatus(game)
-      print dctStatus['line']
+      print '{:<10} - {}'.format(game, dctStatus['line'])
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'
