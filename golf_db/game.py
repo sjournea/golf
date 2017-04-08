@@ -5,7 +5,7 @@ from .score import GolfScore
 
 class GolfGame(object):
   """Base class for all golf games."""
-  __metaclass__=ABCMeta
+  __metaclass__ = ABCMeta
   def __init__(self, golf_round, scores, options=None):
     self.golf_round = golf_round
     self.scores = [GolfScore(dct=sc.toDict()) for sc in scores]

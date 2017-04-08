@@ -35,9 +35,6 @@ class GolfSkinsGameTest(unittest.TestCase):
     g.start()
     for pl in g.scores:
       self.assertEquals(pl.net['score'], 18*[None])
-      self.assertEquals(pl.net['in'], 0)
-      self.assertEquals(pl.net['out'], 0)
-      self.assertEquals(pl.net['total'], 0)
       self.assertEquals(pl.skins['skin'], 18*[0])
       self.assertEquals(pl.skins['in'], 0)
       self.assertEquals(pl.skins['out'], 0)
