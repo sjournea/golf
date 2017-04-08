@@ -8,7 +8,7 @@ Golf game TODO 4/7/17
       Nassau
         Press
       Wolf
-   * Add round script generator (or runner).
+-->* Add round script generator (or runner).
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
    * Mongo DB working

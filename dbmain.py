@@ -4,17 +4,18 @@ import datetime
 #import sys
 import logging
 #import ConfigParser
+import os
 import traceback
 import threading
 #import time,datetime,re,os,traceback,pdb
 
-from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds
+from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.round import GolfRound
 from golf_db.db import GolfDB
 from util.db_mongo import MongoDB
-from util.menu import MenuItem, Menu, InputException
+from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
 
 TLLog.config('logs/dbmain.log', defLogLevel=logging.INFO )
@@ -50,6 +51,9 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',           self._roundLeaderboard))
     self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Statuss',                self._roundStatus))
     self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
+
+
+    self.addMenuItem( MenuItem( 'rou', '<games>...',     'Create round',                     self._createRound))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -230,6 +234,36 @@ class GolfMenu(Menu):
     for game in lstGames:
       dctStatus = self.golf_round.getStatus(game)
       print '{:<10} - {}'.format(game, dctStatus['line'])
+
+  def _createRound(self):
+    roundData = RoundsPlayed[0]
+    lstGames = self.lstCmd[1:]
+    output = 'round.txt'
+    with open(output, 'wt') as f:
+      f.write('# create round\n')
+      f.write('gcr {} {}\n'.format(roundData['course'], roundData['date']))
+      f.write('# add players\n')
+      for player,tee in roundData['players']:
+        f.write('gad {} {}\n'.format(player, tee))
+      f.write('# add games\n')
+      for game in lstGames:
+        f.write('gag {}\n'.format(game))
+      f.write('# start all games\n')
+      f.write('gst\n')
+      f.write('# show scorecard, leaderboard and status for all games\n')
+      f.write('gps {}\n'.format(' '.join(lstGames)))
+      f.write('gpl {}\n'.format(' '.join(lstGames)))
+      f.write('gpt {}\n'.format(' '.join(lstGames)))
+      f.write('pause\n')
+      for hole, scores in roundData['scores']:
+        f.write('# hole {}\n'.format(hole))
+        f.write('gac {} {}\n'.format(hole, ' '.join(str(sc) for sc in scores)))
+        f.write('gps {}\n'.format(' '.join(lstGames)))
+        f.write('gpl {}\n'.format(' '.join(lstGames)))
+        f.write('gpt {}\n'.format(' '.join(lstGames)))
+        f.write('pause{}\n'.format(' enable' if hole in [9, 18] else ''))
+    # now run this script
+    self.cmdFile = FileInput(output)
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'

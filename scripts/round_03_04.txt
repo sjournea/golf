@@ -4,9 +4,11 @@ gad sjournea Blue
 gad snake Blue
 gad spanky Blue
 gad reload Blue
+# add games
 gag gross
 gag net
 gag skins
+# start game
 gst
 gps gross net skins
 gpl gross net skins
