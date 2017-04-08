@@ -76,7 +76,7 @@ class NetGame(GolfGame):
       prev_total = score_dct['total']
       score_dct['pos'] = pos
       for n,net in enumerate(score.net['score']):
-        if net == 0:
+        if net == None:
           break
       else:
         n += 1
