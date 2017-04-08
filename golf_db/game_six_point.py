@@ -37,9 +37,6 @@ class SixPointGame(GolfGame):
       sc.net = {
         'score' : [None for _ in range(len(self.golf_round.course.holes))],
         'bump': self.golf_round.course.calcBumps(sc.course_handicap - min_handicap),
-        'in' : 0,
-        'out':  0,
-        'total': 0,
       }
       sc.points = {
         'point': [None for _ in range(len(self.golf_round.course.holes))],
@@ -55,9 +52,6 @@ class SixPointGame(GolfGame):
     # update net values
     for gs, gross in zip(self.scores, lstGross):
       gs.net['score'][index] = gross - gs.net['bump'][index]
-      gs.net['out'] = sum([score for score in gs.net['score'][:9] if isinstance(score, int)])
-      gs.net['in'] = sum([score for score in gs.net['score'][9:] if isinstance(score, int)])
-      gs.net['total'] = gs.net['in'] + gs.net['out']
     # Determine net standings on this hole
     net_scores = [[n, sc.net['score'][index], 0, 0] for n,sc in enumerate(self.scores)]
     net_scores = sorted(net_scores, key=lambda sc: sc[1])

@@ -13,9 +13,6 @@ class SkinsGame(GolfGame):
       pl.net = {
         'score' : [None for _ in range(len(self.golf_round.course.holes))], 
         'bump': self.golf_round.course.calcBumps(pl.course_handicap - min_handicap),
-        'in' : 0,
-        'out':  0,
-        'total': 0,
       }
       pl.skins = {
         'skin': [0 for _ in range(len(self.golf_round.course.holes))],
@@ -33,9 +30,6 @@ class SkinsGame(GolfGame):
     for gs, gross in zip(self.scores, lstGross):
       # update net
       gs.net['score'][index] = gross - gs.net['bump'][index]
-      gs.net['out'] = sum([sc for sc in gs.net['score'][:9] if isinstance(sc,int)])
-      gs.net['in'] = sum([sc for sc in gs.net['score'][9:] if isinstance(sc,int)])
-      gs.net['total'] = gs.net['in'] + gs.net['out']
 
     # Find net winner on this hole
     net_scores = [sc.net['score'][index] for sc in self.scores]
