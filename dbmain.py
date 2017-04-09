@@ -13,6 +13,7 @@ from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.round import GolfRound
+from golf_db.game_factory import GolfGameList
 from golf_db.db import GolfDB
 from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException, FileInput
@@ -52,8 +53,10 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Statuss',                self._roundStatus))
     self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
 
+    self.addMenuItem( MenuItem( 'lag', '',                   'List games',                   self._gamesList))
 
-    self.addMenuItem( MenuItem( 'rou', '<games>...',     'Create round',                     self._createRound))
+    self.addMenuItem( MenuItem( 'acr', '<index> <games>...', 'Create round',                 self._createRound))
+    self.addMenuItem( MenuItem( 'acl', '',                   'List rounds',                  self._listRounds))
     self.updateHeader()
 
     # for wing IDE object lookup, code does not need to be run
@@ -236,8 +239,10 @@ class GolfMenu(Menu):
       print '{:<10} - {}'.format(game, dctStatus['line'])
 
   def _createRound(self):
-    roundData = RoundsPlayed[0]
-    lstGames = self.lstCmd[1:]
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    roundData = RoundsPlayed[int(self.lstCmd[1])]
+    lstGames = self.lstCmd[2:]
     output = 'round.txt'
     with open(output, 'wt') as f:
       f.write('# create round\n')
@@ -264,6 +269,16 @@ class GolfMenu(Menu):
         f.write('pause{}\n'.format(' enable' if hole in [9, 18] else ''))
     # now run this script
     self.cmdFile = FileInput(output)
+
+  def _gamesList(self):
+    lstGames = GolfGameList()
+    for game in lstGames:
+      print game
+
+  def _listRounds(self):
+    for n,gr in enumerate(RoundsPlayed):
+      print '{:>2} - {} {:<10} players:{}'.format(
+        n, gr['date'], gr['course'], len(gr['players']))
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'
