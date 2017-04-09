@@ -50,6 +50,12 @@ class GolfPlayerInitCase(unittest.TestCase):
       player = GolfPlayer(dct=dct)
       player.validate()
  
+  def test_get_full_name(self):
+    for dct in GolfPlayers:
+      player = GolfPlayer(dct=dct)
+      name = player.getFullName()
+      self.assertIsInstance(name, str)
+
   def test_validate_fails(self):
     player = GolfPlayer()
     # validate fails, no data
