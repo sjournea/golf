@@ -27,3 +27,9 @@ def GolfGameFactory(game):
   if game in dctGames:
     return dctGames[game]
   raise GolfException('game "{}" not supported'.format(game))
+
+def GolfGameList():
+  """Return list of available games."""
+  lst = dctGames.keys()
+  return sorted(lst) 
+  
