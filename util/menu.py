@@ -186,6 +186,8 @@ class Menu(object):
         print 'InputException:%s' % err
         self.showCmds = True
         self.bRepeatCommand = False
+        if self.cmdFile:
+          self.cmdFile = None
 
       except Exception, err:
         s = '%s: %s' % (err.__class__.__name__, err)
@@ -195,4 +197,6 @@ class Menu(object):
         traceback.print_exc()
         print
         self.bRepeatCommand = False
+        if self.cmdFile:
+          self.cmdFile = None
 

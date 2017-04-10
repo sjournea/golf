@@ -36,7 +36,10 @@ class GolfPlayer(Doc):
       raise DocValidateFail('gender must be defined.')
     if self.gender not in self.valid_genders:
       raise DocValidateFail('gender must be in {}'.format(self.valid_genders))
-      
+
+  def getFullName(self):
+    return '{} {}'.format(self.first_name, self.last_name)
+  
   def __str__(self):
     return '{:<15} - {:<6} {:<10} {:<8} {:<5} handicap {:.1f}'.format(
         self.email, self.first_name, self.last_name, self.nick_name, self.gender, self.handicap)

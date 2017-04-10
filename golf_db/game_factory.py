@@ -5,6 +5,7 @@ from .game_net import NetGame
 from .game_skins import SkinsGame
 from .game_six_point import SixPointGame
 from .game_eighty_one import EightyOneGame
+from .game_match import MatchGame
 
 dctGames = { 
   'skins': SkinsGame,
@@ -12,6 +13,7 @@ dctGames = {
   'net': NetGame,
   'six_point': SixPointGame, 
   'eighty_one': EightyOneGame, 
+  'match': MatchGame, 
 }
 
 def GolfGameFactory(game):
@@ -27,3 +29,9 @@ def GolfGameFactory(game):
   if game in dctGames:
     return dctGames[game]
   raise GolfException('game "{}" not supported'.format(game))
+
+def GolfGameList():
+  """Return list of available games."""
+  lst = dctGames.keys()
+  return sorted(lst) 
+  
