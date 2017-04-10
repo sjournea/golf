@@ -119,7 +119,7 @@ class MatchGame(GolfGame):
             status = '{} & {}'.format(total, to_play)
             self.win = n
           else:
-            status = '{} Up'.format(total)
+            status = '{} Up{}'.format(total,' {} to play'.format(to_play) if to_play < 5 else '')
         elif total < 0:
           status = '{} Down'.format(abs(total))
   
@@ -142,5 +142,28 @@ class MatchGame(GolfGame):
     return self.dctLeaderboard
 
   def getStatus(self, **kwargs):
-    self.dctStatus['line'] = '**** Not Implemented yet ****'
+    for n,net in enumerate(self.scores[0].net['score']):
+      if net is None:
+        self.dctStatus['next_hole'] = n+1
+        self.dctStatus['par'] = self.golf_round.course.holes[n].par
+        self.dctStatus['handicap'] = self.golf_round.course.holes[n].handicap
+        bumps = []
+        bump_line = []
+        for sc in self.scores[:2]:
+          if sc.net['bump'][n] > 0:
+            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+            bumps.append(dct)
+            bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
+        self.dctStatus['bumps'] = bumps
+        self.dctStatus['line'] = 'Hole {} Par {} Hdcp {}'.format(
+          self.dctStatus['next_hole'], self.dctStatus['par'], self.dctStatus['handicap'])
+        if bumps:
+          self.dctStatus['line'] += ' Bumps: {}'.format(','.join(bump_line))
+        break
+    else:
+      # round complete
+      self.dctStatus['next_hole'] = None
+      self.dctStatus['par'] = self.golf_round.course.total
+      self.dctStatus['handicap'] = None
+      self.dctStatus['line'] = 'Round Complete'
     return self.dctStatus

@@ -3,12 +3,12 @@ Golf game TODO 4/7/17
     * getDescription() -- full game description.
     * Games need to share code.
       - put in GolfGame class for now.
+    * Games use less then all players
+    * Games support teams
+      - Match - best ball
     * More Games
--->   Match - 2 players / 4 players
-      Nassau
-        Press
+      Nassau - support press(?)
       Wolf
--->* Add round script generator (or runner).
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
    * Mongo DB working
@@ -38,8 +38,10 @@ Completed:
       - SkinsGame
       - SixPoint - 3 player game
       - EightyOne - 3 player game
+      - Match 
     * Add ESC to GrossGame
     * split GolfGames into separate modules.
       game_gross.py, game_net.py, game_skins.py
     * GolfGame abstract - ABCMeta in python.
     * getStatus() -- one line summary.
+ * Add round script generator (or runner).
