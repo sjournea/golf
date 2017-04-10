@@ -211,7 +211,7 @@ class GolfMenu(Menu):
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
     for n,game in enumerate(lstGames):
-      dct = self.golf_round.getScorecard(game)
+      dct = self.golf_round.getScorecard(n)
       print dct['header']
       if n == 0:
         print dct['course']['hdr']
@@ -224,8 +224,8 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
-    for game in lstGames:
-      dctLeaderboard = self.golf_round.getLeaderboard(game)
+    for n,game in enumerate(lstGames):
+      dctLeaderboard = self.golf_round.getLeaderboard(n)
       print dctLeaderboard['hdr']
       for dct in dctLeaderboard['leaderboard']:
         print dct['line']
@@ -234,8 +234,8 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
-    for game in lstGames:
-      dctStatus = self.golf_round.getStatus(game)
+    for n,game in enumerate(lstGames):
+      dctStatus = self.golf_round.getStatus(n)
       print '{:<10} - {}'.format(game, dctStatus['line'])
 
   def _createRound(self):
@@ -258,6 +258,7 @@ class GolfMenu(Menu):
         f.write('# add games\n')
         for game in lstGames:
           f.write('gag {}\n'.format(game))
+        f.write('pause enable\n')
         f.write('# start all games\n')
         f.write('gst\n')
         f.write('# show scorecard, leaderboard and status for all games\n')
