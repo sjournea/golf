@@ -13,7 +13,7 @@ class GolfRound(object):
     self.course = None
     self.date = None
     self.scores = []
-    self.games = {}
+    self.games = []
     if dct:
       self.fromDict(dct)
 
@@ -21,7 +21,7 @@ class GolfRound(object):
     self.course = GolfCourse(dct['course'])
     self.date = dct.get('date')
     self.scores = [GolfScore(player_dct) for player_dct in dct['players']]
-    self.games = dct.get('games', {})
+    self.games = dct.get('games', [])
 
   def toDict(self):
     return { 'course': self.course.toDict(),
@@ -58,24 +58,23 @@ class GolfRound(object):
       game created.
     """
     game_class = GolfGameFactory(game)
-    self.games[game] = game_class(self, self.scores, options)
-    return self.games[game]
+    game_instance = game_class(self, self.scores, options)
+    self.games.append(game_instance)
+    return game_instance
   
-  def getGame(self, game):
+  def getGame(self, index):
     """return a game from this round.
     
     Args:
-      game: Game to get.
+      index: index of Game to get.
     Returns:
       matching game.
     """
-    if game not in self.games:
-      raise GolfException('game "{}" not found'.format(game))
-    return self.games[game]
+    return self.games[index]
   
   def start(self):
     """Start round. Start all games."""
-    for game in self.games.itervalues():
+    for game in self.games:
       game.start()
 
   def addScores(self, hole, lstGross):
@@ -89,23 +88,23 @@ class GolfRound(object):
       raise GolfException('hole number must be in 1-{}'.format(len(self.course.holes)))
     if len(lstGross) != len(self.scores):
       raise GolfException('gross scores do not match number of players')
-    for game in self.games.itervalues():
+    for game in self.games:
       game.addScore(hole-1, lstGross)
 
-  def getScorecard(self, game, **kwargs):
+  def getScorecard(self, index, **kwargs):
     """Scorecard for game."""
-    return self.getGame(game).getScorecard(**kwargs)
+    return self.getGame(index).getScorecard(**kwargs)
   
-  def getLeaderboard(self, game, **kwargs):
+  def getLeaderboard(self, index, **kwargs):
     """Leaderboard for game."""
-    return self.getGame(game).getLeaderboard(**kwargs)
+    return self.getGame(index).getLeaderboard(**kwargs)
   
-  def getStatus(self, game, **kwargs):
-    """Staus for game."""
-    return self.getGame(game).getStatus(**kwargs)
+  def getStatus(self, index, **kwargs):
+    """Status for game."""
+    return self.getGame(index).getStatus(**kwargs)
   
   def __str__(self):
     return '{} - {:<25} - {:<25} - {}'.format(
       self.date.date(), self.course.name,
       ','.join([score.player.nick_name for score in self.scores]),
-      ','.join(self.games.keys()))
+      ','.join([g.__class__.__name__ for g in self.games]))

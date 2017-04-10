@@ -20,7 +20,7 @@ class GolfRoundTest(unittest.TestCase):
     self.assertIsNone(r.course)
     self.assertIsNone(r.date)
     self.assertEqual(r.scores, [])
-    self.assertEqual(r.games, {})
+    self.assertEqual(r.games, [])
 
   def test_init_from_dict(self):
     for dct in GolfRounds:
@@ -40,10 +40,10 @@ class GolfRoundTest(unittest.TestCase):
     skins = r.addGame('skins')
     gross = r.addGame('gross')
     self.assertEqual(len(r.games), 2)
-    self.assertIsInstance(r.games['skins'], SkinsGame)
-    self.assertIsInstance(r.games['gross'], GrossGame)
-    self.assertEqual(skins, r.games['skins'])
-    self.assertEqual(gross, r.games['gross'])
+    self.assertIsInstance(r.games[0], SkinsGame)
+    self.assertIsInstance(r.games[1], GrossGame)
+    self.assertEqual(skins, r.games[0])
+    self.assertEqual(gross, r.games[1])
 
 
 class PlayRoundTest(unittest.TestCase):
@@ -117,12 +117,12 @@ class PlayRoundTest(unittest.TestCase):
     r.start()
     
     r.addScores(1, [4,4])
-    dct = r.getScorecard('gross')
-    dct = r.getScorecard('net')
-    dct = r.getScorecard('skins')
-    dct = r.getLeaderboard('gross')
-    dct = r.getLeaderboard('net')
-    dct = r.getLeaderboard('skins')
+    dct = r.getScorecard(0)
+    dct = r.getScorecard(1)
+    dct = r.getScorecard(2)
+    dct = r.getLeaderboard(0)
+    dct = r.getLeaderboard(1)
+    dct = r.getLeaderboard(2)
 
     dct = gross.getScorecard()
     dct = net.getScorecard()
