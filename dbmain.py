@@ -241,32 +241,37 @@ class GolfMenu(Menu):
   def _createRound(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    roundData = RoundsPlayed[int(self.lstCmd[1])]
+    if self.lstCmd[1] == 'all':
+      rounds = [x for x in range(len(RoundsPlayed))]
+    else:
+      rounds = [int(self.lstCmd[1])]
     lstGames = self.lstCmd[2:]
     output = 'round.txt'
     with open(output, 'wt') as f:
-      f.write('# create round\n')
-      f.write('gcr {} {}\n'.format(roundData['course'], roundData['date']))
-      f.write('# add players\n')
-      for player,tee in roundData['players']:
-        f.write('gad {} {}\n'.format(player, tee))
-      f.write('# add games\n')
-      for game in lstGames:
-        f.write('gag {}\n'.format(game))
-      f.write('# start all games\n')
-      f.write('gst\n')
-      f.write('# show scorecard, leaderboard and status for all games\n')
-      f.write('gps {}\n'.format(' '.join(lstGames)))
-      f.write('gpl {}\n'.format(' '.join(lstGames)))
-      f.write('gpt {}\n'.format(' '.join(lstGames)))
-      f.write('pause\n')
-      for hole, scores in roundData['scores']:
-        f.write('# hole {}\n'.format(hole))
-        f.write('gac {} {}\n'.format(hole, ' '.join(str(sc) for sc in scores)))
+      for index in rounds:
+        roundData = RoundsPlayed[index]
+        f.write('# create round\n')
+        f.write('gcr {} {}\n'.format(roundData['course'], roundData['date']))
+        f.write('# add players\n')
+        for player,tee in roundData['players']:
+          f.write('gad {} {}\n'.format(player, tee))
+        f.write('# add games\n')
+        for game in lstGames:
+          f.write('gag {}\n'.format(game))
+        f.write('# start all games\n')
+        f.write('gst\n')
+        f.write('# show scorecard, leaderboard and status for all games\n')
         f.write('gps {}\n'.format(' '.join(lstGames)))
         f.write('gpl {}\n'.format(' '.join(lstGames)))
         f.write('gpt {}\n'.format(' '.join(lstGames)))
-        f.write('pause{}\n'.format(' enable' if hole in [9, 18] else ''))
+        f.write('pause\n')
+        for hole, scores in roundData['scores']:
+          f.write('# hole {}\n'.format(hole))
+          f.write('gac {} {}\n'.format(hole, ' '.join(str(sc) for sc in scores)))
+          f.write('gps {}\n'.format(' '.join(lstGames)))
+          f.write('gpl {}\n'.format(' '.join(lstGames)))
+          f.write('gpt {}\n'.format(' '.join(lstGames)))
+          f.write('pause{}\n'.format(' enable' if hole in [9, 18] else ''))
     # now run this script
     self.cmdFile = FileInput(output)
 
