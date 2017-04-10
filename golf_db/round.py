@@ -61,6 +61,18 @@ class GolfRound(object):
     self.games[game] = game_class(self, self.scores, options)
     return self.games[game]
   
+  def getGame(self, game):
+    """return a game from this round.
+    
+    Args:
+      game: Game to get.
+    Returns:
+      matching game.
+    """
+    if game not in self.games:
+      raise GolfException('game "{}" not found'.format(game))
+    return self.games[game]
+  
   def start(self):
     """Start round. Start all games."""
     for game in self.games.itervalues():
@@ -80,11 +92,6 @@ class GolfRound(object):
     for game in self.games.itervalues():
       game.addScore(hole-1, lstGross)
 
-  def getGame(self, game):
-    if game not in self.games:
-      raise GolfException('game "{}" not found'.format(game))
-    return self.games[game]
-  
   def getScorecard(self, game, **kwargs):
     """Scorecard for game."""
     return self.getGame(game).getScorecard(**kwargs)
