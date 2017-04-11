@@ -28,9 +28,8 @@ class GolfSixPointGamePlayersTest(unittest.TestCase):
       pl = self.db.playerFind(email)
       gr.addPlayer(pl, tee_name)
 
-    g = SixPointGame(gr, gr.scores)
     with self.assertRaises(GolfException):
-      g.start()
+      g = SixPointGame(gr, gr.scores)
 
     gr2 = GolfRound()
     gr2.course = self.db.courseFind(course_name)
@@ -38,9 +37,8 @@ class GolfSixPointGamePlayersTest(unittest.TestCase):
     for email in lstPlayers[:2]:
       pl = self.db.playerFind(email)
       gr2.addPlayer(pl, tee_name)
-    g2 = SixPointGame(gr2, gr2.scores)
     with self.assertRaises(GolfException):
-      g2.start()
+      g2 = SixPointGame(gr, gr.scores)
 
   def test_right_number_of_players(self):
     course_name = 'Canyon Lakes'

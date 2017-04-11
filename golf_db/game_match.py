@@ -11,7 +11,6 @@ class MatchGame(GolfGame):
 
   def start(self):
     """Start the match game."""
-    #self.validate()
     # find min handicap in all players
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for pl in self.scores:

@@ -79,6 +79,7 @@ class PlayRoundTest(unittest.TestCase):
       pl = self.db.playerFind(email)
       r.addPlayer(pl, tee_name)
     r.addGame('skins')
+    r.addGame('match')
 
   def test_start(self):
     course_name = 'Canyon Lakes'

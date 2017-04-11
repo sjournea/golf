@@ -13,6 +13,7 @@ class GolfGame(object):
     self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
     self.dctLeaderboard = {}
     self.dctStatus = {}
+    self.validate()
     
   def validate(self):
     """Validate a game."""
