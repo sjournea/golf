@@ -3,7 +3,7 @@ Golf game TODO 4/7/17
     * getDescription() -- full game description.
     * Games need to share code.
       - put in GolfGame class for now.
-    * Games use less then all players
+--> * Games use less then all players
     * Games support teams
       - Match - best ball
     * More Games

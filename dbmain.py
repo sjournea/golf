@@ -215,7 +215,6 @@ class GolfMenu(Menu):
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    lstGames = self.lstCmd[1:]
     for n in xrange(self.golf_round.getGameCount()):
       dct = self.golf_round.getScorecard(n)
       print dct['header']
@@ -229,7 +228,6 @@ class GolfMenu(Menu):
   def _roundLeaderboard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    lstGames = self.lstCmd[1:]
     for n in xrange(self.golf_round.getGameCount()):
       dctLeaderboard = self.golf_round.getLeaderboard(n)
       print dctLeaderboard['hdr']
@@ -239,7 +237,6 @@ class GolfMenu(Menu):
   def _roundStatus(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    lstGames = self.lstCmd[1:]
     for n in xrange(self.golf_round.getGameCount()):
       dctStatus = self.golf_round.getStatus(n)
       print '{:>2} - {}'.format(n, dctStatus['line'])
@@ -251,7 +248,7 @@ class GolfMenu(Menu):
       rounds = [x for x in range(len(RoundsPlayed))]
     else:
       rounds = [int(self.lstCmd[1])]
-    lstGames = self.lstCmd[2:]
+    #lstGames = self.lstCmd[2:]
     output = 'round.txt'
     with open(output, 'wt') as f:
       for index in rounds:
@@ -262,22 +259,24 @@ class GolfMenu(Menu):
         for player,tee in roundData['players']:
           f.write('gad {} {}\n'.format(player, tee))
         f.write('# add games\n')
-        for game in lstGames:
-          f.write('gag {}\n'.format(game))
+        f.write('gag gross\n')
+        f.write('gag net\n')
+        for n in xrange(len(roundData['players'])-1):
+          f.write('gag match [0,{}]\n'.format(n+1))
         f.write('pause enable\n')
         f.write('# start all games\n')
         f.write('gst\n')
         f.write('# show scorecard, leaderboard and status for all games\n')
-        f.write('gps {}\n'.format(' '.join(lstGames)))
-        f.write('gpl {}\n'.format(' '.join(lstGames)))
-        f.write('gpt {}\n'.format(' '.join(lstGames)))
+        f.write('gps\n')
+        f.write('gpl\n')
+        f.write('gpt\n')
         f.write('pause\n')
         for hole, scores in roundData['scores']:
           f.write('# hole {}\n'.format(hole))
           f.write('gac {} {}\n'.format(hole, ' '.join(str(sc) for sc in scores)))
-          f.write('gps {}\n'.format(' '.join(lstGames)))
-          f.write('gpl {}\n'.format(' '.join(lstGames)))
-          f.write('gpt {}\n'.format(' '.join(lstGames)))
+          f.write('gps\n')
+          f.write('gpl\n')
+          f.write('gpt\n')
           f.write('pause{}\n'.format(' enable' if hole in [9, 18] else ''))
     # now run this script
     self.cmdFile = FileInput(output)

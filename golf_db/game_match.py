@@ -33,7 +33,7 @@ class MatchGame(GolfGame):
 
   def addScore(self, index, lstGross):
     """add scores for a hole."""
-    for gs, gross in zip(self.scores, [lstGross[n] for n in self.players]):
+    for gs, gross in zip(self.scores, lstGross):
       # update net
       gs.net['score'][index] = gross - gs.net['bump'][index]
 
@@ -120,7 +120,11 @@ class MatchGame(GolfGame):
             status = '{} & {}'.format(total, to_play)
             self.win = n
           else:
-            status = '{} Up{}'.format(total,' {} to play'.format(to_play) if to_play < 5 else '')
+            status = '{} Up'.format(total)
+            if to_play == 0:
+              self.final = True
+            elif to_play < 5:
+              status += ' {} to play'.format(to_play)
         elif total < 0:
           status = '{} Down'.format(abs(total))
   

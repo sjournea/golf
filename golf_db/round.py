@@ -93,7 +93,7 @@ class GolfRound(object):
     if len(lstGross) != len(self.scores):
       raise GolfException('gross scores do not match number of players')
     for game in self.games:
-      game.addScore(hole-1, lstGross)
+      game.setGrossScore(hole-1, lstGross)
 
   def getScorecard(self, index, **kwargs):
     """Scorecard for game."""

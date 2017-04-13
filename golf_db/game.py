@@ -21,6 +21,11 @@ class GolfGame(object):
     """Validate a game."""
     pass
 
+  def setGrossScore(self, hole_index, lstScores):
+    """set gross scores for a hole."""
+    lst = [lstScores[n] for n in self.players]
+    self.addScore(hole_index, lst)
+
   @abstractmethod
   def start(self):
     """Start the game."""
