@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """ dbmain.py - simple query test program for database """ 
+import ast
 import datetime
 #import sys
 import logging
@@ -44,10 +45,10 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
     self.addMenuItem( MenuItem( 'rob', '',            'Round leaderboard'  ,               self._roundGetLeaderboard))
 
-    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>', 'Create a Round of Golf',    self._roundCreate))
-    self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
-    self.addMenuItem( MenuItem( 'gag', '<game>',        'Add game to Round of Golf',         self._roundAddGame))
-    self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
+    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>', 'Create a Round of Golf',      self._roundCreate))
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>',         'Add player to Round of Golf', self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gag', '<game> <players>',      'Add game to Round of Golf',   self._roundAddGame))
+    self.addMenuItem( MenuItem( 'gst', '',                      'Start Round of Golf',         self._roundStart))
     self.addMenuItem( MenuItem( 'gps', '<game>...',     'Print Game Scorecards',             self._roundScorecard))
     self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',           self._roundLeaderboard))
     self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Statuss',                self._roundStatus))
@@ -189,7 +190,12 @@ class GolfMenu(Menu):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     game = self.lstCmd[1]
-    self.golf_round.addGame(game)
+    
+    players = None
+    if len(self.lstCmd) > 2:
+      players = ast.literal_eval(self.lstCmd[2])
+      
+    self.golf_round.addGame(game, players=players)
     print self.golf_round
 
   def _roundStart(self):
@@ -210,21 +216,21 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
-    for n,game in enumerate(lstGames):
+    for n in xrange(self.golf_round.getGameCount()):
       dct = self.golf_round.getScorecard(n)
       print dct['header']
       if n == 0:
         print dct['course']['hdr']
         print dct['course']['par']
         print dct['course']['hdcp']
-      for player in dct[game]:
+      for player in dct['players']:
         print player['line']
 
   def _roundLeaderboard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
-    for n,game in enumerate(lstGames):
+    for n in xrange(self.golf_round.getGameCount()):
       dctLeaderboard = self.golf_round.getLeaderboard(n)
       print dctLeaderboard['hdr']
       for dct in dctLeaderboard['leaderboard']:
@@ -234,9 +240,9 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     lstGames = self.lstCmd[1:]
-    for n,game in enumerate(lstGames):
+    for n in xrange(self.golf_round.getGameCount()):
       dctStatus = self.golf_round.getStatus(n)
-      print '{:<10} - {}'.format(game, dctStatus['line'])
+      print '{:>2} - {}'.format(n, dctStatus['line'])
 
   def _createRound(self):
     if len(self.lstCmd) < 2:

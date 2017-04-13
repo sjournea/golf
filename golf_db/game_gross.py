@@ -54,7 +54,7 @@ class GrossGame(GolfGame):
       dct['total'] = score.gross['total']
       dct['esc'] = score.gross['esc']
       lstPlayers.append(dct)
-    self.dctScorecard['gross'] = lstPlayers
+    self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
 
   def getLeaderboard(self, **kwargs):

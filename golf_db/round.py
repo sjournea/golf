@@ -48,17 +48,17 @@ class GolfRound(object):
     gs.calcCourseHandicap()
     self.scores.append(gs)
 
-  def addGame(self, game, options=None):
+  def addGame(self, game, **kwargs):
     """Add a game to this round.
     
     Args:
       game: Game to add.
-      options: dictionary of game options.
+      **kwargs: keyword arguments.
     Returns:
       game created.
     """
     game_class = GolfGameFactory(game)
-    game_instance = game_class(self, self.scores, options)
+    game_instance = game_class(self, self.scores, **kwargs)
     self.games.append(game_instance)
     return game_instance
   
@@ -71,6 +71,10 @@ class GolfRound(object):
       matching game.
     """
     return self.games[index]
+  
+  def getGameCount(self):
+    """returns number of games in this round."""
+    return len(self.games)
   
   def start(self):
     """Start round. Start all games."""

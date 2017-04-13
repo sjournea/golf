@@ -57,7 +57,7 @@ class NetGame(GolfGame):
       dct['out'] = score.net['out']
       dct['total'] = score.net['total']
       lstPlayers.append(dct)
-    self.dctScorecard['net'] = lstPlayers
+    self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
 
   def getLeaderboard(self, **kwargs):

@@ -114,8 +114,8 @@ class GolfSixPointGameTest(unittest.TestCase):
     dct = g.getScorecard()
     self.assertIn('course', dct)
     self.assertIn('header', dct)
-    self.assertIn('six_point', dct)
-    players = dct['six_point']
+    self.assertIn('players', dct)
+    players = dct['players']
     for player in players:
       self.assertIn('line', player)
       self.assertEqual(player['in'], 0)
@@ -126,8 +126,8 @@ class GolfSixPointGameTest(unittest.TestCase):
     dct = g.getScorecard()
     self.assertIn('course', dct)
     self.assertIn('header', dct)
-    self.assertIn('six_point', dct)
-    for player in dct['six_point']:
+    self.assertIn('players', dct)
+    for player in dct['players']:
       self.assertIn('line', player)
       self.assertEqual(player['in'], 0)
       self.assertEqual(player['out'], 2)
@@ -137,8 +137,8 @@ class GolfSixPointGameTest(unittest.TestCase):
     dct = g.getScorecard()
     self.assertIn('course', dct)
     self.assertIn('header', dct)
-    self.assertIn('six_point', dct)
-    for player in dct['six_point']:
+    self.assertIn('players', dct)
+    for player in dct['players']:
       self.assertIn('line', player)
       self.assertIn('in', player)
       self.assertIn('out', player)

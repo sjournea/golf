@@ -108,7 +108,7 @@ class SixPointGame(GolfGame):
       dct['out'] = points['out']
       dct['total'] = points['total']
       lstPlayers.append(dct)
-    self.dctScorecard[self.NAME] = lstPlayers
+    self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
