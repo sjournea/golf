@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """ dbmain.py - simple query test program for database """ 
+import ast
 import datetime
 #import sys
 import logging
@@ -44,10 +45,10 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'ros', '',            'Round scorecard'  ,                 self._roundGetScorecard))
     self.addMenuItem( MenuItem( 'rob', '',            'Round leaderboard'  ,               self._roundGetLeaderboard))
 
-    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>', 'Create a Round of Golf',    self._roundCreate))
-    self.addMenuItem( MenuItem( 'gad', '<email> <tee>', 'Add player to Round of Golf',       self._roundAddPlayer))
-    self.addMenuItem( MenuItem( 'gag', '<game>',        'Add game to Round of Golf',         self._roundAddGame))
-    self.addMenuItem( MenuItem( 'gst', '',              'Start Round of Golf',               self._roundStart))
+    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>', 'Create a Round of Golf',      self._roundCreate))
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>',         'Add player to Round of Golf', self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gag', '<game> <players>',      'Add game to Round of Golf',   self._roundAddGame))
+    self.addMenuItem( MenuItem( 'gst', '',                      'Start Round of Golf',         self._roundStart))
     self.addMenuItem( MenuItem( 'gps', '<game>...',     'Print Game Scorecards',             self._roundScorecard))
     self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',           self._roundLeaderboard))
     self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Statuss',                self._roundStatus))
@@ -189,7 +190,12 @@ class GolfMenu(Menu):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     game = self.lstCmd[1]
-    self.golf_round.addGame(game)
+    
+    players = None
+    if len(self.lstCmd) > 2:
+      players = ast.literal_eval(self.lstCmd[2])
+      
+    self.golf_round.addGame(game, players=players)
     print self.golf_round
 
   def _roundStart(self):
@@ -209,22 +215,20 @@ class GolfMenu(Menu):
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    lstGames = self.lstCmd[1:]
-    for n,game in enumerate(lstGames):
+    for n in xrange(self.golf_round.getGameCount()):
       dct = self.golf_round.getScorecard(n)
       print dct['header']
       if n == 0:
         print dct['course']['hdr']
         print dct['course']['par']
         print dct['course']['hdcp']
-      for player in dct[game]:
+      for player in dct['players']:
         print player['line']
 
   def _roundLeaderboard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    lstGames = self.lstCmd[1:]
-    for n,game in enumerate(lstGames):
+    for n in xrange(self.golf_round.getGameCount()):
       dctLeaderboard = self.golf_round.getLeaderboard(n)
       print dctLeaderboard['hdr']
       for dct in dctLeaderboard['leaderboard']:
@@ -233,10 +237,9 @@ class GolfMenu(Menu):
   def _roundStatus(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    lstGames = self.lstCmd[1:]
-    for n,game in enumerate(lstGames):
+    for n in xrange(self.golf_round.getGameCount()):
       dctStatus = self.golf_round.getStatus(n)
-      print '{:<10} - {}'.format(game, dctStatus['line'])
+      print '{:>2} - {}'.format(n, dctStatus['line'])
 
   def _createRound(self):
     if len(self.lstCmd) < 2:
@@ -245,7 +248,7 @@ class GolfMenu(Menu):
       rounds = [x for x in range(len(RoundsPlayed))]
     else:
       rounds = [int(self.lstCmd[1])]
-    lstGames = self.lstCmd[2:]
+    #lstGames = self.lstCmd[2:]
     output = 'round.txt'
     with open(output, 'wt') as f:
       for index in rounds:
@@ -256,22 +259,24 @@ class GolfMenu(Menu):
         for player,tee in roundData['players']:
           f.write('gad {} {}\n'.format(player, tee))
         f.write('# add games\n')
-        for game in lstGames:
-          f.write('gag {}\n'.format(game))
+        f.write('gag gross\n')
+        f.write('gag net\n')
+        for n in xrange(len(roundData['players'])-1):
+          f.write('gag match [0,{}]\n'.format(n+1))
         f.write('pause enable\n')
         f.write('# start all games\n')
         f.write('gst\n')
         f.write('# show scorecard, leaderboard and status for all games\n')
-        f.write('gps {}\n'.format(' '.join(lstGames)))
-        f.write('gpl {}\n'.format(' '.join(lstGames)))
-        f.write('gpt {}\n'.format(' '.join(lstGames)))
+        f.write('gps\n')
+        f.write('gpl\n')
+        f.write('gpt\n')
         f.write('pause\n')
         for hole, scores in roundData['scores']:
           f.write('# hole {}\n'.format(hole))
           f.write('gac {} {}\n'.format(hole, ' '.join(str(sc) for sc in scores)))
-          f.write('gps {}\n'.format(' '.join(lstGames)))
-          f.write('gpl {}\n'.format(' '.join(lstGames)))
-          f.write('gpt {}\n'.format(' '.join(lstGames)))
+          f.write('gps\n')
+          f.write('gpl\n')
+          f.write('gpt\n')
           f.write('pause{}\n'.format(' enable' if hole in [9, 18] else ''))
     # now run this script
     self.cmdFile = FileInput(output)

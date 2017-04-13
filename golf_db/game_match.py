@@ -11,7 +11,6 @@ class MatchGame(GolfGame):
 
   def start(self):
     """Start the match game."""
-    #self.validate()
     # find min handicap in all players
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for pl in self.scores:
@@ -40,7 +39,7 @@ class MatchGame(GolfGame):
 
     if not self.final:
       # Find net winner on this hole
-      net_scores = [sc.net['score'][index] for sc in self.scores[:2]]
+      net_scores = [sc.net['score'][index] for sc in self.scores]
       if net_scores[0] < net_scores[1]:
         # player 0 wins hole 
         self.scores[0].match['hole'][index] = 1
@@ -64,23 +63,25 @@ class MatchGame(GolfGame):
         self.scores[1].match['hole'][index] = 0
         self.scores[1].match['score'][index] = self.scores[1].match['total']
   
-      for gs in self.scores[:2]:
+      for gs in self.scores:
         gs.match['out'] = sum([sc for sc in gs.match['hole'][:9] if isinstance(sc, int)])
         gs.match['in'] = sum([sc for sc in gs.match['hole'][9:] if isinstance(sc, int)])
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     lstPlayers = []
-    for n,score in enumerate(self.scores[:2]):
+    for n,score in enumerate(self.scores):
       dct = {'player': score.player }
       line = '{:<6}'.format(score.player.nick_name)
       match = score.match
-      for x in match['score'][:9]:
+      for x,bump in zip(match['score'][:9], score.net['bump'][:9]):
         xs = '{:+d}'.format(x) if x is not None else ''
+        xs = '{}{}'.format('*' if bump > 0 else '',xs)
         line += ' {:>3}'.format(xs)
       line += ' {:>+4d}'.format(match['out'])
-      for x in match['score'][9:]:
+      for x,bump in zip(match['score'][9:], score.net['bump'][9:]):
         xs = '{:+d}'.format(x) if x is not None else ''
+        xs = '{}{}'.format('*' if bump > 0 else '',xs)
         line += ' {:>3}'.format(xs)
       line += ' {:>+4d} {:>+4d}'.format(match['in'], match['total'])
       dct['line'] = line
@@ -88,7 +89,7 @@ class MatchGame(GolfGame):
       dct['out'] = match['out']
       dct['total'] = match['total']
       lstPlayers.append(dct)
-    self.dctScorecard['match'] = lstPlayers
+    self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
@@ -107,7 +108,7 @@ class MatchGame(GolfGame):
       self.dctLeaderboard['to_play'] = to_play
       self.dctLeaderboard['final'] = self.final
       board = []
-      for n,score in enumerate(self.scores[:2]):
+      for n,score in enumerate(self.scores):
         player = score.player
         dct = {'player': player }
         total = score.match['total']
@@ -119,7 +120,11 @@ class MatchGame(GolfGame):
             status = '{} & {}'.format(total, to_play)
             self.win = n
           else:
-            status = '{} Up{}'.format(total,' {} to play'.format(to_play) if to_play < 5 else '')
+            status = '{} Up'.format(total)
+            if to_play == 0:
+              self.final = True
+            elif to_play < 5:
+              status += ' {} to play'.format(to_play)
         elif total < 0:
           status = '{} Down'.format(abs(total))
   
@@ -149,7 +154,7 @@ class MatchGame(GolfGame):
         self.dctStatus['handicap'] = self.golf_round.course.holes[n].handicap
         bumps = []
         bump_line = []
-        for sc in self.scores[:2]:
+        for sc in self.scores:
           if sc.net['bump'][n] > 0:
             dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
             bumps.append(dct)

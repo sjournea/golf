@@ -55,7 +55,7 @@ class GolfMatchGameTest(unittest.TestCase):
     g.addScore(1, [4,4])
     dct = g.getScorecard()
     self.assertIn('header', dct)
-    self.assertIn('match', dct)
+    self.assertIn('players', dct)
 
   def test_game_leaderboard(self):
     g = MatchGame(self.gr, self.gr.scores)

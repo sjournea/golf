@@ -29,7 +29,6 @@ class SixPointGame(GolfGame):
 
   def start(self):
     """Start the skins game."""
-    self.validate()
     # find min handicap in all players
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for sc in self.scores:
@@ -109,7 +108,7 @@ class SixPointGame(GolfGame):
       dct['out'] = points['out']
       dct['total'] = points['total']
       lstPlayers.append(dct)
-    self.dctScorecard[self.NAME] = lstPlayers
+    self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):

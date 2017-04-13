@@ -6,17 +6,25 @@ from .score import GolfScore
 class GolfGame(object):
   """Base class for all golf games."""
   __metaclass__ = ABCMeta
-  def __init__(self, golf_round, scores, options=None):
+  def __init__(self, golf_round, scores, **kwargs):
     self.golf_round = golf_round
-    self.scores = [GolfScore(dct=sc.toDict()) for sc in scores]
-    self.options = options if options else {}
+    self.players = kwargs.get('players')
+    if not self.players:
+      self.players = [n for n in xrange(len(scores))]
+    self.scores = [GolfScore(dct=scores[n].toDict()) for n in self.players]
     self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
     self.dctLeaderboard = {}
     self.dctStatus = {}
+    self.validate()
     
   def validate(self):
     """Validate a game."""
     pass
+
+  def setGrossScore(self, hole_index, lstScores):
+    """set gross scores for a hole."""
+    lst = [lstScores[n] for n in self.players]
+    self.addScore(hole_index, lst)
 
   @abstractmethod
   def start(self):

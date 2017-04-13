@@ -54,7 +54,7 @@ class GolfGrossGameTest(unittest.TestCase):
       g.addScore(index, [4,4])
       dct = g.getScorecard()
       self.assertIn('header', dct)
-      self.assertIn('gross', dct)
+      self.assertIn('players', dct)
 
   def test_game_leaderboard(self):
     g = GrossGame(self.gr, self.gr.scores)

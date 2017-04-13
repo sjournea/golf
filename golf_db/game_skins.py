@@ -69,7 +69,7 @@ class SkinsGame(GolfGame):
       dct['out'] = skins['out']
       dct['total'] = skins['total']
       lstPlayers.append(dct)
-    self.dctScorecard['skins'] = lstPlayers
+    self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
