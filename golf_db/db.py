@@ -67,7 +67,7 @@ class GolfDB(object):
 
   def playerSave(self, player):
     """Return a matching player by email."""
-    return self._save('players', player.toDict())
+    return self._saveCollection('players', player.toDict())
 
   def roundList(self, **kwargs):
     """Return a list of all rounds."""
@@ -110,8 +110,8 @@ class GolfDB(object):
       co = db[collection]
       return co.count()
 
-  def _save(self, collection, dct):
-    """Return a list of all courses by name."""
+  def _saveCollection(self, collection, dct):
+    """Save dict to collection."""
     try:
       lst = []
       with self.db as session:

@@ -32,10 +32,7 @@ class Doc(object):
       setattr(self, field, dct.get(field))
   
   def toDict(self):
-    dct = {}
-    for field in self.fields:
-      dct[field] = getattr(self, field)
-    return dct
+    return { field: getattr(self, field) for field in self.fields }
     
   def __eq__(self, other):
     for field in self.fields:
