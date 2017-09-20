@@ -364,6 +364,13 @@ DeltaView_Players = [
   {'player': GolfPlayers[2], 'gross': [6,7,5,3,5,3,8,6,6, 6,6,5,5,5,3,5,7,5], 'tee': delta_view_tees[0]},
 ]
 
+Skywest_Players = [
+  {'player': GolfPlayers[0], 'gross': [7,4,6,7,4,5,6,4,5, 5,5,5,5,6,4,4,5,5], 'tee': skywest_tees[0]},
+  {'player': GolfPlayers[1], 'gross': [6,7,4,6,4,7,5,3,6, 5,4,3,7,6,5,4,6,4], 'tee': skywest_tees[0]},
+  {'player': GolfPlayers[2], 'gross': [7,6,5,7,4,5,5,3,5, 6,5,4,5,5,5,4,6,5], 'tee': skywest_tees[0]},
+  {'player': GolfPlayers[3], 'gross': [8,5,7,6,5,6,5,5,6, 4,7,4,7,7,5,5,6,7], 'tee': skywest_tees[0]},
+]
+
 GolfRounds = [
   { 'date': datetime.datetime(2017, 3, 7), 
     'course': GolfCourses[0],
