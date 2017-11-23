@@ -3,10 +3,22 @@ import unittest
 from golf_db.db import GolfDB, GolfDBException
 from golf_db.player import GolfPlayer
 
-class DBTestInit(unittest.TestCase):
-  def test_init(self):
+class DBTestType(unittest.TestCase):
+  def test_type_default(self):
     db = GolfDB(database='golf_test')
 
+  def test_type_mongo(self):
+    db = GolfDB(database='golf_test', db_type='mongo')
+
+  def test_type_rest_api(self):
+    with self.assertRaises(GolfDBException):
+      db = GolfDB(database='golf_test', db_type='rest_api')
+
+  def test_type_bad_db_type(self):
+    with self.assertRaises(GolfDBException):
+      db = GolfDB(database='golf_test', db_type='dbase')
+
+class DBTestInit(unittest.TestCase):
   def test_create(self):
     db = GolfDB(database='golf_test')
     db.create()

@@ -18,12 +18,27 @@ class GolfDB(object):
   COURSE = 'course'
   PLAYERS = 'players'
   ROUNDS = 'rounds'
-  def __init__(self, **kwargs):
-    self.host = kwargs.get('host', MongoDB.DEF_HOST)
-    self.port = kwargs.get('port', MongoDB.DEF_PORT)
-    self.database = kwargs.get('database', self.DATABASE)
-    self.db = MongoDB(self.host, self.port)
   
+  def __init__(self, **kwargs):
+    self.db_type = kwargs.get('db_type', 'mongo')
+    self.database = kwargs.get('database', self.DATABASE)
+    self._setup_connection(**kwargs)
+    self.db = None
+    self.connect()
+
+  def _setup_connection(self, **kwargs):
+    """Create all parameters needed for db_type."""
+    if self.db_type == 'mongo':
+      self.host = kwargs.get('host', MongoDB.DEF_HOST)
+      self.port = kwargs.get('port', MongoDB.DEF_PORT)
+    elif self.db_type == 'rest_api':
+      raise GolfDBException('db_type "{}" not implemented (yet).'.format(self.db_type))
+    else:
+      raise GolfDBException('db_type "{}" not supported.'.format(self.db_type))
+
+  def connect(self, **kwargs):  
+    self.db = MongoDB(self.host, self.port)
+
   def create(self, **kwargs):
     """Create all collections and indexes needed."""
     # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.

@@ -127,14 +127,14 @@ class MongoDBCollectionTest(MongoTestCase):
       coll.clear()
       self.assertEquals(coll.count(), 0)
       
-  def test_collection_drop(self):
-    """ test dropping a collection from a database """
-    with self.db:
-      coll = Collection(self.db, self.database_name, self.collection_name) 
-      coll.drop()
-      dct = self.db.databases()
-      colls = dct[self.database_name]
-      self.assertNotIn(self.collection_name, colls)
+  #def test_collection_drop(self):
+    #""" test dropping a collection from a database """
+    #with self.db:
+      #coll = Collection(self.db, self.database_name, self.collection_name) 
+      #coll.drop()
+      #dct = self.db.databases()
+      #colls = dct[self.database_name]
+      #self.assertNotIn(self.collection_name, colls)
 
   def test_collection_count(self):
     """ test counting a collection from a database 
