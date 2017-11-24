@@ -362,15 +362,15 @@ cinnabar_lake_canyon_tees = [
 ]
 
 cinnabar_lake_holes = (
-  {'par': 5, 'handicap':  10},
-  {'par': 3, 'handicap':  16},
-  {'par': 4, 'handicap':   2},
-  {'par': 4, 'handicap':   4},
-  {'par': 4, 'handicap':  18},
-  {'par': 4, 'handicap':  14},
-  {'par': 5, 'handicap':   6},
-  {'par': 3, 'handicap':   8},
-  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':   9},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':  13},
+  {'par': 5, 'handicap':   5},
+  {'par': 3, 'handicap':   7},
+  {'par': 4, 'handicap':  13},
 )
 
 cinnabar_canyon_holes = (
@@ -386,21 +386,23 @@ cinnabar_canyon_holes = (
 )
 
 cinnabar_mountain_holes = (
-  {'par': 5, 'handicap':  10},
-  {'par': 3, 'handicap':  18},
-  {'par': 4, 'handicap':   6},
-  {'par': 4, 'handicap':   2},
-  {'par': 4, 'handicap':  14},
-  {'par': 3, 'handicap':  12},
-  {'par': 5, 'handicap':  16},
-  {'par': 4, 'handicap':   4},
-  {'par': 4, 'handicap':   8},
+  {'par': 5, 'handicap':   9},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  13},
+  {'par': 3, 'handicap':  11},
+  {'par': 5, 'handicap':  15},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   7},
 )
 
-cinnabar_lake_canyon_holes     = cinnabar_lake_holes     + cinnabar_canyon_holes
-cinnabar_mountain_lake_holes   = cinnabar_mountain_holes + cinnabar_lake_holes
-cinnabar_mountain_canyon_holes = cinnabar_mountain_holes + cinnabar_canyon_holes
-cinnabar_lake_mountain_holes   = cinnabar_lake_holes + cinnabar_mountain_holes 
+cinnabar_lake_canyon_holes     = cinnabar_lake_holes     + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_canyon_holes])
+cinnabar_lake_mountain_holes   = cinnabar_lake_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_mountain_holes])
+cinnabar_mountain_lake_holes   = cinnabar_mountain_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_lake_holes])
+cinnabar_mountain_canyon_holes = cinnabar_mountain_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_canyon_holes])
+cinnabar_canyon_lake_holes     = cinnabar_canyon_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_lake_holes])
+cinnabar_canyon_mountain_holes = cinnabar_canyon_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_mountain_holes])
 
 cinnabar_mountain_lake_tees = [
   {'gender': 'mens',   'name': 'Hawk',        'rating': 73.6, 'slope': 139 },
@@ -512,6 +514,8 @@ DBGolfCourses = (
   {'name': 'Cinnabar Hills Mountain/Lake',    'holes': cinnabar_mountain_lake_holes, 'tees': cinnabar_mountain_lake_tees},  
   {'name': 'Cinnabar Hills Mountain/Canyon',  'holes': cinnabar_mountain_canyon_holes, 'tees': cinnabar_mountain_canyon_tees },  
   {'name': 'Cinnabar Hills Lake/Mountain',    'holes': cinnabar_lake_mountain_holes, 'tees': cinnabar_mountain_lake_tees},  
+  {'name': 'Cinnabar Hills Canyon/Lake',      'holes': cinnabar_canyon_lake_holes, 'tees': cinnabar_lake_canyon_tees},  
+  {'name': 'Cinnabar Hills Canyon/Mountain',  'holes': cinnabar_canyon_mountain_holes, 'tees': cinnabar_mountain_canyon_tees},  
   {'name': 'Sunnyvale',                       'holes': sunnyvale_men_holes, 'tees': sunnyvale_tees},  
   {'name': 'Shoreline Golf Links',            'holes': shoreline_men_holes, 'tees': shoreline_tees},  
 )
