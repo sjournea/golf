@@ -400,6 +400,7 @@ cinnabar_mountain_holes = (
 cinnabar_lake_canyon_holes     = cinnabar_lake_holes     + cinnabar_canyon_holes
 cinnabar_mountain_lake_holes   = cinnabar_mountain_holes + cinnabar_lake_holes
 cinnabar_mountain_canyon_holes = cinnabar_mountain_holes + cinnabar_canyon_holes
+cinnabar_lake_mountain_holes   = cinnabar_lake_holes + cinnabar_mountain_holes 
 
 cinnabar_mountain_lake_tees = [
   {'gender': 'mens',   'name': 'Hawk',        'rating': 73.6, 'slope': 139 },
@@ -450,6 +451,7 @@ DBGolfCourses = (
   {'name': 'Cinnabar Hills Lake/Canyon',      'holes': cinnabar_lake_canyon_holes, 'tees': cinnabar_lake_canyon_tees },  
   {'name': 'Cinnabar Hills Mountain/Lake',    'holes': cinnabar_mountain_lake_holes, 'tees': cinnabar_mountain_lake_tees},  
   {'name': 'Cinnabar Hills Mountain/Canyon',  'holes': cinnabar_mountain_canyon_holes, 'tees': cinnabar_mountain_canyon_tees },  
+  {'name': 'Cinnabar Hills Lake/Mountain',    'holes': cinnabar_lake_mountain_holes, 'tees': cinnabar_mountain_lake_tees},  
 )
 
 GolfPlayers = (
