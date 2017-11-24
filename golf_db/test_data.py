@@ -290,6 +290,270 @@ monarch_bay_tees = [
   {'gender': 'womens', 'name': 'Forward',      'rating': 69.2, 'slope': 115 },
 ]
 
+san_ramon_tees = [
+  {'gender': 'mens',   'name': 'Championship', 'rating': 71.2, 'slope': 127 },
+  {'gender': 'mens',   'name': 'Regular',      'rating': 69.5, 'slope': 120 },
+  {'gender': 'womens', 'name': 'Women Regular','rating': 75.0, 'slope': 130 },
+  {'gender': 'womens', 'name': 'Forward',      'rating': 72.7, 'slope': 126 },
+]
+
+san_ramon_men_holes = (
+  {'par': 4, 'handicap':  13},
+  {'par': 3, 'handicap':   5},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':  15},
+  {'par': 3, 'handicap':   7},
+  {'par': 5, 'handicap':   9},
+  {'par': 4, 'handicap':   3},
+
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   6},
+  {'par': 4, 'handicap':  14},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':   8},
+  {'par': 5, 'handicap':  16},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+)
+
+callippe_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 73.0, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 71.5, 'slope': 129 },
+  {'gender': 'mens',   'name': 'White',      'rating': 69.7, 'slope': 124 },
+  {'gender': 'mens',   'name': 'Yellow',     'rating': 67.9, 'slope': 118 },
+  {'gender': 'mens',   'name': 'Red',        'rating': 64.2, 'slope': 109 },
+  {'gender': 'womens', 'name': 'White',      'rating': 75.4, 'slope': 136 },
+  {'gender': 'womens', 'name': 'Yellow',     'rating': 72.8, 'slope': 131 },
+]
+
+callippe_men_holes = (
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':   7},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   9},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  15},
+  {'par': 5, 'handicap':   3},
+
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':  16},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   8},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':   6},
+)
+
+cinnabar_lake_canyon_tees = [
+  {'gender': 'mens',   'name': 'Hawk',        'rating': 73.0, 'slope': 140 },
+  {'gender': 'mens',   'name': 'Cinnabar',    'rating': 71.3, 'slope': 137 },
+  {'gender': 'mens',   'name': 'Cinn/Quick',  'rating': 69.7, 'slope': 135 },
+  {'gender': 'mens',   'name': 'Quicksilver', 'rating': 68.4, 'slope': 130 },
+  {'gender': 'womens', 'name': 'Quicksilver', 'rating': 73.6, 'slope': 141 },
+  {'gender': 'womens', 'name': 'Quick/Oak',   'rating': 70.8, 'slope': 126 },
+  {'gender': 'womens', 'name': 'Oak',         'rating': 69.9, 'slope': 125 },
+]
+
+cinnabar_lake_holes = (
+  {'par': 5, 'handicap':   9},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':  13},
+  {'par': 5, 'handicap':   5},
+  {'par': 3, 'handicap':   7},
+  {'par': 4, 'handicap':  13},
+)
+
+cinnabar_canyon_holes = (
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':  15},
+  {'par': 3, 'handicap':  17},
+  {'par': 5, 'handicap':   1},
+  {'par': 4, 'handicap':  11},
+  {'par': 3, 'handicap':   3},
+  {'par': 5, 'handicap':   5},
+)
+
+cinnabar_mountain_holes = (
+  {'par': 5, 'handicap':   9},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  13},
+  {'par': 3, 'handicap':  11},
+  {'par': 5, 'handicap':  15},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   7},
+)
+
+cinnabar_lake_canyon_holes     = cinnabar_lake_holes     + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_canyon_holes])
+cinnabar_lake_mountain_holes   = cinnabar_lake_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_mountain_holes])
+cinnabar_mountain_lake_holes   = cinnabar_mountain_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_lake_holes])
+cinnabar_mountain_canyon_holes = cinnabar_mountain_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_canyon_holes])
+cinnabar_canyon_lake_holes     = cinnabar_canyon_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_lake_holes])
+cinnabar_canyon_mountain_holes = cinnabar_canyon_holes + tuple([{ 'par':dct['par'], 'handicap': dct['handicap']+1} for dct in cinnabar_mountain_holes])
+
+cinnabar_mountain_lake_tees = [
+  {'gender': 'mens',   'name': 'Hawk',        'rating': 73.6, 'slope': 139 },
+  {'gender': 'mens',   'name': 'Cinnabar',    'rating': 71.1, 'slope': 134 },
+  {'gender': 'mens',   'name': 'Cinn/Quick',  'rating': 69.2, 'slope': 132 },
+  {'gender': 'mens',   'name': 'Quicksilver', 'rating': 67.8, 'slope': 127 },
+  {'gender': 'womens', 'name': 'Quicksilver', 'rating': 73.0, 'slope': 139 },
+  {'gender': 'womens', 'name': 'Quick/Oak',   'rating': 71.0, 'slope': 125 },
+  {'gender': 'womens', 'name': 'Oak',         'rating': 70.0, 'slope': 125 },
+]
+
+cinnabar_mountain_canyon_tees = [
+  {'gender': 'mens',   'name': 'Hawk',        'rating': 72.6, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Cinnabar',    'rating': 70.6, 'slope': 132 },
+  {'gender': 'mens',   'name': 'Cinn/Quick',  'rating': 68.7, 'slope': 129 },
+  {'gender': 'mens',   'name': 'Quicksilver', 'rating': 67.2, 'slope': 127 },
+  {'gender': 'womens', 'name': 'Quicksilver', 'rating': 72.0, 'slope': 138 },
+  {'gender': 'womens', 'name': 'Quick/Oak',   'rating': 70.0, 'slope': 127 },
+  {'gender': 'womens', 'name': 'Oak',         'rating': 68.9, 'slope': 126 },
+]
+
+sunnyvale_tees = [
+  {'gender': 'mens',   'name': 'Blue',       'rating': 70.1, 'slope': 117 },
+  {'gender': 'mens',   'name': 'White',      'rating': 67.9, 'slope': 110 },
+  {'gender': 'mens',   'name': 'Red',        'rating': 65.4, 'slope': 106 },
+  {'gender': 'womens', 'name': 'White',      'rating': 73.1, 'slope': 128 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 69.8, 'slope': 118 },
+]
+
+sunnyvale_men_holes = (
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   5},
+  {'par': 5, 'handicap':  11},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':   9},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   3},
+
+  {'par': 5, 'handicap':  14},
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':  18},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':  12},
+  {'par': 3, 'handicap':   6},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   4},
+)
+
+shoreline_tees = [
+  {'gender': 'mens',   'name': 'Blue',       'rating': 71.9, 'slope': 127 },
+  {'gender': 'mens',   'name': 'White',      'rating': 69.3, 'slope': 123 },
+  {'gender': 'mens',   'name': 'Red',        'rating': 66.5, 'slope': 116 },
+  {'gender': 'womens', 'name': 'White',      'rating': 75.0, 'slope': 131 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 71.1, 'slope': 123 },
+]
+
+shoreline_men_holes = (
+  {'par': 5, 'handicap':  10},
+  {'par': 4, 'handicap':   6},
+  {'par': 4, 'handicap':  12},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  14},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  16},
+  {'par': 5, 'handicap':   8},
+
+  {'par': 5, 'handicap':  17},
+  {'par': 3, 'handicap':   7},
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   3},
+  {'par': 5, 'handicap':  13},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   9},
+)
+
+poppy_ridge_chardonnay_holes = [
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':  17},
+  {'par': 3, 'handicap':  11},
+  {'par': 4, 'handicap':   9},
+  {'par': 5, 'handicap':   5},
+  {'par': 4, 'handicap':   3},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':  15},
+]
+
+poppy_ridge_merlot_holes = [
+  {'par': 4, 'handicap':   3},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':   7},
+  {'par': 5, 'handicap':  11},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  17},
+  {'par': 5, 'handicap':   9},
+]
+
+poppy_ridge_zinfandel_holes = [
+  {'par': 4, 'handicap':  17},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':   7},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  13},
+  {'par': 5, 'handicap':   9},
+  {'par': 4, 'handicap':   3},
+]
+
+poppy_ridge_merlot_zinfandel_holes  = poppy_ridge_merlot_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_zinfandel_holes]
+poppy_ridge_merlot_chardonnay_holes = poppy_ridge_merlot_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_chardonnay_holes]
+poppy_ridge_chardonnay_merlot_holes = poppy_ridge_chardonnay_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_merlot_holes]
+poppy_ridge_chardonnay_zinfandel_holes = poppy_ridge_chardonnay_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_zinfandel_holes]
+poppy_ridge_zinfandel_chardonnay_holes = poppy_ridge_zinfandel_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_chardonnay_holes]
+poppy_ridge_zinfandel_merlot_holes = poppy_ridge_zinfandel_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_merlot_holes]
+
+poppy_ridge_merlot_chardonnay_tees = [
+  {'gender': 'mens',   'name': 'Black', 'rating': 74.8, 'slope': 135 },
+  {'gender': 'mens',   'name': 'Blue',  'rating': 72.9, 'slope': 130 },
+  {'gender': 'mens',   'name': 'White', 'rating': 70.9, 'slope': 126 },
+  {'gender': 'mens',   'name': 'Gold',  'rating': 65.8, 'slope': 118 },
+  {'gender': 'womens', 'name': 'White', 'rating': 75.3, 'slope': 133 },
+  {'gender': 'womens', 'name': 'Gold',  'rating': 69.5, 'slope': 121 },
+]
+
+poppy_ridge_chardonnay_zinfandel_tees = [
+  {'gender': 'mens',   'name': 'Black', 'rating': 74.3, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Blue',  'rating': 72.4, 'slope': 132 },
+  {'gender': 'mens',   'name': 'White', 'rating': 70.2, 'slope': 128 },
+  {'gender': 'mens',   'name': 'Gold',  'rating': 66.0, 'slope': 120 },
+  {'gender': 'womens', 'name': 'White', 'rating': 75.3, 'slope': 135 },
+  {'gender': 'womens', 'name': 'Gold',  'rating': 70.9, 'slope': 126 },
+]
+
+poppy_ridge_zinfandel_merlot_tees = [
+  {'gender': 'mens',   'name': 'Black', 'rating': 74.5, 'slope': 137 },
+  {'gender': 'mens',   'name': 'Blue',  'rating': 72.7, 'slope': 133 },
+  {'gender': 'mens',   'name': 'White', 'rating': 70.7, 'slope': 127 },
+  {'gender': 'mens',   'name': 'Gold',  'rating': 65.8, 'slope': 119 },
+  {'gender': 'womens', 'name': 'White', 'rating': 75.5, 'slope': 134 },
+  {'gender': 'womens', 'name': 'Gold',  'rating': 70.4, 'slope': 123 },
+]
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -301,6 +565,12 @@ GolfCourses = (
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
   {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
+  {'name': 'Poppy Ridge Merlot/Zinfandel',     'holes': poppy_ridge_merlot_zinfandel_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
+  {'name': 'Poppy Ridge Merlot/Chardonnay',    'holes': poppy_ridge_merlot_chardonnay_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Merlot',    'holes': poppy_ridge_chardonnay_merlot_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
 )
 
 DBGolfCourses = (
@@ -314,6 +584,22 @@ DBGolfCourses = (
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
   {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
+  {'name': 'San Ramon',                  'holes': san_ramon_men_holes, 'tees': san_ramon_tees},  
+  {'name': 'Callippe Preserve',          'holes': callippe_men_holes, 'tees': callippe_tees},  
+  {'name': 'Cinnabar Hills Lake/Canyon',      'holes': cinnabar_lake_canyon_holes, 'tees': cinnabar_lake_canyon_tees },  
+  {'name': 'Cinnabar Hills Mountain/Lake',    'holes': cinnabar_mountain_lake_holes, 'tees': cinnabar_mountain_lake_tees},  
+  {'name': 'Cinnabar Hills Mountain/Canyon',  'holes': cinnabar_mountain_canyon_holes, 'tees': cinnabar_mountain_canyon_tees },  
+  {'name': 'Cinnabar Hills Lake/Mountain',    'holes': cinnabar_lake_mountain_holes, 'tees': cinnabar_mountain_lake_tees},  
+  {'name': 'Cinnabar Hills Canyon/Lake',      'holes': cinnabar_canyon_lake_holes, 'tees': cinnabar_lake_canyon_tees},  
+  {'name': 'Cinnabar Hills Canyon/Mountain',  'holes': cinnabar_canyon_mountain_holes, 'tees': cinnabar_mountain_canyon_tees},  
+  {'name': 'Sunnyvale',                       'holes': sunnyvale_men_holes, 'tees': sunnyvale_tees},  
+  {'name': 'Shoreline Golf Links',            'holes': shoreline_men_holes, 'tees': shoreline_tees},  
+  {'name': 'Poppy Ridge Merlot/Zinfandel',     'holes': poppy_ridge_merlot_zinfandel_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
+  {'name': 'Poppy Ridge Merlot/Chardonnay',    'holes': poppy_ridge_merlot_chardonnay_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Merlot',    'holes': poppy_ridge_chardonnay_merlot_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
 )
 
 GolfPlayers = (
@@ -327,13 +613,15 @@ GolfPlayers = (
 )
 
 DBGolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.9, 'gender': 'man'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 19.2, 'gender': 'man'},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.4, 'gender': 'man'},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
   {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 19.3, 'gender': 'man'},
   {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
   {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frog',   'handicap': 11.2, 'gender': 'woman'},
-  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6,  'gender': 'woman'},
+  {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'GT',     'handicap': 22.5, 'gender': 'man'},
+  {'email':'spike@tl.com',    'first_name': 'John',  'last_name': 'Molcillo', 'nick_name': 'Spike',  'handicap': 17.5, 'gender': 'man'},
 )
 
 TestGolfPlayers = [

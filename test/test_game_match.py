@@ -2,8 +2,10 @@ import unittest
 import datetime
 
 from golf_db.round import GolfRound
+from golf_db.player import GolfPlayer
+from golf_db.course import GolfCourse
 #from golf_db.test_data import GolfRounds,GolfCourses, GolfPlayers
-from golf_db.db import GolfDB
+from golf_db.db import GolfDBAdmin
 #from golf_db.game import GolfGame, SkinsGame, NetGame
 from golf_db.game_match import MatchGame
 #from golf_db.game_factory import GolfGameFactory
@@ -13,7 +15,7 @@ from golf_db.game_match import MatchGame
 class GolfMatchGameTest(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    cls.db = GolfDB(database='golf_game_test')
+    cls.db = GolfDBAdmin(database='golf_game_test')
     cls.db.create()
     
   def setUp(self):
@@ -23,10 +25,10 @@ class GolfMatchGameTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake']
     
     self.gr = GolfRound()
-    self.gr.course = self.db.courseFind(course_name)
+    self.gr.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     self.gr.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       self.gr.addPlayer(pl, tee_name)
 
   def test_game_init(self):

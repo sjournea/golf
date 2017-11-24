@@ -1,123 +1,211 @@
 """db.py - databae wrapper for golf objects.
-
 """
+from abc import ABCMeta, abstractmethod, abstractproperty
+from pymongo import MongoClient, errors
+
 from .course import GolfCourse
 from .player import GolfPlayer
 from .round import GolfRound
 from .test_data import DBGolfCourses, DBGolfPlayers, DBGolfRounds
 
-from pymongo import errors
-from util.db_mongo import MongoDB
+from util.tl_logger import TLLog
+
+log = TLLog.getLogger( 'golfdb' )
 
 class GolfDBException(Exception):
   pass
 
+
+class DBConnect:
+  """Abstract base databse connection class."""
+  __metaclass__ = ABCMeta
+  def __init__(self, db, **kwargs):
+    self.db = db
+  
+  @abstractmethod
+  def databases(self, **kwargs):
+    """Return dictionaries of database names with list of collection namess """
+    pass
+
+  @abstractmethod
+  def drop_database(self, database=None):
+    """Remove a database."""
+    pass
+  
+  @abstractproperty
+  def courses(self):
+    return None
+  
+  @abstractproperty
+  def players(self):
+    return None
+  
+  @abstractproperty
+  def rounds(self):
+    return None
+  
+
+class DBConnectMongo(DBConnect):
+  DEF_HOST = 'localhost'
+  DEF_PORT = 27017
+  DATABASE = 'golf'
+  
+  def __init__(self, db, **kwargs):
+    DBConnect.__init__(self, db, **kwargs)
+    self.host = kwargs.get('host', self.DEF_HOST)
+    self.port = kwargs.get('port', self.DEF_PORT)
+    self._conn = MongoClient(host=self.host, port=self.port)
+    self._database = self._conn[kwargs.get('database', self.DATABASE)]
+    self._courses = self._database.courses
+    self._players = self._database.players
+    self._rounds = self._database.rounds
+    
+  lstDBIgnore = ['local']
+  lstCollIgnore = ['system.indexes']
+  def databases(self, **kwargs):
+    """ return dictionaries of database names with list of collection namess """
+    show_all = kwargs.get('show_all') 
+    log.debug( 'databases() - show_all:%s' % show_all)
+    dct = {}
+    lstDBNames = self._conn.database_names()
+    if not show_all:
+      lstDBNames = [dbName for dbName in lstDBNames if dbName not in self.lstDBIgnore]
+    for dbName in lstDBNames:
+      db = self._conn[dbName]
+      lstCollNames = db.collection_names()
+      if not show_all:
+        lstCollNames = [colName for colName in lstCollNames if colName not in self.lstCollIgnore]
+      dct[dbName] = lstCollNames
+    return dct
+
+  def drop_database(self, database=None):
+    """Remove a database."""
+    database = str(database) if database else self._database
+    self._conn.drop_database(database)
+  
+  @property
+  def courses(self):
+    return self._courses
+  
+  @property
+  def players(self):
+    return self._players
+  
+  @property
+  def rounds(self):
+    return self._rounds
+  
+  
 class GolfDB(object):
   """Database wrapper for golf objects."""
   DATABASE = 'golf'
-  COURSE = 'course'
-  PLAYERS = 'players'
-  ROUNDS = 'rounds'
-  def __init__(self, **kwargs):
-    self.host = kwargs.get('host', MongoDB.DEF_HOST)
-    self.port = kwargs.get('port', MongoDB.DEF_PORT)
-    self.database = kwargs.get('database', self.DATABASE)
-    self.db = MongoDB(self.host, self.port)
   
-  def create(self, **kwargs):
-    """Create all collections and indexes needed."""
-    # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
-    with self.db as session:
-      self.db.drop_database(self.database)
-      self.db.insert_many(self.database, 'players', DBGolfPlayers)
-      self.db.insert_many(self.database, 'courses', DBGolfCourses)
-      self.db.insert_many(self.database, 'rounds', DBGolfRounds)
-      # create index on player email
-      db = session.conn[self.database]
-      db.players.create_index('email', unique=True, background=True)
-      
-  def remove(self, **kwargs):
-    """Remove database."""
-    with self.db as session:
-      self.db.drop_database(self.database)
+  def __init__(self, **kwargs):
+    self.db_type = kwargs.get('db_type', 'mongo')
+    self.database = kwargs.get('database', self.DATABASE)
+    self.conn = None
+    self._setup_connection(**kwargs)
 
+  def _setup_connection(self, **kwargs):
+    """Create all parameters needed for db_type."""
+    if self.db_type == 'mongo':
+      self.conn = DBConnectMongo(self, **kwargs)
+    elif self.db_type == 'rest_api':
+      raise GolfDBException('db_type "{}" not implemented (yet).'.format(self.db_type))
+    else:
+      raise GolfDBException('db_type "{}" not supported.'.format(self.db_type))
+
+  def databases(self):
+    return self.conn.databases()
+  
+  @property
+  def courses(self):
+    return self.conn.courses
+  
+  @property
+  def players(self):
+    return self.conn.players
+  
+  @property
+  def rounds(self):
+    return self.conn.rounds
+  
   def courseList(self, **kwargs):
     """Return a list of courses."""
-    return self._buildList('courses', GolfCourse, **kwargs)
-  
-  def courseCount(self, **kwargs):
-    """Return count of courses."""
-    return self._countCollection('courses', **kwargs)
-  
-  def courseFind(self, name):
-    """Return a matching course by name."""
-    return self._findOne('courses', GolfCourse, query={'name': { '$regex': name}})
+    return self._buildList2(self.courses, **kwargs)
+
+  def courseFind(self, name, **kwargs):
+    """Return a list of courses."""
+    return self._buildList2(self.courses, filter={'name': { '$regex': name}}, **kwargs)
   
   def playerList(self, **kwargs):
     """Return a list of all players."""
-    return self._buildList('players', GolfPlayer, **kwargs)
+    return self._buildList2(self.players, **kwargs)
   
-  def playerCount(self, **kwargs):
-    """Return count of players."""
-    return self._countCollection('players', **kwargs)
-  
-  def playerFind(self, email):
+  def playerFind(self, email, **kwargs):
     """Return a matching player by email."""
-    return self._findOne('players', GolfPlayer, query={'email': { '$regex': email}})
+    return self._buildList2(self.players, filter={'email': { '$regex': email}}, **kwargs)
 
   def playerSave(self, player):
     """Return a matching player by email."""
-    return self._saveCollection('players', player.toDict())
+    return self._saveCollection2(self.players, player.toDict())
 
   def roundList(self, **kwargs):
     """Return a list of all rounds."""
-    return self._buildList('rounds', GolfRound, **kwargs)
+    return self._buildList2(self.rounds, **kwargs)
   
-  def roundCount(self, **kwargs):
-    """Return count of rounds."""
-    return self._countCollection('rounds', **kwargs)
-  
-  def roundFind(self, name):
+  def roundFind(self, name, **kwargs):
     """Return a matching round by course name."""
-    return self._findOne('rounds', GolfRound, query={'course.name': { '$regex': name}})
+    return self._buildList2(self.rounds, filter={'course.name': { '$regex': name}}, **kwargs)
 
-  def _buildList(self, collection, DBClass, **kwargs):
+  def _buildList2(self, collection, **kwargs):
     """Return a list of all courses by name."""
     lst = []
+    filter = kwargs.get('filter', {})
     limit = kwargs.get('limit', 20)
     skip = kwargs.get('skip', 0)
-    with self.db as session:
-      db = session.conn[self.database]
-      co = db[collection]
-      for dct in co.find().limit(limit).skip(skip):
-        lst.append(DBClass(dct=dct))
+    dbclass = kwargs.get('dbclass')
+    lst = [dct for dct in collection.find(filter).limit(limit).skip(skip)]
+    if dbclass:
+      lst = [dbclass(dct=dct) for dct in lst]
     return lst
     
-  def _findOne(self, collection, DBClass, **kwargs):
+  def _findOne2(self, collection, **kwargs):
     """Return a list of all courses by name."""
     query = kwargs.get('query', {})
-    with self.db as session:
-      db = session.conn[self.database]
-      co = db[collection]
-      dct = co.find_one(query)
-      return DBClass(dct=dct) if dct else None
+    dbclass = kwargs.get('dbclass')
+    dct = collection.find_one(query)
+    if dct and dbclass:
+      dct = dbclass(dct=dct)
+    return dct
 
-  def _countCollection(self, collection, **kwargs):
-    """Return a list of all courses by name."""
-    lst = []
-    with self.db as session:
-      db = session.conn[self.database]
-      co = db[collection]
-      return co.count()
-
-  def _saveCollection(self, collection, dct):
+  def _saveCollection2(self, collection, dct):
     """Save dict to collection."""
     try:
-      lst = []
-      with self.db as session:
-        db = session.conn[self.database]
-        co = db[collection]
-        co.save(dct)
+      collection.save(dct)
     except errors.DuplicateKeyError, ex:
       raise GolfDBException('Duplicate key error')
       
+
+class GolfDBAdmin(GolfDB):
+  """Database wrapper for golf admin objects."""
+
+  def create(self, **kwargs):
+    """Create a new golf database and add all collections and indexes needed."""
+    players = kwargs.get('players', DBGolfPlayers)
+    courses = kwargs.get('courses', DBGolfCourses)
+    rounds = kwargs.get('rounds', DBGolfRounds)
+    # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
+    self.conn.drop_database()
+    self.conn.players.insert_many(players)
+    self.conn.courses.insert_many(courses)
+    self.conn.rounds.insert_many(rounds)
+    # create index on player email
+    self.conn.players.create_index('email', unique=True, background=True)
+
+  def remove(self, database=None):
+    """Delete a database."""
+    self.conn.drop_database(database)
+
+      
+  

@@ -1,14 +1,18 @@
-Golf game TODO 4/7/17
+Bugs
+  Net game should have opton for full net score.
+Golf game TODO 11/23/17
   Python prototype
+    *
     * getDescription() -- full game description.
     * Games need to share code.
-      - put in GolfGame class for now.
---> * Games use less then all players
+      - put in GolfGame class for now. 
+    * Games use less then all players
     * Games support teams
       - Match - best ball
     * More Games
       Nassau - support press(?)
       Wolf
+      Snake - 3 putts 
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
    * Mongo DB working
@@ -26,22 +30,3 @@ Golf game TODO 4/7/17
   iPhone - Swift
     * Get old baseball xcode project workin on new Mac.
 
-Completed:
-  * Abstract GolfGame class
-    * game class contains ALL information for game
-      - players (GolfScore), subset or all from round players
-      - gross/net/extras
-      - course handicap
-    * Games completed:
-      - GrossGame
-      - NetGame
-      - SkinsGame
-      - SixPoint - 3 player game
-      - EightyOne - 3 player game
-      - Match 
-    * Add ESC to GrossGame
-    * split GolfGames into separate modules.
-      game_gross.py, game_net.py, game_skins.py
-    * GolfGame abstract - ABCMeta in python.
-    * getStatus() -- one line summary.
- * Add round script generator (or runner).

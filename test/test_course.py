@@ -3,7 +3,7 @@ import unittest
 from golf_db.course import GolfCourse
 from golf_db.hole import GolfHole
 from golf_db.test_data import GolfCourses
-from golf_db.db import GolfDB
+from golf_db.db import GolfDBAdmin
 from golf_db.exceptions import GolfException,DocValidateFail
 
 class GolfCourseTestCase(unittest.TestCase):
@@ -99,9 +99,11 @@ class GolfCourseTestCase(unittest.TestCase):
     
   def test_get_tee(self):
     # Find Lake Chabot 
-    db = GolfDB(database='golf_test')
+    db = GolfDBAdmin(database='golf_test')
     db.create()
-    course = db.courseFind('Lake Chabot')
+    lst = db.courseFind('Lake Chabot', dbclass=GolfCourse)
+    self.assertEqual(len(lst), 1)
+    course = lst[0]
     # test get tee by nme and gender, default gender is "mens"
     tee = course.getTee('Blue')
     self.assertDictEqual(tee, {'gender':'mens', 'name':'Blue', 'rating': 68.9, 'slope': 119})
