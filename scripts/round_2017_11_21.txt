@@ -1,0 +1,121 @@
+# create a round and add players scores
+gcr Callippe 2017-11-21
+gad sjournea White
+gad spike White
+# add games
+gag gross
+gag net
+gag skins
+# start game
+gst 
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 1
+gac 1 5 6
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 2
+gac 2 5 4
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 3
+gac 3 6 6
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 4
+gac 4 5 4
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 5
+gac 5 5 6
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 6
+gac 6 4 3
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 7
+gac 7 7 5
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 8
+gac 8 5 6
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 9
+gac 9 9 7
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause enable
+# hole 10
+gac 10 5 7
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 11
+gac 11 7 5
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 12
+gac 12 6 6
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 13
+gac 13 4 3
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 14
+gac 14 5 7
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 15
+gac 15 8 7
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 16
+gac 16 3 4
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 17
+gac 17 8 6
+gps gross net skins
+gpl gross net skins
+gpt gross net skins
+pause
+# hole 18
+gac 18 7 8
+gps gross net skins
+gpl gross net skins
+gpt gross net skins

@@ -290,6 +290,67 @@ monarch_bay_tees = [
   {'gender': 'womens', 'name': 'Forward',      'rating': 69.2, 'slope': 115 },
 ]
 
+san_ramon_tees = [
+  {'gender': 'mens',   'name': 'Championship', 'rating': 71.2, 'slope': 127 },
+  {'gender': 'mens',   'name': 'Regular',      'rating': 69.5, 'slope': 120 },
+  {'gender': 'womens', 'name': 'Women Regular','rating': 75.0, 'slope': 130 },
+  {'gender': 'womens', 'name': 'Forward',      'rating': 72.7, 'slope': 126 },
+]
+
+san_ramon_men_holes = (
+  {'par': 4, 'handicap':  13},
+  {'par': 3, 'handicap':   5},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':  15},
+  {'par': 3, 'handicap':   7},
+  {'par': 5, 'handicap':   9},
+  {'par': 4, 'handicap':   3},
+
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   6},
+  {'par': 4, 'handicap':  14},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':   8},
+  {'par': 5, 'handicap':  16},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+)
+
+callippe_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 73.0, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 71.5, 'slope': 129 },
+  {'gender': 'mens',   'name': 'White',      'rating': 69.7, 'slope': 124 },
+  {'gender': 'mens',   'name': 'Yellow',     'rating': 67.9, 'slope': 118 },
+  {'gender': 'mens',   'name': 'Red',        'rating': 64.2, 'slope': 109 },
+  {'gender': 'womens', 'name': 'White',      'rating': 75.4, 'slope': 136 },
+  {'gender': 'womens', 'name': 'Yellow',     'rating': 72.8, 'slope': 131 },
+]
+
+callippe_men_holes = (
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':   7},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   9},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  15},
+  {'par': 5, 'handicap':   3},
+
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':  16},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   8},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':   6},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -314,6 +375,8 @@ DBGolfCourses = (
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
   {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
+  {'name': 'San Ramon',       'holes': san_ramon_men_holes, 'tees': san_ramon_tees},  
+  {'name': 'Callippe Preserve', 'holes': callippe_men_holes, 'tees': callippe_tees},  
 )
 
 GolfPlayers = (
@@ -327,13 +390,15 @@ GolfPlayers = (
 )
 
 DBGolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.9, 'gender': 'man'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 19.2, 'gender': 'man'},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.4, 'gender': 'man'},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
   {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 19.3, 'gender': 'man'},
   {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
   {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frog',   'handicap': 11.2, 'gender': 'woman'},
-  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6,  'gender': 'woman'},
+  {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'GT',     'handicap': 22.5, 'gender': 'man'},
+  {'email':'spike@tl.com',    'first_name': 'John',  'last_name': 'Molcillo', 'nick_name': 'Spike',  'handicap': 17.5, 'gender': 'man'},
 )
 
 TestGolfPlayers = [
