@@ -484,6 +484,76 @@ shoreline_men_holes = (
   {'par': 4, 'handicap':   9},
 )
 
+poppy_ridge_chardonnay_holes = [
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':  17},
+  {'par': 3, 'handicap':  11},
+  {'par': 4, 'handicap':   9},
+  {'par': 5, 'handicap':   5},
+  {'par': 4, 'handicap':   3},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':  15},
+]
+
+poppy_ridge_merlot_holes = [
+  {'par': 4, 'handicap':   3},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':   7},
+  {'par': 5, 'handicap':  11},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  17},
+  {'par': 5, 'handicap':   9},
+]
+
+poppy_ridge_zinfandel_holes = [
+  {'par': 4, 'handicap':  17},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':   7},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  13},
+  {'par': 5, 'handicap':   9},
+  {'par': 4, 'handicap':   3},
+]
+
+poppy_ridge_merlot_zinfandel_holes  = poppy_ridge_merlot_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_zinfandel_holes]
+poppy_ridge_merlot_chardonnay_holes = poppy_ridge_merlot_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_chardonnay_holes]
+poppy_ridge_chardonnay_merlot_holes = poppy_ridge_chardonnay_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_merlot_holes]
+poppy_ridge_chardonnay_zinfandel_holes = poppy_ridge_chardonnay_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_zinfandel_holes]
+poppy_ridge_zinfandel_chardonnay_holes = poppy_ridge_zinfandel_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_chardonnay_holes]
+poppy_ridge_zinfandel_merlot_holes = poppy_ridge_zinfandel_holes + [{'par':dct['par'], 'handicap': dct['handicap']+1} for dct in poppy_ridge_merlot_holes]
+
+poppy_ridge_merlot_chardonnay_tees = [
+  {'gender': 'mens',   'name': 'Black', 'rating': 74.8, 'slope': 135 },
+  {'gender': 'mens',   'name': 'Blue',  'rating': 72.9, 'slope': 130 },
+  {'gender': 'mens',   'name': 'White', 'rating': 70.9, 'slope': 126 },
+  {'gender': 'mens',   'name': 'Gold',  'rating': 65.8, 'slope': 118 },
+  {'gender': 'womens', 'name': 'White', 'rating': 75.3, 'slope': 133 },
+  {'gender': 'womens', 'name': 'Gold',  'rating': 69.5, 'slope': 121 },
+]
+
+poppy_ridge_chardonnay_zinfandel_tees = [
+  {'gender': 'mens',   'name': 'Black', 'rating': 74.3, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Blue',  'rating': 72.4, 'slope': 132 },
+  {'gender': 'mens',   'name': 'White', 'rating': 70.2, 'slope': 128 },
+  {'gender': 'mens',   'name': 'Gold',  'rating': 66.0, 'slope': 120 },
+  {'gender': 'womens', 'name': 'White', 'rating': 75.3, 'slope': 135 },
+  {'gender': 'womens', 'name': 'Gold',  'rating': 70.9, 'slope': 126 },
+]
+
+poppy_ridge_zinfandel_merlot_tees = [
+  {'gender': 'mens',   'name': 'Black', 'rating': 74.5, 'slope': 137 },
+  {'gender': 'mens',   'name': 'Blue',  'rating': 72.7, 'slope': 133 },
+  {'gender': 'mens',   'name': 'White', 'rating': 70.7, 'slope': 127 },
+  {'gender': 'mens',   'name': 'Gold',  'rating': 65.8, 'slope': 119 },
+  {'gender': 'womens', 'name': 'White', 'rating': 75.5, 'slope': 134 },
+  {'gender': 'womens', 'name': 'Gold',  'rating': 70.4, 'slope': 123 },
+]
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -495,6 +565,12 @@ GolfCourses = (
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
   {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
+  {'name': 'Poppy Ridge Merlot/Zinfandel',     'holes': poppy_ridge_merlot_zinfandel_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
+  {'name': 'Poppy Ridge Merlot/Chardonnay',    'holes': poppy_ridge_merlot_chardonnay_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Merlot',    'holes': poppy_ridge_chardonnay_merlot_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
 )
 
 DBGolfCourses = (
@@ -518,6 +594,12 @@ DBGolfCourses = (
   {'name': 'Cinnabar Hills Canyon/Mountain',  'holes': cinnabar_canyon_mountain_holes, 'tees': cinnabar_mountain_canyon_tees},  
   {'name': 'Sunnyvale',                       'holes': sunnyvale_men_holes, 'tees': sunnyvale_tees},  
   {'name': 'Shoreline Golf Links',            'holes': shoreline_men_holes, 'tees': shoreline_tees},  
+  {'name': 'Poppy Ridge Merlot/Zinfandel',     'holes': poppy_ridge_merlot_zinfandel_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
+  {'name': 'Poppy Ridge Merlot/Chardonnay',    'holes': poppy_ridge_merlot_chardonnay_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Merlot',    'holes': poppy_ridge_chardonnay_merlot_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
+  {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
+  {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
 )
 
 GolfPlayers = (

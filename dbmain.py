@@ -100,7 +100,7 @@ class GolfMenu(Menu):
       print '{:>2} - {}'.format(n+1,player)
 
   def _listCourses(self):
-    courses = self.gdb.courseList(dbclass=GolfCourse)
+    courses = self.gdb.courseList(dbclass=GolfCourse, limit=100)
     for n,course in enumerate(courses):
       print '{:>2} - {}'.format(n+1,course)
 
