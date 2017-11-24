@@ -101,7 +101,9 @@ class GolfCourseTestCase(unittest.TestCase):
     # Find Lake Chabot 
     db = GolfDB(database='golf_test')
     db.create()
-    course = db.courseFind('Lake Chabot')
+    lst = db.courseFind('Lake Chabot', dbclass=GolfCourse)
+    self.assertEqual(len(lst), 1)
+    course = lst[0]
     # test get tee by nme and gender, default gender is "mens"
     tee = course.getTee('Blue')
     self.assertDictEqual(tee, {'gender':'mens', 'name':'Blue', 'rating': 68.9, 'slope': 119})

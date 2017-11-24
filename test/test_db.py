@@ -1,5 +1,8 @@
 import unittest
 
+from golf_db.round import GolfRound
+from golf_db.player import GolfPlayer
+from golf_db.course import GolfCourse
 from golf_db.db import GolfDB, GolfDBException
 from golf_db.player import GolfPlayer
 
@@ -22,8 +25,7 @@ class DBTestInit(unittest.TestCase):
   def test_create(self):
     db = GolfDB(database='golf_test')
     db.create()
-    with db.db as session:
-      dctDatabases = db.db.databases()
+    dctDatabases = db.databases()
     self.assertIn('golf_test', dctDatabases)
     collections = dctDatabases['golf_test']
     expected_collections = [u'courses', u'players',u'rounds']
@@ -32,8 +34,7 @@ class DBTestInit(unittest.TestCase):
       self.assertIn(exp, collections)
     # test remove
     db.remove()
-    with db.db as session:
-      dctDatabases = db.db.databases()
+    dctDatabases = db.databases()
     self.assertNotIn('golf_test', dctDatabases)
     
 class DBTestAPI(unittest.TestCase):
@@ -44,22 +45,22 @@ class DBTestAPI(unittest.TestCase):
     cls.db.create()
       
   def test_course_api(self):
-    cnt = self.db.courseCount()
+    #cnt = self.db.courseCount()
     #print 'courses : {}'.format(cnt)
-    courses = self.db.courseList()
+    courses = self.db.courseList(dbclass=GolfCourse)
     #for course in courses:
       #print course
-    c = self.db.courseFind(courses[1].name)
+    c = self.db.courseFind(courses[1].name, dbclass=GolfCourse)[0]
     #print c
     self.assertEqual(c, courses[1])
     
   def test_player_api(self):
-    cnt = self.db.playerCount()
+    #cnt = self.db.playerCount()
     #print 'players : {}'.format(cnt)
-    players = self.db.playerList()
+    players = self.db.playerList(dbclass=GolfPlayer)
     #for player in players:
       #print player
-    p = self.db.playerFind(players[1].email)
+    p = self.db.playerFind(players[1].email, dbclass=GolfPlayer)[0]
     #print r
     self.assertEqual(p, players[1])
     
@@ -72,13 +73,13 @@ class DBTestAPI(unittest.TestCase):
     beatle.nick_name = 'NoReligion'
     
     # add and verify count
-    cnt0 = self.db.playerCount()
+    cnt0 = self.db.players.count()
     self.db.playerSave(beatle)
-    cnt = self.db.playerCount()
+    cnt = self.db.players.count()
     self.assertEqual(cnt0+1, cnt)
 
     # find and verify equal
-    p = self.db.playerFind(beatle.email)
+    p = self.db.playerFind(beatle.email, dbclass=GolfPlayer)[0]
     self.assertEqual(p, beatle)
 
     # save again and verify fails
@@ -86,12 +87,12 @@ class DBTestAPI(unittest.TestCase):
       self.db.playerSave(beatle)
     
   def test_round_api(self):
-    cnt = self.db.roundCount()
+    cnt = self.db.rounds.count()
     #print 'rounds : {}'.format(cnt)
-    rounds = self.db.roundList()
+    rounds = self.db.roundList(dbclass=GolfRound)
     #for r in rounds:
       #print r
-    r = self.db.roundFind(rounds[1].course.name)
+    r = self.db.roundFind(rounds[1].course.name, dbclass=GolfRound)[0]
     #print r
     self.assertEqual(r, rounds[1])
     

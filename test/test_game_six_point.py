@@ -2,6 +2,7 @@ import unittest
 import datetime
 
 from golf_db.round import GolfRound
+from golf_db.course import GolfCourse
 from golf_db.test_data import TestGolfPlayers
 from golf_db.db import GolfDB
 from golf_db.game_six_point import SixPointGame
@@ -22,20 +23,20 @@ class GolfSixPointGamePlayersTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake', 'spanky', 'reload']
     
     gr = GolfRound()
-    gr.course = self.db.courseFind(course_name)
+    gr.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     gr.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       gr.addPlayer(pl, tee_name)
 
     with self.assertRaises(GolfException):
       g = SixPointGame(gr, gr.scores)
 
     gr2 = GolfRound()
-    gr2.course = self.db.courseFind(course_name)
+    gr2.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     gr2.date = date_of_round
     for email in lstPlayers[:2]:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       gr2.addPlayer(pl, tee_name)
     with self.assertRaises(GolfException):
       g2 = SixPointGame(gr, gr.scores)
@@ -47,10 +48,10 @@ class GolfSixPointGamePlayersTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake', 'spanky']
     
     gr = GolfRound()
-    gr.course = self.db.courseFind(course_name)
+    gr.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     gr.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       gr.addPlayer(pl, tee_name)
 
     g = SixPointGame(gr, gr.scores)
@@ -69,7 +70,7 @@ class GolfSixPointGameTest(unittest.TestCase):
     date_of_round = datetime.datetime(2017, 3, 23)
     
     self.gr = GolfRound()
-    self.gr.course = self.db.courseFind(course_name)
+    self.gr.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     self.gr.date = date_of_round
     for dct in TestGolfPlayers[:3]:
       pl = GolfPlayer(dct=dct)

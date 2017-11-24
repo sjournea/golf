@@ -2,6 +2,8 @@ import unittest
 import datetime
 
 from golf_db.round import GolfRound
+from golf_db.course import GolfCourse
+from golf_db.player import GolfPlayer
 from golf_db.test_data import GolfRounds,GolfCourses, GolfPlayers
 from golf_db.db import GolfDB
 from golf_db.game_skins import SkinsGame
@@ -35,7 +37,7 @@ class GolfRoundTest(unittest.TestCase):
     tee_name = 'Blue'
     date_of_round = datetime.datetime(2017, 3, 23)
     r = GolfRound()
-    r.course = self.db.courseFind(course_name)
+    r.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     r.date = date_of_round
     skins = r.addGame('skins')
     gross = r.addGame('gross')
@@ -59,10 +61,10 @@ class PlayRoundTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake']
     
     r = GolfRound()
-    r.course = self.db.courseFind(course_name)
+    r.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     r.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       r.addPlayer(pl, tee_name)
     self.assertEqual(len(r.scores), 2)
     
@@ -73,10 +75,10 @@ class PlayRoundTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake']
     
     r = GolfRound()
-    r.course = self.db.courseFind(course_name)
+    r.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     r.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       r.addPlayer(pl, tee_name)
     r.addGame('skins')
     r.addGame('match')
@@ -88,10 +90,10 @@ class PlayRoundTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake']
     
     r = GolfRound()
-    r.course = self.db.courseFind(course_name)
+    r.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     r.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       r.addPlayer(pl, tee_name)
 
     r.addGame('gross')
@@ -106,10 +108,10 @@ class PlayRoundTest(unittest.TestCase):
     lstPlayers = ['sjournea', 'snake']
     
     r = GolfRound()
-    r.course = self.db.courseFind(course_name)
+    r.course = self.db.courseFind(course_name, dbclass=GolfCourse)[0]
     r.date = date_of_round
     for email in lstPlayers:
-      pl = self.db.playerFind(email)
+      pl = self.db.playerFind(email, dbclass=GolfPlayer)[0]
       r.addPlayer(pl, tee_name)
 
     gross = r.addGame('gross')
