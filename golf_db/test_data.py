@@ -422,6 +422,36 @@ cinnabar_mountain_canyon_tees = [
   {'gender': 'womens', 'name': 'Oak',         'rating': 68.9, 'slope': 126 },
 ]
 
+sunnyvale_tees = [
+  {'gender': 'mens',   'name': 'Blue',       'rating': 70.1, 'slope': 117 },
+  {'gender': 'mens',   'name': 'White',      'rating': 67.9, 'slope': 110 },
+  {'gender': 'mens',   'name': 'Red',        'rating': 65.4, 'slope': 106 },
+  {'gender': 'womens', 'name': 'White',      'rating': 73.1, 'slope': 128 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 69.8, 'slope': 118 },
+]
+
+sunnyvale_men_holes = (
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   5},
+  {'par': 5, 'handicap':  11},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':   9},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   3},
+
+  {'par': 5, 'handicap':  14},
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':  18},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':  12},
+  {'par': 3, 'handicap':   6},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   4},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -452,6 +482,7 @@ DBGolfCourses = (
   {'name': 'Cinnabar Hills Mountain/Lake',    'holes': cinnabar_mountain_lake_holes, 'tees': cinnabar_mountain_lake_tees},  
   {'name': 'Cinnabar Hills Mountain/Canyon',  'holes': cinnabar_mountain_canyon_holes, 'tees': cinnabar_mountain_canyon_tees },  
   {'name': 'Cinnabar Hills Lake/Mountain',    'holes': cinnabar_lake_mountain_holes, 'tees': cinnabar_mountain_lake_tees},  
+  {'name': 'Sunnyvale',                       'holes': sunnyvale_men_holes, 'tees': sunnyvale_tees},  
 )
 
 GolfPlayers = (
