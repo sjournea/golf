@@ -33,14 +33,14 @@ class GolfMenu(Menu):
     self.golf_round = None
     # add menu items
     self.addMenuItem( MenuItem( 'dl', '',             'Show databases.' ,                  self._showDatabases) )
-    #self.addMenuItem( MenuItem( 'dc', '<database>',   'create golf test data database.',   self._createGolfDatabase) )
-    #self.addMenuItem( MenuItem( 'dr', '<database>',   'Drop a database.',                  self._dropDatabase) )
+    self.addMenuItem( MenuItem( 'dc', '<database>',   'create golf test data database.',   self._createGolfDatabase) )
+    self.addMenuItem( MenuItem( 'dr', '<database>',   'Drop a database.',                  self._dropDatabase) )
     #self.addMenuItem( MenuItem( 'use', '<database>',  'Use a database.',                   self._useDatabase) )
     self.addMenuItem( MenuItem( 'pll',  '',           'List players.',                     self._listPlayers) )
     self.addMenuItem( MenuItem( 'plf',  '<email>',    'find players.',                     self._findPlayers) )
     self.addMenuItem( MenuItem( 'col',  '',           'List courses.',                     self._listCourses) )
     self.addMenuItem( MenuItem( 'cof',  '<course name>',           'Find a course.',       self._findCourse) )
-    #self.addMenuItem( MenuItem( 'co', '',             'Execute a command',                 self._execute))
+    self.addMenuItem( MenuItem( 'co', '',             'Execute a command',                 self._execute))
     #self.addMenuItem( MenuItem( 'cos', '',            'Get a scorecard'  ,                 self._courseGetScorecard))
     #self.addMenuItem( MenuItem( 'tp', '',             'test a put ',                       self._playerPut))
     self.addMenuItem( MenuItem( 'rol',  '',           'List rounds.',                      self._listRounds) )
@@ -48,13 +48,13 @@ class GolfMenu(Menu):
     #self.addMenuItem( MenuItem( 'rob', '',            'Round leaderboard'  ,               self._roundGetLeaderboard))
 
     self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>', 'Create a Round of Golf',      self._roundCreate))
-    #self.addMenuItem( MenuItem( 'gad', '<email> <tee>',         'Add player to Round of Golf', self._roundAddPlayer))
-    #self.addMenuItem( MenuItem( 'gag', '<game> <players>',      'Add game to Round of Golf',   self._roundAddGame))
-    #self.addMenuItem( MenuItem( 'gst', '',                      'Start Round of Golf',         self._roundStart))
-    #self.addMenuItem( MenuItem( 'gps', '<game>...',     'Print Game Scorecards',             self._roundScorecard))
-    #self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',           self._roundLeaderboard))
-    #self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Statuss',                self._roundStatus))
-    #self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',               self._roundAddScore))
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>',         'Add player to Round of Golf', self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gag', '<game> <players>',      'Add game to Round of Golf',   self._roundAddGame))
+    self.addMenuItem( MenuItem( 'gst', '',                      'Start Round of Golf',         self._roundStart))
+    self.addMenuItem( MenuItem( 'gps', '<game>...',     'Print Game Scorecards',               self._roundScorecard))
+    self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',             self._roundLeaderboard))
+    self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Status',                   self._roundStatus))
+    self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',                 self._roundAddScore))
 
     #self.addMenuItem( MenuItem( 'lag', '',                   'List games',                   self._gamesList))
 
@@ -80,12 +80,12 @@ class GolfMenu(Menu):
   def _createGolfDatabase(self):
     self.gdb.create()
 
-  def _useDatabase(self):
-    if len(self.lstCmd) < 2:
-      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    self.database = self.lstCmd[1]
-    self.gdb = GolfDB(self.database)
-    self.updateHeader()
+  #def _useDatabase(self):
+    #if len(self.lstCmd) < 2:
+      #raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    #self.database = self.lstCmd[1]
+    #self.gdb = GolfDB()
+    #self.updateHeader()
 
   def _listPlayers(self):
     players = self.gdb.playerList(dbclass=GolfPlayer)
@@ -117,17 +117,13 @@ class GolfMenu(Menu):
       print '{} - {}'.format(n,r)
       
   def _execute(self):
-    if self.database is None:
-      raise InputException( 'Database must be set with use command.')      
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    with self.db as session:
-      db = session.conn[self.database]
-      cmd = ' '.join(self.lstCmd[1:])
-      cmd_string = 'rc = db.{}'.format(cmd)
-      print 'cmd_string:"{}"'.format(cmd_string)
-      exec(cmd_string)
-      print rc
+    cmd = ' '.join(self.lstCmd[1:])
+    cmd_string = 'rc = self.gdb.conn.{}'.format(cmd)
+    print 'cmd_string:"{}"'.format(cmd_string)
+    exec(cmd_string)
+    print rc
 
   def _playerPut(self):
     if self.database is None:
@@ -183,7 +179,12 @@ class GolfMenu(Menu):
     course_name = self.lstCmd[1]
     dtPlay = datetime.datetime.strptime(self.lstCmd[2], "%Y-%m-%d")
     self.golf_round = GolfRound()
-    self.golf_round.course = self.gdb.courseFind(course_name)
+    lst_courses = self.gdb.courseFind(course_name, dbclass=GolfCourse)
+    if len(lst_courses) == 0:
+      raise InputException( 'course name "{}" not matched.'.format(course_name))
+    elif len(lst_courses) > 1:
+      raise InputException( 'course name "{}" not unique. {} matched.'.format(course_name, len(lst_courses)))
+    self.golf_round.course = lst_courses[0]
     self.golf_round.date = dtPlay
     print self.golf_round
 
@@ -192,9 +193,12 @@ class GolfMenu(Menu):
       raise InputException( 'Golf round not created')
     if len(self.lstCmd) < 3:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
-    player = self.gdb.playerFind(email=self.lstCmd[1])
-    if player is None:
+    players = self.gdb.playerFind(email=self.lstCmd[1], dbclass=GolfPlayer)
+    if len(players) == 0:
       raise InputException( 'Player "%s" not found in database.' % self.lstCmd[0] )
+    elif len(players) > 1:
+      raise InputException( 'Player "%s" not unique.' % self.lstCmd[0] )
+    player = players[0]
     tee = self.lstCmd[2]
     self.golf_round.addPlayer(player, tee)
     print self.golf_round
