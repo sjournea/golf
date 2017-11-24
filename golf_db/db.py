@@ -1,5 +1,6 @@
 """db.py - databae wrapper for golf objects.
 """
+from abc import ABCMeta, abstractmethod, abstractproperty
 from pymongo import MongoClient, errors
 
 from .course import GolfCourse
@@ -16,10 +17,33 @@ class GolfDBException(Exception):
 
 
 class DBConnect:
-  """Base databse connection class."""
-  # TODO: Make abstract
+  """Abstract base databse connection class."""
+  __metaclass__ = ABCMeta
   def __init__(self, db, **kwargs):
     self.db = db
+  
+  @abstractmethod
+  def databases(self, **kwargs):
+    """Return dictionaries of database names with list of collection namess """
+    pass
+
+  @abstractmethod
+  def drop_database(self, database=None):
+    """Remove a database."""
+    pass
+  
+  @abstractproperty
+  def courses(self):
+    return None
+  
+  @abstractproperty
+  def players(self):
+    return None
+  
+  @abstractproperty
+  def rounds(self):
+    return None
+  
 
 class DBConnectMongo(DBConnect):
   DEF_HOST = 'localhost'
@@ -38,17 +62,18 @@ class DBConnectMongo(DBConnect):
     
   lstDBIgnore = ['local']
   lstCollIgnore = ['system.indexes']
-  def databases(self, showAll=False):
+  def databases(self, **kwargs):
     """ return dictionaries of database names with list of collection namess """
-    log.debug( 'databases() - showAll:%s' % showAll)
+    show_all = kwargs.get('show_all') 
+    log.debug( 'databases() - show_all:%s' % show_all)
     dct = {}
     lstDBNames = self._conn.database_names()
-    if not showAll:
+    if not show_all:
       lstDBNames = [dbName for dbName in lstDBNames if dbName not in self.lstDBIgnore]
     for dbName in lstDBNames:
       db = self._conn[dbName]
       lstCollNames = db.collection_names()
-      if not showAll:
+      if not show_all:
         lstCollNames = [colName for colName in lstCollNames if colName not in self.lstCollIgnore]
       dct[dbName] = lstCollNames
     return dct
@@ -74,9 +99,6 @@ class DBConnectMongo(DBConnect):
 class GolfDB(object):
   """Database wrapper for golf objects."""
   DATABASE = 'golf'
-  COURSE = 'course'
-  PLAYERS = 'players'
-  ROUNDS = 'rounds'
   
   def __init__(self, **kwargs):
     self.db_type = kwargs.get('db_type', 'mongo')
@@ -169,7 +191,7 @@ class GolfDBAdmin(GolfDB):
   """Database wrapper for golf admin objects."""
 
   def create(self, **kwargs):
-    """Create all collections and indexes needed."""
+    """Create a new golf database and add all collections and indexes needed."""
     # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
     self.conn.drop_database()
     self.conn.players.insert_many(DBGolfPlayers)
@@ -179,6 +201,7 @@ class GolfDBAdmin(GolfDB):
     self.conn.players.create_index('email', unique=True, background=True)
 
   def remove(self, database=None):
+    """Delete a database."""
     self.conn.drop_database(database)
 
       
