@@ -351,6 +351,76 @@ callippe_men_holes = (
   {'par': 4, 'handicap':   6},
 )
 
+cinnabar_lake_canyon_tees = [
+  {'gender': 'mens',   'name': 'Hawk',        'rating': 73.0, 'slope': 140 },
+  {'gender': 'mens',   'name': 'Cinnabar',    'rating': 71.3, 'slope': 137 },
+  {'gender': 'mens',   'name': 'Cinn/Quick',  'rating': 69.7, 'slope': 135 },
+  {'gender': 'mens',   'name': 'Quicksilver', 'rating': 68.4, 'slope': 130 },
+  {'gender': 'womens', 'name': 'Quicksilver', 'rating': 73.6, 'slope': 141 },
+  {'gender': 'womens', 'name': 'Quick/Oak',   'rating': 70.8, 'slope': 126 },
+  {'gender': 'womens', 'name': 'Oak',         'rating': 69.9, 'slope': 125 },
+]
+
+cinnabar_lake_holes = (
+  {'par': 5, 'handicap':  10},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':  18},
+  {'par': 4, 'handicap':  14},
+  {'par': 5, 'handicap':   6},
+  {'par': 3, 'handicap':   8},
+  {'par': 4, 'handicap':  12},
+)
+
+cinnabar_canyon_holes = (
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':  15},
+  {'par': 3, 'handicap':  17},
+  {'par': 5, 'handicap':   1},
+  {'par': 4, 'handicap':  11},
+  {'par': 3, 'handicap':   3},
+  {'par': 5, 'handicap':   5},
+)
+
+cinnabar_mountain_holes = (
+  {'par': 5, 'handicap':  10},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   6},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':  14},
+  {'par': 3, 'handicap':  12},
+  {'par': 5, 'handicap':  16},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':   8},
+)
+
+cinnabar_lake_canyon_holes     = cinnabar_lake_holes     + cinnabar_canyon_holes
+cinnabar_mountain_lake_holes   = cinnabar_mountain_holes + cinnabar_lake_holes
+cinnabar_mountain_canyon_holes = cinnabar_mountain_holes + cinnabar_canyon_holes
+
+cinnabar_mountain_lake_tees = [
+  {'gender': 'mens',   'name': 'Hawk',        'rating': 73.6, 'slope': 139 },
+  {'gender': 'mens',   'name': 'Cinnabar',    'rating': 71.1, 'slope': 134 },
+  {'gender': 'mens',   'name': 'Cinn/Quick',  'rating': 69.2, 'slope': 132 },
+  {'gender': 'mens',   'name': 'Quicksilver', 'rating': 67.8, 'slope': 127 },
+  {'gender': 'womens', 'name': 'Quicksilver', 'rating': 73.0, 'slope': 139 },
+  {'gender': 'womens', 'name': 'Quick/Oak',   'rating': 71.0, 'slope': 125 },
+  {'gender': 'womens', 'name': 'Oak',         'rating': 70.0, 'slope': 125 },
+]
+
+cinnabar_mountain_canyon_tees = [
+  {'gender': 'mens',   'name': 'Hawk',        'rating': 72.6, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Cinnabar',    'rating': 70.6, 'slope': 132 },
+  {'gender': 'mens',   'name': 'Cinn/Quick',  'rating': 68.7, 'slope': 129 },
+  {'gender': 'mens',   'name': 'Quicksilver', 'rating': 67.2, 'slope': 127 },
+  {'gender': 'womens', 'name': 'Quicksilver', 'rating': 72.0, 'slope': 138 },
+  {'gender': 'womens', 'name': 'Quick/Oak',   'rating': 70.0, 'slope': 127 },
+  {'gender': 'womens', 'name': 'Oak',         'rating': 68.9, 'slope': 126 },
+]
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -375,8 +445,11 @@ DBGolfCourses = (
   {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
   {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
   {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
-  {'name': 'San Ramon',       'holes': san_ramon_men_holes, 'tees': san_ramon_tees},  
-  {'name': 'Callippe Preserve', 'holes': callippe_men_holes, 'tees': callippe_tees},  
+  {'name': 'San Ramon',                  'holes': san_ramon_men_holes, 'tees': san_ramon_tees},  
+  {'name': 'Callippe Preserve',          'holes': callippe_men_holes, 'tees': callippe_tees},  
+  {'name': 'Cinnabar Hills Lake/Canyon',      'holes': cinnabar_lake_canyon_holes, 'tees': cinnabar_lake_canyon_tees },  
+  {'name': 'Cinnabar Hills Mountain/Lake',    'holes': cinnabar_mountain_lake_holes, 'tees': cinnabar_mountain_lake_tees},  
+  {'name': 'Cinnabar Hills Mountain/Canyon',  'holes': cinnabar_mountain_canyon_holes, 'tees': cinnabar_mountain_canyon_tees },  
 )
 
 GolfPlayers = (
