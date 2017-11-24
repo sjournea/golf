@@ -90,20 +90,20 @@ class GolfMenu(Menu):
   def _listPlayers(self):
     players = self.gdb.playerList(dbclass=GolfPlayer)
     for n,player in enumerate(players):
-      print '{} - {}'.format(n,player)
-      
+      print '{:>2} - {}'.format(n+1,player)
+
   def _findPlayers(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     players = self.gdb.playerFind(self.lstCmd[1], dbclass=GolfPlayer)
     for n,player in enumerate(players):
-      print '{} - {}'.format(n,player)
-      
+      print '{:>2} - {}'.format(n+1,player)
+
   def _listCourses(self):
     courses = self.gdb.courseList(dbclass=GolfCourse)
     for n,course in enumerate(courses):
-      print '{} - {}'.format(n,course)
-      
+      print '{:>2} - {}'.format(n+1,course)
+
   def _findCourse(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
@@ -114,8 +114,8 @@ class GolfMenu(Menu):
   def _listRounds(self):
     rounds = self.gdb.roundList(dbclass=GolfRound)
     for n,r in enumerate(rounds):
-      print '{} - {}'.format(n,r)
-      
+      print '{:>2} - {}'.format(n+1,r)
+
   def _execute(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
@@ -308,7 +308,7 @@ class GolfMenu(Menu):
   def _listRounds(self):
     for n,gr in enumerate(RoundsPlayed):
       print '{:>2} - {} {:<10} players:{}'.format(
-        n, gr['date'], gr['course'], len(gr['players']))
+        n+1, gr['date'], gr['course'], len(gr['players']))
 
 def main():
   DEF_LOG_ENABLE = 'dbmain'

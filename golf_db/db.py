@@ -192,11 +192,14 @@ class GolfDBAdmin(GolfDB):
 
   def create(self, **kwargs):
     """Create a new golf database and add all collections and indexes needed."""
+    players = kwargs.get('players', DBGolfPlayers)
+    courses = kwargs.get('courses', DBGolfCourses)
+    rounds = kwargs.get('rounds', DBGolfRounds)
     # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
     self.conn.drop_database()
-    self.conn.players.insert_many(DBGolfPlayers)
-    self.conn.courses.insert_many(DBGolfCourses)
-    self.conn.rounds.insert_many(DBGolfRounds)
+    self.conn.players.insert_many(players)
+    self.conn.courses.insert_many(courses)
+    self.conn.rounds.insert_many(rounds)
     # create index on player email
     self.conn.players.create_index('email', unique=True, background=True)
 
