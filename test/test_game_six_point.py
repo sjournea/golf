@@ -4,7 +4,7 @@ import datetime
 from golf_db.round import GolfRound
 from golf_db.course import GolfCourse
 from golf_db.test_data import TestGolfPlayers
-from golf_db.db import GolfDB
+from golf_db.db import GolfDBAdmin
 from golf_db.game_six_point import SixPointGame
 from golf_db.player import GolfPlayer
 from golf_db.exceptions import GolfException
@@ -13,7 +13,7 @@ from golf_db.exceptions import GolfException
 class GolfSixPointGamePlayersTest(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    cls.db = GolfDB(database='golf_game_test')
+    cls.db = GolfDBAdmin(database='golf_game_test')
     cls.db.create()
 
   def test_wrong_number_of_players(self):
@@ -61,7 +61,7 @@ class GolfSixPointGamePlayersTest(unittest.TestCase):
 class GolfSixPointGameTest(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    cls.db = GolfDB(database='golf_game_test')
+    cls.db = GolfDBAdmin(database='golf_game_test')
     cls.db.create()
     
   def setUp(self):

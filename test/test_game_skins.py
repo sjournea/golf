@@ -5,7 +5,7 @@ from golf_db.round import GolfRound
 from golf_db.course import GolfCourse
 from golf_db.player import GolfPlayer
 #from golf_db.test_data import GolfRounds,GolfCourses, GolfPlayers
-from golf_db.db import GolfDB
+from golf_db.db import GolfDBAdmin
 from golf_db.game_skins import SkinsGame
 from golf_db.exceptions import GolfException
 
@@ -13,7 +13,7 @@ from golf_db.exceptions import GolfException
 class GolfSkinsGameTest(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    cls.db = GolfDB(database='golf_game_test')
+    cls.db = GolfDBAdmin(database='golf_game_test')
     cls.db.create()
     
   def setUp(self):

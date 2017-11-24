@@ -3,7 +3,7 @@ import unittest
 from golf_db.round import GolfRound
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
-from golf_db.db import GolfDB, GolfDBException
+from golf_db.db import GolfDB, GolfDBAdmin, GolfDBException
 from golf_db.player import GolfPlayer
 
 class DBTestType(unittest.TestCase):
@@ -23,7 +23,7 @@ class DBTestType(unittest.TestCase):
 
 class DBTestInit(unittest.TestCase):
   def test_create(self):
-    db = GolfDB(database='golf_test')
+    db = GolfDBAdmin(database='golf_test')
     db.create()
     dctDatabases = db.databases()
     self.assertIn('golf_test', dctDatabases)
@@ -36,12 +36,17 @@ class DBTestInit(unittest.TestCase):
     db.remove()
     dctDatabases = db.databases()
     self.assertNotIn('golf_test', dctDatabases)
+
+  def test_create_fail(self):
+    db = GolfDB(database='golf_test')
+    with self.assertRaises(AttributeError):
+      db.create()
     
 class DBTestAPI(unittest.TestCase):
 
   @classmethod
   def setUpClass(cls):
-    cls.db = GolfDB(database='golf_test')
+    cls.db = GolfDBAdmin(database='golf_test')
     cls.db.create()
       
   def test_course_api(self):

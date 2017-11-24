@@ -15,7 +15,7 @@ from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.round import GolfRound
 from golf_db.game_factory import GolfGameList
-from golf_db.db import GolfDB
+from golf_db.db import GolfDB, GolfDBAdmin
 from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
@@ -29,7 +29,7 @@ class GolfMenu(Menu):
     super(GolfMenu, self).__init__(cmdFile)
     #self.db = mongo_db
     #self.database = kwargs.get('database')
-    self.gdb = GolfDB(**dct_options)
+    self.gdb = GolfDBAdmin(**dct_options)
     self.golf_round = None
     # add menu items
     self.addMenuItem( MenuItem( 'dl', '',             'Show databases.' ,                  self._showDatabases) )

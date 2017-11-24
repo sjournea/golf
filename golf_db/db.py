@@ -93,22 +93,9 @@ class GolfDB(object):
     else:
       raise GolfDBException('db_type "{}" not supported.'.format(self.db_type))
 
-  def create(self, **kwargs):
-    """Create all collections and indexes needed."""
-    # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
-    self.conn.drop_database()
-    self.conn.players.insert_many(DBGolfPlayers)
-    self.conn.courses.insert_many(DBGolfCourses)
-    self.conn.rounds.insert_many(DBGolfRounds)
-    # create index on player email
-    self.conn.players.create_index('email', unique=True, background=True)
-      
   def databases(self):
     return self.conn.databases()
   
-  def remove(self, database=None):
-    self.conn.drop_database(database)
-
   @property
   def courses(self):
     return self.conn.courses
@@ -177,3 +164,22 @@ class GolfDB(object):
     except errors.DuplicateKeyError, ex:
       raise GolfDBException('Duplicate key error')
       
+
+class GolfDBAdmin(GolfDB):
+  """Database wrapper for golf admin objects."""
+
+  def create(self, **kwargs):
+    """Create all collections and indexes needed."""
+    # WARNING -- DB* test_data is changed with mongo db insertion, _id added to all inserted.
+    self.conn.drop_database()
+    self.conn.players.insert_many(DBGolfPlayers)
+    self.conn.courses.insert_many(DBGolfCourses)
+    self.conn.rounds.insert_many(DBGolfRounds)
+    # create index on player email
+    self.conn.players.create_index('email', unique=True, background=True)
+
+  def remove(self, database=None):
+    self.conn.drop_database(database)
+
+      
+  
