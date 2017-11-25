@@ -6,8 +6,9 @@ gad spanky Championship
 gad reload Championship
 # add games
 gag gross
-gag net
-gag stableford stableford_type='Spanish' jokers=((1,10),(2,11),(3,12),(4,13))
+#gag net
+#gag stableford stableford_type='Spanish' jokers=((1,10),(2,11),(3,12),(4,13))
+gag vegas teams=((0,2),(1,3))
 # start game
 gst
 gps

@@ -7,6 +7,7 @@ from .game_six_point import SixPointGame
 from .game_eighty_one import EightyOneGame
 from .game_match import MatchGame
 from .game_stableford import StablefordGame
+from .game_vegas import VegasGame
 
 dctGames = { 
   'skins': SkinsGame,
@@ -16,6 +17,7 @@ dctGames = {
   'eighty_one': EightyOneGame, 
   'match': MatchGame, 
   'stableford': StablefordGame, 
+  'vegas': VegasGame, 
 }
 
 def GolfGameFactory(game):
