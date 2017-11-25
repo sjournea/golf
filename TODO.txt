@@ -11,12 +11,14 @@ Golf game TODO 11/23/17
     * More Games
       Nassau - support press(?)
       Wolf
-      Snake - 3 putts 
+      Snake - 3 putts - need to track putts  
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
    * Mongo DB working
-     - Remove database from GolfGame class for now
-     - GolfCourse, GolfPlayers, GolfRound (no games)
+     - GolfGame class needs doc support
+       - toDict(), fromDict()
+       - __eq__, __ne__ for testing.
+    - GolfCourse, GolfPlayers, GolfRound (no games)
    * Move python into folder, including venv.
      - create folder structure.
      - platforms

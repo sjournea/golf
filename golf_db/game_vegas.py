@@ -13,6 +13,7 @@ class Team:
 
   def setup(self, course, min_handicap):
     print 'setup() - min_handicap:{}'.format(min_handicap)
+    self.course = course
     # calculate total bumps but limit to max allowed
     self.total_bumps = self.handicap - min_handicap
     self.total_bumps = min(self.total_bumps, self.MAX_HANDICAP)
@@ -20,13 +21,21 @@ class Team:
     self.bumps = course.calcBumps(self.total_bumps)
     # initialize points
     self.score = [None for _ in range(len(course.holes))]
+    self.double = [None for _ in range(len(course.holes))]
     self.points = [None for _ in range(len(course.holes))]
     self.points_in = 0
     self.points_out = 0
     self.points_total = 0
 
   def calculate_score(self, index):
+    # save gross scores
     gross_scores = [player.gross[index] for player in self.players]
+    # is there a natural birdie in gross_scores
+    self.double[index] = False
+    for player in self.players:
+      if player.gross[index] < self.course.holes[index].par:
+        self.double[index] = True
+        break
     # apply bump to lower score
     if self.bumps[index]:
       low_gross = min(gross_scores)
@@ -39,22 +48,28 @@ class Team:
     self.score[index] = gross_scores[low_index]*10 + gross_scores[low_index ^ 1]
 
   def update_points(self, index, other_team):
-    self.points[index] = self.score[index] - other_team.score[index]
+    self.points[index] = max(other_team.score[index] - self.score[index], 0)
+    if self.points[index] > 0 and self.double[index]:
+      self.points[index] *= 2
     self.points_in = sum([pt for pt in self.points[9:] if pt is not None])
     self.points_out = sum([pt for pt in self.points[:9] if pt is not None])
     self.points_total = self.points_in + self.points_out
-    
+
   def get_scorecard(self):
     """Scorecard for team."""
     dct = {'team': self.name }
     line = '{:<6}'.format(self.name)
     for i,score in enumerate(self.score[:9]):
       s = '*' if self.bumps[i] else ''
+      if self.double[i]:
+        s = '^'
       s += '' if score is None else '{:d}'.format(score)
       line += ' {:>3}'.format(s)
     line += ' {:>4d}'.format(self.points_out)
     for i,score in enumerate(self.score[9:]):
       s = '*' if self.bumps[i+9] else ''
+      if self.double[i+9]:
+        s = '^'
       s += '' if score is None else '{:d}'.format(score)
       line += ' {:>3}'.format(s)
     line += ' {:>4d} {:>4d}'.format(self.points_in, self.points_total)
@@ -126,7 +141,7 @@ class VegasGame(GolfGame):
   
   def getLeaderboard(self, **kwargs):
     board = []
-    teams = sorted(self.team_list, key=lambda team: team.points_total)
+    teams = sorted(self.team_list, key=lambda team: team.points_total, reverse=True)
     pos = 1
     prev_total = None
     for team in teams:
@@ -134,7 +149,7 @@ class VegasGame(GolfGame):
         'team': team,
         'total' : team.points_total,
       }
-      if prev_total != None and score_dct['total'] > prev_total:
+      if prev_total != None and score_dct['total'] < prev_total:
         pos += 1
 
       prev_total = score_dct['total']
