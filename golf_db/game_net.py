@@ -7,6 +7,16 @@ from .game import GolfGame
 
 class NetGame(GolfGame):
   """Basic net golf game. For us weekenders."""
+  def __init__(self, golf_round, scores, **kwargs):
+    self.use_full_net = kwargs.get('use_full_net', False)
+    super(NetGame, self).__init__(golf_round, scores, **kwargs)
+
+  def _calc_bumps(self, pl, min_handicap):
+    if self.use_full_net:
+      min_handicap = 0
+    bumps = self.golf_round.course.calcBumps(pl.course_handicap - min_handicap)
+    return bumps
+
   def start(self):
     """Start the game."""
     # find min handicap in all players
@@ -14,8 +24,8 @@ class NetGame(GolfGame):
     for pl in self.scores:
       # net start
       pl.net = {
-        'score' : [None for _ in range(len(self.golf_round.course.holes))], 
-        'bump': self.golf_round.course.calcBumps(pl.course_handicap - min_handicap),
+        'score' : [None for _ in range(len(self.golf_round.course.holes))],
+        'bump': self._calc_bumps(pl, min_handicap),
         'in' : 0,
         'out':  0,
         'total': 0,
@@ -45,11 +55,11 @@ class NetGame(GolfGame):
       dct = {'player': score.player }
       line = '{:<6}'.format(score.player.nick_name)
       for net,bump in zip(score.net['score'][:9], score.net['bump'][:9]):
-        nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
+        nets = '{}{}'.format(bump*'*', net if net > 0 else '')
         line += ' {:>3}'.format(nets)
       line += ' {:>4}'.format(score.net['out'])
       for net,bump in zip(score.net['score'][9:], score.net['bump'][9:]):
-        nets = '{}{}'.format('*' if bump > 0 else '', net if net > 0 else '')
+        nets = '{}{}'.format(bump*'*', net if net > 0 else '')
         line += ' {:>3}'.format(nets)
       line += ' {:>4} {:>4}'.format(score.net['in'], score.net['total'])
       dct['line'] = line

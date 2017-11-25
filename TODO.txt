@@ -1,8 +1,7 @@
 Bugs
-  Net game should have opton for full net score.
+
 Golf game TODO 11/23/17
   Python prototype
-    *
     * getDescription() -- full game description.
     * Games need to share code.
       - put in GolfGame class for now. 

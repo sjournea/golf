@@ -3,7 +3,7 @@ gcr Shoreline 2017-11-05
 gad sjournea White
 # add games
 gag gross
-gag net
+gag net use_full_net=Yes
 # start game
 gst 
 gps 
