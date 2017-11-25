@@ -7,21 +7,34 @@ class StablefordGame(GolfGame):
   dct_scoring = {
     'Classic': { -3: 8, -2: 5, -1: 2, 0: 0, 1: -1, 2:-2, 'min':8, 'max': -2},
     'British': { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':4, 'max': 0 },
-    #'Spanish': { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':8, 'max': 0 },
+    'Spanish': { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':8, 'max': 0 },
   }
 
   def __init__(self, golf_round, scores, **kwargs):
     self.stableford_type = kwargs.get('stableford_type', 'Classic')
+    self.jokers = kwargs.get('jokers')
     super(StablefordGame, self).__init__(golf_round, scores, **kwargs)
-  
+
   def validate(self):
     if self.stableford_type not in self.dct_scoring:
       raise GolfException('stableford_type {} not supported.'.format(self.stableford_type))
+    if self.stableford_type == 'Spanish':
+      if not self.jokers:
+        raise GolfException('stableford_type Spanish needs jokers set.')
+      if len(self.jokers) != len(self.scores):
+        raise GolfException('stableford_type Spanish needs a joker set for each player.')
+      for joker in self.jokers:
+        if len(joker) != 2:
+          raise GolfException('stableford_type Spanish jokers must have 2 values.')
+        if joker[0] not in (1,2,3,4,5,6,7,8,9):
+          raise GolfException('stableford_type Spanish joker[0] must be in 1-9.')
+        if joker[1] not in (10,11,12,13,14,15,16,17,18):
+          raise GolfException('stableford_type Spanish joker[1] must be in 10-18.')
 
   def start(self):
     self.dct_stableford = self.dct_scoring[self.stableford_type]
     # use full handicap for all players
-    for pl in self.scores:
+    for n,pl in enumerate(self.scores):
       pl.net = {
         'score' : [None for _ in range(len(self.golf_round.course.holes))], 
         'bump': self.golf_round.course.calcBumps(pl.course_handicap),
@@ -31,6 +44,7 @@ class StablefordGame(GolfGame):
         'in': 0,
         'out': 0,
         'total': 0,
+        'jokers': self.jokers[n] if self.stableford_type == 'Spanish' else None,
      }
     self.dctScorecard['header'] = '{0:*^93}'.format(' Stableford ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Points Thru'
@@ -49,7 +63,10 @@ class StablefordGame(GolfGame):
       # update net
       net_score = gross - pl.net['bump'][index]
       pl.net['score'][index] = net_score
-      pl.points['point'][index] = self._calc_score(net_score - self.golf_round.course.holes[index].par) 
+      pl.points['point'][index] = self._calc_score(net_score - self.golf_round.course.holes[index].par)
+      if pl.points['jokers']:
+        if (index+1) in pl.points['jokers']:
+          pl.points['point'][index] *= 2  
       pl.points['out'] = sum([pt for pt in pl.points['point'][:9] if pt is not None])
       pl.points['in'] = sum([pt for pt in pl.points['point'][9:] if pt is not None])
       pl.points['total'] = pl.points['in'] + pl.points['out']
@@ -61,12 +78,14 @@ class StablefordGame(GolfGame):
       dct = {'player': score.player }
       line = '{:<6}'.format(score.player.nick_name)
       points = score.points
-      for point in points['point'][:9]:
-        s = '' if point is None else '{:d}'.format(point)
+      for i,point in enumerate(points['point'][:9]):
+        s = '*' if points['jokers'] and (i+1) in points['jokers'] else ''
+        s += '' if point is None else '{:d}'.format(point)
         line += ' {:>3}'.format(s)
       line += ' {:>4d}'.format(points['out'])
-      for point in points['point'][9:]:
-        s = '' if point is None else '{:d}'.format(point)
+      for i,point in enumerate(points['point'][9:]):
+        s = '*' if points['jokers'] and (i+10) in points['jokers'] else ''
+        s += '' if point is None else '{:d}'.format(point)
         line += ' {:>3}'.format(s)
       line += ' {:>4d} {:>4d}'.format(points['in'], points['total'])
       dct['line'] = line

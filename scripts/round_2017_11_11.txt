@@ -7,7 +7,7 @@ gad reload Championship
 # add games
 gag gross
 gag net
-gag stableford stableford_type=British
+gag stableford stableford_type='Spanish' jokers=((1,10),(2,11),(3,12),(4,13))
 # start game
 gst
 gps

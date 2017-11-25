@@ -31,10 +31,28 @@ class GolfStablefordGameTest(unittest.TestCase):
   def test_game_init(self):
     g = StablefordGame(self.gr, self.gr.scores)
     self.assertEqual(g.stableford_type, 'Classic')
+    self.assertIsNone(g.jokers)
 
     g = StablefordGame(self.gr, self.gr.scores, stableford_type='British')
     self.assertEqual(g.stableford_type, 'British')
+    self.assertIsNone(g.jokers)
     
+    with self.assertRaises(GolfException):
+      g = StablefordGame(self.gr, self.gr.scores, stableford_type='Spanish')
+  
+    with self.assertRaises(GolfException):
+      g = StablefordGame(self.gr, self.gr.scores, stableford_type='Spanish', jokers=((1,10),(2,11),(3,12)))
+
+    with self.assertRaises(GolfException):
+      g = StablefordGame(self.gr, self.gr.scores, stableford_type='Spanish', jokers=((1,10),(2,11),(3,12),(13,)))
+
+    with self.assertRaises(GolfException):
+      g = StablefordGame(self.gr, self.gr.scores, stableford_type='Spanish', jokers=((1,5),(2,11),(3,12),(4,13)))
+
+    g = StablefordGame(self.gr, self.gr.scores, stableford_type='Spanish', jokers=((1,10),(2,11),(3,12),(4,13)))
+    self.assertEqual(g.stableford_type, 'Spanish')
+    self.assertEqual(g.jokers,((1,10),(2,11),(3,12),(4,13)))
+
   def test_game_start(self):
     g = StablefordGame(self.gr, self.gr.scores)
     g.start()

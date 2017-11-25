@@ -215,9 +215,9 @@ class GolfMenu(Menu):
     for arg in self.lstCmd[2:]:
       lst = arg.split('=')
       if lst[0] == 'players':
-        players = ast.literal_eval(lst[1])
+        players = eval(lst[1])
       else:
-        dct[lst[0]] = lst[1]
+        dct[lst[0]] = eval(lst[1])
 
     self.golf_round.addGame(game, players=players, **dct)
     print self.golf_round
