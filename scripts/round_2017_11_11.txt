@@ -7,12 +7,12 @@ gad reload Championship
 # add games
 gag gross
 gag net
-gag skins
+gag stableford stableford_type=British
 # start game
 gst
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
+gps
+gpl
+gpt
 pause
 # hole 1
 gac 1 4 3 6 6
