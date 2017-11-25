@@ -209,12 +209,17 @@ class GolfMenu(Menu):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     game = self.lstCmd[1]
-    
+
     players = None
-    if len(self.lstCmd) > 2:
-      players = ast.literal_eval(self.lstCmd[2])
-      
-    self.golf_round.addGame(game, players=players)
+    dct = {}
+    for arg in self.lstCmd[2:]:
+      lst = arg.split('=')
+      if lst[0] == 'players':
+        players = ast.literal_eval(lst[1])
+      else:
+        dct[lst[0]] = lst[1]
+
+    self.golf_round.addGame(game, players=players, **dct)
     print self.golf_round
 
   def _roundStart(self):
