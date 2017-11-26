@@ -11,13 +11,11 @@ Basic golf game, the players simply add up their scores and compare. You shot a 
     """Start the game."""
     for pl in self.scores:
       # gross start
-      pl.gross = {
-        'score' : [None for _ in range(len(self.golf_round.course.holes))], 
-        'in' : 0,
-        'out':  0,
-        'total': 0,
-        'esc': 0,
-      }
+      pl._gross = [None for _ in range(len(self.golf_round.course.holes))]
+      pl._in = 0
+      pl._out = 0
+      pl._total = 0
+      pl._esc =  0
     # add header to scorecard
     self.dctScorecard['course'] = self.golf_round.course.getScorecard(ESC=1)
     self.dctScorecard['header'] = '{0:*^98}'.format(' Gross ')
@@ -32,30 +30,31 @@ Basic golf game, the players simply add up their scores and compare. You shot a 
     """
     for gs, gross in zip(self.scores, lstGross):
       # update gross
-      gs.gross['score'][index] = gross
-      gs.gross['out'] = sum([sc for sc in gs.gross['score'][:9] if isinstance(sc, int)])
-      gs.gross['in'] = sum([sc for sc in gs.gross['score'][9:] if isinstance(sc, int)])
-      gs.gross['total'] = gs.gross['in'] + gs.gross['out']
+      gs._gross[index] = gross
+      gs._out = sum([sc for sc in gs._gross[:9] if isinstance(sc, int)])
+      gs._in = sum([sc for sc in gs._gross[9:] if isinstance(sc, int)])
+      gs._total = gs._in + gs._out
       # update ESC score
-      gs.gross['esc'] += self.golf_round.course.calcESC(index, gross, gs.course_handicap)
+      gs._esc += self.golf_round.course.calcESC(index, gross, gs.course_handicap)
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     lstPlayers = []
     for n,score in enumerate(self.scores):
       dct = {'player': score.player }
+      dct['in'] = score._in
+      dct['out'] = score._out
+      dct['total'] = score._total
+      dct['esc'] = score._esc
+      # build line for stdout
       line = '{:<6}'.format(score.player.nick_name)
-      for gross in score.gross['score'][:9]:
-        line += ' {:>3}'.format(gross) if gross > 0 else '    '
-      line += ' {:>4}'.format(score.gross['out'])
-      for gross in score.gross['score'][9:]:
-        line += ' {:>3}'.format(gross) if gross > 0 else '    '
-      line += ' {:>4} {:>4} {:>4}'.format(score.gross['in'], score.gross['total'], score.gross['esc'])
+      for gross in score._gross[:9]:
+        line += ' {:>3}'.format(gross) if gross is not None else '    '
+      line += ' {:>4}'.format(score._out)
+      for gross in score._gross[9:]:
+        line += ' {:>3}'.format(gross) if gross is not None else '    '
+      line += ' {:>4} {:>4} {:>4}'.format(score._in, score._total, score._esc)
       dct['line'] = line
-      dct['in'] = score.gross['in']
-      dct['out'] = score.gross['out']
-      dct['total'] = score.gross['total']
-      dct['esc'] = score.gross['esc']
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
@@ -63,19 +62,19 @@ Basic golf game, the players simply add up their scores and compare. You shot a 
   def getLeaderboard(self, **kwargs):
     """Scorecard with all players."""
     board = []
-    scores = sorted(self.scores, key=lambda score: score.gross['total'])
+    scores = sorted(self.scores, key=lambda score: score._total)
     pos = 1
     prev_total = None
     for score in scores:
       score_dct = {
         'player': score.player,
-        'total' : score.gross['total'],
+        'total' : score._total,
       }
       if prev_total != None and score_dct['total'] > prev_total:
         pos += 1
       prev_total = score_dct['total']
       score_dct['pos'] = pos
-      for n,gross in enumerate(score.gross['score']):
+      for n,gross in enumerate(score._gross):
         if gross is None:
           break
       else:
@@ -89,7 +88,7 @@ Basic golf game, the players simply add up their scores and compare. You shot a 
 
   def getStatus(self, **kwargs):
     """Scorecard with all players."""
-    for n,gross in enumerate(self.scores[0].gross['score']):
+    for n,gross in enumerate(self.scores[0]._gross):
       if gross is None:
         self.dctStatus['next_hole'] = n+1
         self.dctStatus['par'] = self.golf_round.course.holes[n].par
