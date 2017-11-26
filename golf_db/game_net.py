@@ -28,13 +28,11 @@ The bumps will be added to the lowest handicap holes on the course being played.
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for pl in self.scores:
       # net start
-      pl.net = {
-        'score' : [None for _ in range(len(self.golf_round.course.holes))],
-        'bump': self._calc_bumps(pl, min_handicap),
-        'in' : 0,
-        'out':  0,
-        'total': 0,
-      }
+      pl._net = [None for _ in range(len(self.golf_round.course.holes))]
+      pl._bumps = self._calc_bumps(pl, min_handicap)
+      pl._in = 0
+      pl._out = 0
+      pl._total = 0
     # add header to scorecard
     self.dctScorecard['header'] = '{0:*^93}'.format(' Net ')
     self.dctLeaderboard['hdr'] = 'Pos Name     Net Thru'
@@ -48,29 +46,31 @@ The bumps will be added to the lowest handicap holes on the course being played.
     """
     for gs, gross in zip(self.scores, lstGross):
       # update net
-      gs.net['score'][index] = gross - gs.net['bump'][index]
-      gs.net['out'] = sum([sc for sc in gs.net['score'][:9] if isinstance(sc, int)])
-      gs.net['in'] = sum([sc for sc in gs.net['score'][9:] if isinstance(sc, int)])
-      gs.net['total'] = gs.net['in'] + gs.net['out']
+      gs._net[index] = gross - gs._bumps[index]
+      gs._out = sum([sc for sc in gs._net[:9] if isinstance(sc, int)])
+      gs._in = sum([sc for sc in gs._net[9:] if isinstance(sc, int)])
+      gs._total = gs._in + gs._out
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     lstPlayers = []
     for n,score in enumerate(self.scores):
-      dct = {'player': score.player }
+      dct = {
+        'player': score.player,
+        'in': score._in,
+        'out': score._out,
+        'total': score._total,
+      }
       line = '{:<6}'.format(score.player.nick_name)
-      for net,bump in zip(score.net['score'][:9], score.net['bump'][:9]):
+      for net,bump in zip(score._net[:9], score._bumps[:9]):
         nets = '{}{}'.format(bump*'*', net if net > 0 else '')
         line += ' {:>3}'.format(nets)
-      line += ' {:>4}'.format(score.net['out'])
-      for net,bump in zip(score.net['score'][9:], score.net['bump'][9:]):
+      line += ' {:>4}'.format(score._out)
+      for net,bump in zip(score._net[9:], score._bumps[9:]):
         nets = '{}{}'.format(bump*'*', net if net > 0 else '')
         line += ' {:>3}'.format(nets)
-      line += ' {:>4} {:>4}'.format(score.net['in'], score.net['total'])
+      line += ' {:>4} {:>4}'.format(score._in, score._total)
       dct['line'] = line
-      dct['in'] = score.net['in']
-      dct['out'] = score.net['out']
-      dct['total'] = score.net['total']
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
@@ -78,19 +78,19 @@ The bumps will be added to the lowest handicap holes on the course being played.
   def getLeaderboard(self, **kwargs):
     """Scorecard with all players."""
     board = []
-    scores = sorted(self.scores, key=lambda score: score.net['total'])
+    scores = sorted(self.scores, key=lambda score: score._total)
     pos = 1
     prev_total = None
     for score in scores:
       score_dct = {
         'player': score.player,
-        'total' : score.net['total'],
+        'total' : score._total,
       }
       if prev_total != None and score_dct['total'] > prev_total:
         pos += 1
       prev_total = score_dct['total']
       score_dct['pos'] = pos
-      for n,net in enumerate(score.net['score']):
+      for n,net in enumerate(score._net):
         if net == None:
           break
       else:
@@ -104,7 +104,7 @@ The bumps will be added to the lowest handicap holes on the course being played.
 
   def getStatus(self, **kwargs):
     """."""
-    for n,net in enumerate(self.scores[0].net['score']):
+    for n,net in enumerate(self.scores[0]._net):
       if net is None:
         self.dctStatus['next_hole'] = n+1
         self.dctStatus['par'] = self.golf_round.course.holes[n].par
@@ -112,8 +112,8 @@ The bumps will be added to the lowest handicap holes on the course being played.
         bumps = []
         bump_line = []
         for sc in self.scores:
-          if sc.net['bump'][n] > 0:
-            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+          if sc._bumps[n] > 0:
+            dct = {'player': sc.player, 'bumps': sc._bumps[n]}
             bumps.append(dct)
             bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
         self.dctStatus['bumps'] = bumps
