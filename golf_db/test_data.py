@@ -617,10 +617,10 @@ DBGolfPlayers = (
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.4, 'gender': 'man'},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
   {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 19.3, 'gender': 'man'},
-  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
+  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bamba',  'handicap': 31.8, 'gender': 'woman'},
   {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frog',   'handicap': 11.2, 'gender': 'woman'},
   {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6,  'gender': 'woman'},
-  {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'GT',     'handicap': 22.5, 'gender': 'man'},
+  {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'Tech',    'handicap': 22.5, 'gender': 'man'},
   {'email':'spike@tl.com',    'first_name': 'John',  'last_name': 'Molcillo', 'nick_name': 'Spike',  'handicap': 17.5, 'gender': 'man'},
 )
 
