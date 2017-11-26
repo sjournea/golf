@@ -42,7 +42,8 @@ class Menu(object):
     self._pause_ignore = False
     self._pause_enabled = True
     self._cmd_file = None
-    self._cmd_files = [] 
+    self._cmd_files = []
+    self._cmd_stack = []
     if cmd_file is not None:
       self._cmd_file = FileInput( cmd_file )
       
@@ -72,6 +73,9 @@ class Menu(object):
   def shutdown(self):
     pass
 
+  def pushCommands(self, lst_commands):
+    self._cmd_stack.extend(lst_commands)
+
   def runMenu(self):
     while True:
       try:
@@ -100,7 +104,9 @@ class Menu(object):
             print curTime.strftime( '%H:%M:%S' )
 
         if not self.bRepeatCommand:
-          if self._cmd_file:
+          if self._cmd_stack:
+            cmd = self._cmd_stack.pop(0)
+          elif self._cmd_file:
             cmd = self._cmd_file.getNextLine()
             if cmd is None:
               if self._cmd_files:
