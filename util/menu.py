@@ -40,6 +40,7 @@ class Menu(object):
     self.bRepeatCommand = False
     self.dctQuerys = {}
     self.cmdFile = None
+    self._pause_ignore = False
     self._pause_enabled = True
     if cmdFile is not None:
       self.cmdFile = FileInput( cmdFile )
@@ -132,6 +133,14 @@ class Menu(object):
 
         # pause
         if self.lstCmd[0] == 'pause':
+          if len(self.lstCmd) > 1 and self.lstCmd[1] == 'ignore':
+            if self.lstCmd[2] == 'on':
+              self._pause_ignore = True
+            elif self.lstCmd[2] == 'off':
+              self._pause_ignore = False
+            continue
+          if self._pause_ignore:
+            continue
           if len(self.lstCmd) > 1 and self.lstCmd[1] == 'enable':
             self._pause_enabled = True
           if self._pause_enabled:
