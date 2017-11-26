@@ -4,16 +4,22 @@ from .exceptions import GolfException
 
 
 class SixPointGame(GolfGame):
-  """Six point golf game.
-  
-  Game for a threesome. 6 points per hole, breakdown:
-    Rank   Points
-    ----   ------  
-    1,2,3  4,2,0
-    1,2,2  4,1,1
-    1,1,2  3,3,0
-    1,1,1  2,2,2
-  """
+  """Six point golf game."""
+  description = """
+In the Six Point Game, three players compete for six points per hole.
+Before the game, the players should agree to how much each point is worth
+(consider that a player who never wins a point on any hole will owe about 100 points to his/her friends).
+
+Handicaps are used in this game - the best player plays as scratch, and the other two players receive the
+same number of strokes as the difference between their and the best player's course handicap. 
+
+On each hole, the points can break down in four ways (as mentioned above, the scores on each hole are adjusted by the players' handicaps):
+If there is a clear winner on the hole, that player wins 4 points. The golfer who finishes second receives 2 points, and the last place golfer receives nothing (4-2-0).
+If two golfers tie for second they each receive 1 point, and the clear winner receives 4 points. (4-1-1).
+If two golfers tie for lowest score, they win 3 points each, and the golfer with the high score receives nothing (3-3-0).
+If all three golfers tie the hole, they each receive 2 points (2-2-2).
+At the end of the match, all the points are totaled, with the low-point-total player paying both the other players a sum based on the difference between their final point totals. The player with the second highest point total also pays the high-point player based on the difference between their point totals.
+"""
   POINTS_WIN_1ST = 4
   POINTS_TIE_1ST = 3
   POINTS_WIN_2ND = 2

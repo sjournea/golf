@@ -7,6 +7,11 @@ from .game import GolfGame
 
 class NetGame(GolfGame):
   """Basic net golf game. For us weekenders."""
+  description = """
+One purpose of a golf handicap is to help players of different skill levels to create a fair match.
+Take the difference between each handicap (e.g. 25 - 13 = 12) and that is the number of strokes given to the higher handicap player.
+The bumps will be added to the lowest handicap holes on the course being played.
+"""
   def __init__(self, golf_round, scores, **kwargs):
     self.use_full_net = kwargs.get('use_full_net', False)
     super(NetGame, self).__init__(golf_round, scores, **kwargs)
