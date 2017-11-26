@@ -54,7 +54,9 @@ class GolfMenu(Menu):
     self.addMenuItem( MenuItem( 'gps', '<game>...',     'Print Game Scorecards',               self._roundScorecard))
     self.addMenuItem( MenuItem( 'gpl', '<game>...',     'Print Game Leaderboards',             self._roundLeaderboard))
     self.addMenuItem( MenuItem( 'gpt', '<game>...',     'Print Game Status',                   self._roundStatus))
+    self.addMenuItem( MenuItem( 'gpd', '',              'Print Game Scorecards, Leaderboards, Status',                   self._roundDump))
     self.addMenuItem( MenuItem( 'gac', '<hole> <gross..>', 'Add Round Scores',                 self._roundAddScore))
+    self.addMenuItem( MenuItem( 'gas', '<hole> gross=<gross..> <pause=enable>', 'Add Scores',                 self._roundScore))
 
     #self.addMenuItem( MenuItem( 'lag', '',                   'List games',                   self._gamesList))
 
@@ -236,6 +238,24 @@ class GolfMenu(Menu):
     lstGross = [int(gross) for gross in self.lstCmd[2:]]
     self.golf_round.addScores(hole, lstGross)
     
+  def _roundScore(self):
+    """ gas <hole> gross=<list> [pause=enable]"""
+    if self.golf_round is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    hole = int(self.lstCmd[1])
+    pause_command = 'pause'
+    for arg in self.lstCmd[2:]:
+      lst = arg.split('=')
+      if lst[0] == 'gross':
+        lstGross = eval(lst[1])
+      elif lst[0] == 'pause':
+        pause_command += ' '+ lst[1]
+    self.golf_round.addScores(hole, lstGross)
+    self._roundDump()
+    self.pushCommands([pause_command])
+    
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
@@ -265,6 +285,12 @@ class GolfMenu(Menu):
       dctStatus = self.golf_round.getStatus(n)
       print '{:>2} - {}'.format(n, dctStatus['line'])
 
+  def _roundDump(self):
+    """ dump scorecard, leaderboard, status."""
+    self._roundScorecard()
+    self._roundLeaderboard()
+    self._roundStatus()
+    
   def _createRound(self):
     if len(self.lstCmd) < 2:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )

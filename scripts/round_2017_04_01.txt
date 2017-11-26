@@ -8,114 +8,25 @@ gag gross
 gag net
 gag skins
 gst
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 1
-gac 1 5 7 5 4
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 2
-gac 2 6 6 6 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 3
-gac 3 5 5 8 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 4
-gac 4 4 4 4 4
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 5
-gac 5 6 7 5 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 6
-gac 6 7 6 6 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 7
-gac 7 4 4 7 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 8
-gac 8 9 5 6 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 9
-gac 9 5 5 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
+gps
+gpl
+gpt
 pause enable
-# hole 10
-gac 10 3 5 2 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 11
-gac 11 5 6 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 12
-gac 12 9 8 9 8
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 13
-gac 13 7 5 6 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 14
-gac 14 4 5 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 15
-gac 15 6 5 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 16
-gac 16 8 7 7 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 17
-gac 17 4 4 4 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 18
-gac 18 8 7 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
+gas 1 gross=[5,7,5,4]
+gas 2 gross=[6,6,6,5]
+gas 3 gross=[5,5,8,5]
+gas 4 gross=[4,4,4,4]
+gas 5 gross=[6,7,5,7]
+gas 6 gross=[7,6,6,6]
+gas 7 gross=[4,4,7,5]
+gas 8 gross=[9,5,6,5]
+gas 9 gross=[5,5,5,5] pause=enable
+gas 10 gross=[3,5,2,5]
+gas 11 gross=[5,6,5,5]
+gas 12 gross=[9,8,9,8]
+gas 13 gross=[7,5,6,6]
+gas 14 gross=[4,5,5,5]
+gas 15 gross=[6,5,5,5]
+gas 16 gross=[8,7,7,7]
+gas 17 gross=[4,4,4,5]
+gas 18 gross=[8,7,5,5] pause=enable
