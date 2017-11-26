@@ -6,6 +6,8 @@ from .score import GolfScore
 class GolfGame(object):
   """Base class for all golf games."""
   __metaclass__ = ABCMeta
+  description = """<Description not set>"""  
+  
   def __init__(self, golf_round, scores, **kwargs):
     self.golf_round = golf_round
     self.players = kwargs.get('players')

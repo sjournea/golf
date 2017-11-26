@@ -21,7 +21,7 @@ class Team:
     self.bumps = course.calcBumps(self.total_bumps)
     # initialize points
     self.score = [None for _ in range(len(course.holes))]
-    self.double = [None for _ in range(len(course.holes))]
+    self.multiplier = [1 for _ in range(len(course.holes))]
     self.points = [None for _ in range(len(course.holes))]
     self.points_in = 0
     self.points_out = 0
@@ -30,12 +30,9 @@ class Team:
   def calculate_score(self, index):
     # save gross scores
     gross_scores = [player.gross[index] for player in self.players]
-    # is there a natural birdie in gross_scores
-    self.double[index] = False
+    # adjust multiplier for natural birdie or better in gross_scores?
     for player in self.players:
-      if player.gross[index] < self.course.holes[index].par:
-        self.double[index] = True
-        break
+      self.multiplier[index] = max((self.course.holes[index].par - player.gross[index])+1, self.multiplier[index], 1)
     # apply bump to lower score
     if self.bumps[index]:
       low_gross = min(gross_scores)
@@ -48,9 +45,7 @@ class Team:
     self.score[index] = gross_scores[low_index]*10 + gross_scores[low_index ^ 1]
 
   def update_points(self, index, other_team):
-    self.points[index] = max(other_team.score[index] - self.score[index], 0)
-    if self.points[index] > 0 and self.double[index]:
-      self.points[index] *= 2
+    self.points[index] = max(other_team.score[index] - self.score[index], 0)*self.multiplier[index]
     self.points_in = sum([pt for pt in self.points[9:] if pt is not None])
     self.points_out = sum([pt for pt in self.points[:9] if pt is not None])
     self.points_total = self.points_in + self.points_out
@@ -61,14 +56,14 @@ class Team:
     line = '{:<6}'.format(self.name)
     for i,score in enumerate(self.score[:9]):
       s = '*' if self.bumps[i] else ''
-      if self.double[i]:
+      if self.multiplier[i] > 1:
         s = '^'
       s += '' if score is None else '{:d}'.format(score)
       line += ' {:>3}'.format(s)
     line += ' {:>4d}'.format(self.points_out)
     for i,score in enumerate(self.score[9:]):
       s = '*' if self.bumps[i+9] else ''
-      if self.double[i+9]:
+      if self.multiplier[i+9] > 1:
         s = '^'
       s += '' if score is None else '{:d}'.format(score)
       line += ' {:>3}'.format(s)
@@ -85,6 +80,26 @@ class Team:
 
 class VegasGame(GolfGame):
   """The Vegas golf game."""
+  description = """
+The key to Vegas is in the comparison of scores at the end of the hole.
+After the hole, each score becomes a digit in the overall team score.
+If one team member shoots a 4, and the other a 5, the team's total score
+becomes 45 (the lowest score always becomes the first digit).
+If their competitors shoot a 5 and a 6, their team score becomes 56.
+The team scores are then compared and the difference (in this case 11 points)
+is awarded to the low team. 
+
+The game becomes more interesting when a player birdies a hole.
+If the winning team has a birdie in its score, the points won (the difference) are doubled.
+If one team scores an eagle, the points won are tripled. As an example, 
+if on a par 3 one team has a combined score of 23, while the other has a combined score of 45,
+the low team wins 44 points (22 x 2) - this can create quite a swing in the game.
+
+Handicaps enter into Vegas during the initial team comparison. Each team adds together its handicaps,
+and the difference is the number of strokes awarded to the higher handicap team. For example,
+if one team is made up of a 6 and a 12 handicap, while their competitors are both 8s, then the
+first team receives 18 - 16 = 2 strokes. When a bump is used it is always applied to the lower score on the team.
+"""
   def __init__(self, golf_round, scores, **kwargs):
     self.teams = kwargs.get('teams', ((0,1),(2,3)))
     super(VegasGame, self).__init__(golf_round, scores, **kwargs)
