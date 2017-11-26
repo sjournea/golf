@@ -3,6 +3,23 @@ from .game import GolfGame
 
 class SkinsGame(GolfGame):
   """The Skins game."""
+  description = """
+Skins is very much a match play format, but it is usually played between three or four players.
+Each hole is played separately, and is won by the player with the lowest score on the hole -- that golfer wins 'the skin'.
+The interesting part of the game happens when two or more players tie for the low score.
+In this case there is 'no blood,' and the skin 'carries over' to the next hole, doubling its worth.
+At the end of the game, each player settles up based on the number of skins they have. 
+
+Skins games are played using handicaps by playing off of the lowest handicap golfer.
+For example, imagine three golfers of handicaps 8, 16, and 28 were to play a game of skins.
+In this match the lowest handicap golfer would play straight up,
+the 16 handicap golfer would receive 8 strokes on the hardest 8 holes (as denoted by the HDCP number on the scorecard),
+and the 28 handicap golfer would receive 2 strokes on the hardest two holes and a stroke on the rest of the holes.
+
+Each person brings a skin to the hole, and the winner of the hole wins a skin from each of the losing players.
+For a threesome this means that the winner wins two skins on a hole. For a foursome, this means three skins.
+In both cases the other players each lose a skin. 
+"""
   def start(self):
     """Start the skins game."""
     # find min handicap in all players

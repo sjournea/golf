@@ -4,6 +4,9 @@ from .game import GolfGame
 
 class GrossGame(GolfGame):
   """Basic gross game. Man's golf."""
+  description = """
+Basic golf game, the players simply add up their scores and compare. You shot a 97? I shot an 87. I win.
+"""
   def start(self):
     """Start the game."""
     for pl in self.scores:

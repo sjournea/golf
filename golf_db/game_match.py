@@ -5,6 +5,15 @@ from .exceptions import GolfException
 
 class MatchGame(GolfGame):
   """Match golf game."""
+  description = """
+Match play is a hole-by-hole game where the lowest score wins the hole.
+If I shoot a five, and you shoot an eight, then in medal play I should gain three strokes.
+However, in match play I only win one point (no matter how many strokes better I played the hole).
+If the players tie the hole, it is 'halved' (no one wins a point).
+Once we are finished the golfer with the most points wins.
+
+Handicaps are used in match play.
+"""
   def validate(self):
     if len(self.scores) != 2:
       raise GolfException('Match game must have 2 players, {} found.'.format(len(self.scores)))
