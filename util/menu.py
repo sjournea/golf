@@ -33,18 +33,19 @@ class MenuItem(object):
       MenuItem.lstCmds.append( self.cmd )
 
 class Menu(object):
-  def __init__(self,cmdFile=None, menuSize=50):
+  def __init__(self,cmd_file=None, menuSize=50):
     self.lstMenuItems = []
     self.header = '****'
     self.showCmds = True
     self.bRepeatCommand = False
     self.dctQuerys = {}
-    self.cmdFile = None
     self._pause_ignore = False
     self._pause_enabled = True
-    if cmdFile is not None:
-      self.cmdFile = FileInput( cmdFile )
-
+    self._cmd_file = None
+    self._cmd_files = [] 
+    if cmd_file is not None:
+      self._cmd_file = FileInput( cmd_file )
+      
     self._lstBuiltInMenuItems = [
             MenuItem( '?',  '',                        'show help'),
             MenuItem( 'x',  '',                        'exit program'),
@@ -99,10 +100,13 @@ class Menu(object):
             print curTime.strftime( '%H:%M:%S' )
 
         if not self.bRepeatCommand:
-          if self.cmdFile:
-            cmd = self.cmdFile.getNextLine()
+          if self._cmd_file:
+            cmd = self._cmd_file.getNextLine()
             if cmd is None:
-              self.cmdFile = None
+              if self._cmd_files:
+                self._cmd_file = self._cmd_files.pop()
+              else:
+                self._cmd_file = None 
               continue
             else:
               print 'Command: < %s' % cmd
@@ -159,7 +163,10 @@ class Menu(object):
 
         # load commands from a file
         if self.lstCmd[0] == '<':
-          self.cmdFile = FileInput( self.lstCmd[1] )
+          # if open command file then stack
+          if self._cmd_file:
+            self._cmd_files.append(self._cmd_file)
+          self._cmd_file = FileInput( self.lstCmd[1] )
           continue
 
         # show help
@@ -195,9 +202,11 @@ class Menu(object):
         print 'InputException:%s' % err
         self.showCmds = True
         self.bRepeatCommand = False
-        if self.cmdFile:
-          self.cmdFile = None
-
+        if self._cmd_file:
+          self._cmd_file = None
+        if self._cmd_files:
+          self._cmd_files = []
+  
       except Exception, err:
         s = '%s: %s' % (err.__class__.__name__, err)
         log.error( s )
@@ -206,6 +215,8 @@ class Menu(object):
         traceback.print_exc()
         print
         self.bRepeatCommand = False
-        if self.cmdFile:
-          self.cmdFile = None
+        if self._cmd_file:
+          self._cmd_file = None
+        if self._cmd_files:
+          self._cmd_files = []
 
