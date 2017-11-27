@@ -35,17 +35,13 @@ class StablefordGame(GolfGame):
     self.dct_stableford = self.dct_scoring[self.stableford_type]
     # use full handicap for all players
     for n,pl in enumerate(self.scores):
-      pl.net = {
-        'score' : [None for _ in range(len(self.golf_round.course.holes))], 
-        'bump': self.golf_round.course.calcBumps(pl.course_handicap),
-      }
-      pl.points = {
-        'point': [None for _ in range(len(self.golf_round.course.holes))],
-        'in': 0,
-        'out': 0,
-        'total': 0,
-        'jokers': self.jokers[n] if self.stableford_type == 'Spanish' else None,
-     }
+      pl._score = [None for _ in range(len(self.golf_round.course.holes))]
+      pl._bumps = self.golf_round.course.calcBumps(pl.course_handicap)
+      pl._points = [None for _ in range(len(self.golf_round.course.holes))]
+      pl._in = 0
+      pl._out = 0
+      pl._total = 0
+      pl._jokers = self.jokers[n] if self.stableford_type == 'Spanish' else None
     self.dctScorecard['header'] = '{0:*^93}'.format(' Stableford ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Points Thru'
 
@@ -61,57 +57,56 @@ class StablefordGame(GolfGame):
     """add scores for a hole."""
     for pl, gross in zip(self.scores, lstGross):
       # update net
-      net_score = gross - pl.net['bump'][index]
-      pl.net['score'][index] = net_score
-      pl.points['point'][index] = self._calc_score(net_score - self.golf_round.course.holes[index].par)
-      if pl.points['jokers']:
-        if (index+1) in pl.points['jokers']:
-          pl.points['point'][index] *= 2  
-      pl.points['out'] = sum([pt for pt in pl.points['point'][:9] if pt is not None])
-      pl.points['in'] = sum([pt for pt in pl.points['point'][9:] if pt is not None])
-      pl.points['total'] = pl.points['in'] + pl.points['out']
+      net_score = gross - pl._bumps[index]
+      pl._score[index] = net_score
+      pl._points[index] = self._calc_score(net_score - self.golf_round.course.holes[index].par)
+      if pl._jokers:
+        if (index+1) in pl._jokers:
+          pl._points[index] *= 2  
+      pl._out = sum([pt for pt in pl._points[:9] if pt is not None])
+      pl._in = sum([pt for pt in pl._points[9:] if pt is not None])
+      pl._total = pl._in + pl._out
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     lstPlayers = []
-    for n,score in enumerate(self.scores):
-      dct = {'player': score.player }
-      line = '{:<6}'.format(score.player.nick_name)
-      points = score.points
-      for i,point in enumerate(points['point'][:9]):
-        s = '*' if points['jokers'] and (i+1) in points['jokers'] else ''
+    for n,sc in enumerate(self.scores):
+      dct = {'player': sc.player }
+      dct['in'] = sc._in
+      dct['out'] = sc._out
+      dct['total'] = sc._total
+      line = '{:<6}'.format(sc.player.nick_name)
+      for i,point in enumerate(sc._points[:9]):
+        s = '*' if sc._jokers and (i+1) in sc._jokers else ''
         s += '' if point is None else '{:d}'.format(point)
         line += ' {:>3}'.format(s)
-      line += ' {:>4d}'.format(points['out'])
-      for i,point in enumerate(points['point'][9:]):
-        s = '*' if points['jokers'] and (i+10) in points['jokers'] else ''
+      line += ' {:>4d}'.format(sc._out)
+      for i,point in enumerate(sc._points[9:]):
+        s = '*' if sc._jokers and (i+10) in sc._jokers else ''
         s += '' if point is None else '{:d}'.format(point)
         line += ' {:>3}'.format(s)
-      line += ' {:>4d} {:>4d}'.format(points['in'], points['total'])
+      line += ' {:>4d} {:>4d}'.format(sc._in, sc._total)
       dct['line'] = line
-      dct['in'] = points['in']
-      dct['out'] = points['out']
-      dct['total'] = points['total']
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
     board = []
-    scores = sorted(self.scores, key=lambda score: score.points['total'], reverse=True)
+    scores = sorted(self.scores, key=lambda score: score._total, reverse=True)
     pos = 1
     prev_total = None
-    for score in scores:
+    for sc in scores:
       score_dct = {
-        'player': score.player,
-        'total' : score.points['total'],
+        'player': sc.player,
+        'total' : sc._total,
       }
       if prev_total != None and score_dct['total'] > prev_total:
         pos += 1
 
       prev_total = score_dct['total']
       score_dct['pos'] = pos
-      for n,point in enumerate(score.points['point']):
+      for n,point in enumerate(sc._points):
         if point is None:
           break
       else:
@@ -124,7 +119,7 @@ class StablefordGame(GolfGame):
     return self.dctLeaderboard
 
   def getStatus(self, **kwargs):
-    for n,net in enumerate(self.scores[0].net['score']):
+    for n,net in enumerate(self.scores[0]._score):
       if net is None:
         self.dctStatus['next_hole'] = n+1
         self.dctStatus['par'] = self.golf_round.course.holes[n].par
@@ -132,8 +127,8 @@ class StablefordGame(GolfGame):
         bumps = []
         bump_line = []
         for sc in self.scores:
-          if sc.net['bump'][n] > 0:
-            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+          if sc._bumps[n] > 0:
+            dct = {'player': sc.player, 'bumps': sc._bumps[n]}
             bumps.append(dct)
             bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
         self.dctStatus['bumps'] = bumps
