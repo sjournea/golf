@@ -39,16 +39,12 @@ At the end of the match, all the points are totaled, with the low-point-total pl
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for sc in self.scores:
       # net start
-      sc.net = {
-        'score' : [None for _ in range(len(self.golf_round.course.holes))],
-        'bump': self.golf_round.course.calcBumps(sc.course_handicap - min_handicap),
-      }
-      sc.points = {
-        'point': [None for _ in range(len(self.golf_round.course.holes))],
-        'in': 0,
-        'out': 0,
-        'total': 0,
-      }
+      sc._score = [None for _ in range(len(self.golf_round.course.holes))]
+      sc._bumps = self.golf_round.course.calcBumps(sc.course_handicap - min_handicap)
+      sc._points = [None for _ in range(len(self.golf_round.course.holes))]
+      sc._in = 0
+      sc._out = 0
+      sc._total = 0
     self.dctScorecard['header'] = '{0:*^93}'.format(' {} '.format(self.TITLE))
     self.dctLeaderboard['hdr'] = 'Pos Name  Points Thru'
 
@@ -56,9 +52,9 @@ At the end of the match, all the points are totaled, with the low-point-total pl
     """add scores for a hole."""
     # update net values
     for gs, gross in zip(self.scores, lstGross):
-      gs.net['score'][index] = gross - gs.net['bump'][index]
+      gs._score[index] = gross - gs._bumps[index]
     # Determine net standings on this hole
-    net_scores = [[n, sc.net['score'][index], 0, 0] for n,sc in enumerate(self.scores)]
+    net_scores = [[n, sc._score[index], 0, 0] for n,sc in enumerate(self.scores)]
     net_scores = sorted(net_scores, key=lambda sc: sc[1])
     pos = 1
     prev_total = None
@@ -90,49 +86,48 @@ At the end of the match, all the points are totaled, with the low-point-total pl
     # put points
     for lst,sc in zip(net_scores, self.scores):
       #print lst
-      self.scores[lst[0]].points['point'][index] = lst[3]        
+      self.scores[lst[0]]._points[index] = lst[3]        
     for sc in self.scores:
-      sc.points['out'] = sum([point for point in sc.points['point'][:9] if isinstance(point, int)])
-      sc.points['in'] = sum([point for point in sc.points['point'][9:] if isinstance(point, int)])
-      sc.points['total'] = sc.points['in'] + sc.points['out']
+      sc._out = sum([point for point in sc._points[:9] if isinstance(point, int)])
+      sc._in = sum([point for point in sc._points[9:] if isinstance(point, int)])
+      sc._total = sc._in + sc._out
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     lstPlayers = []
-    for n,score in enumerate(self.scores):
-      dct = {'player': score.player }
-      line = '{:<6}'.format(score.player.nick_name)
-      points = score.points
-      for point in points['point'][:9]:
+    for n,sc in enumerate(self.scores):
+      dct = {'player': sc.player }
+      dct['in'] = sc._in
+      dct['out'] = sc._out
+      dct['total'] = sc._total
+      line = '{:<6}'.format(sc.player.nick_name)
+      for point in sc._points[:9]:
         line += ' {:>3}'.format(point if point != None else '')
-      line += ' {:>4d}'.format(points['out'])
-      for point in points['point'][9:]:
+      line += ' {:>4d}'.format(sc._out)
+      for point in sc._points[9:]:
         line += ' {:>3}'.format(point if point != None else '')
-      line += ' {:>4d} {:>4d}'.format(points['in'], points['total'])
+      line += ' {:>4d} {:>4d}'.format(sc._in, sc._total)
       dct['line'] = line
-      dct['in'] = points['in']
-      dct['out'] = points['out']
-      dct['total'] = points['total']
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
     board = []
-    scores = sorted(self.scores, key=lambda score: score.points['total'], reverse=True)
+    scores = sorted(self.scores, key=lambda score: score._total, reverse=True)
     pos = 1
     prev_total = None
-    for score in scores:
+    for sc in scores:
       score_dct = {
-        'player': score.player,
-        'total' : score.points['total'],
+        'player': sc.player,
+        'total' : sc._total,
       }
       if prev_total != None and score_dct['total'] < prev_total:
         pos += 1
 
       prev_total = score_dct['total']
       score_dct['pos'] = pos
-      for n,point in enumerate(score.points['point']):
+      for n,point in enumerate(sc._points):
         if point is None:
           break
       else:
@@ -145,7 +140,7 @@ At the end of the match, all the points are totaled, with the low-point-total pl
     return self.dctLeaderboard
 
   def getStatus(self, **kwargs):
-    for n,net in enumerate(self.scores[0].net['score']):
+    for n,net in enumerate(self.scores[0]._score):
       if net is None:
         self.dctStatus['next_hole'] = n+1
         self.dctStatus['par'] = self.golf_round.course.holes[n].par
@@ -153,8 +148,8 @@ At the end of the match, all the points are totaled, with the low-point-total pl
         bumps = []
         bump_line = []
         for sc in self.scores:
-          if sc.net['bump'][n] > 0:
-            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+          if sc._bumps[n] > 0:
+            dct = {'player': sc.player, 'bumps': sc._bumps[n]}
             bumps.append(dct)
             bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
         self.dctStatus['bumps'] = bumps

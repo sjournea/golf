@@ -8,114 +8,23 @@ gag net
 gag six_point
 gag eighty_one
 gst
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 1
-gac 1 7 6 6
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 2
-gac 2 7 7 7
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 3
-gac 3 4 4 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 4
-gac 4 6 5 3
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 5
-gac 5 6 8 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 6
-gac 6 4 3 3
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 7
-gac 7 6 5 8
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 8
-gac 8 5 4 6
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 9
-gac 9 6 6 6
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
+gpd 
 pause enable
-# hole 10
-gac 10 6 6 6
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 11
-gac 11 8 5 6
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 12
-gac 12 7 6 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 13
-gac 13 4 4 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 14
-gac 14 6 6 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 15
-gac 15 5 6 3
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 16
-gac 16 5 6 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 17
-gac 17 6 5 7
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
-pause
-# hole 18
-gac 18 8 6 5
-gps gross net six_point eighty_one
-gpl gross net six_point eighty_one
-gpt gross net six_point eighty_one
+gas 1 gross=[7,6,6] 
+gas 2 gross=[7,7,7]
+gas 3 gross=[4,4,5]
+gas 4 gross=[6,5,3]
+gas 5 gross=[6,8,5]
+gas 6 gross=[4,3,3]
+gas 7 gross=[6,5,8]
+gas 8 gross=[5,4,6]
+gas 9 gross=[6,6,6] pause=enable
+gas 10 gross=[6,6,6]
+gas 11 gross=[8,5,6]
+gas 12 gross=[7,6,5]
+gas 13 gross=[4,4,5]
+gas 14 gross=[6,6,5]
+gas 15 gross=[5,6,3]
+gas 16 gross=[5,6,5]
+gas 17 gross=[6,5,7]
+gas 18 gross=[8,6,5] pause=enable

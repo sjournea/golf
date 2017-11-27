@@ -11,111 +11,22 @@ gst
 gps 
 gpl 
 gpt
-pause
-# hole 1
-gac 1 6 8
-gps 
-gpl 
-gpt
-pause
-# hole 2
-gac 2 4 4
-gps 
-gpl 
-gpt
-pause
-# hole 3
-gac 3 6 7
-gps 
-gpl 
-gpt
-pause
-# hole 4
-gac 4 4 5
-gps 
-gpl 
-gpt
-pause
-# hole 5
-gac 5 4 5
-gps 
-gpl 
-gpt
-pause
-# hole 6
-gac 6 6 5
-gps 
-gpl 
-gpt
-pause
-# hole 7
-gac 7 4 4
-gps 
-gpl 
-gpt
-pause
-# hole 8
-gac 8 6 7
-gps 
-gpl 
-gpt
-pause
-# hole 9
-gac 9 4 5
-gps 
-gpl 
-gpt
 pause enable
-# hole 10
-gac 10 5 7 
-gps 
-gpl 
-gpt
-pause
-# hole 11
-gac 11 6 8
-gps 
-gpl 
-gpt
-pause
-# hole 12
-gac 12 4 6
-gps 
-gpl 
-gpt
-pause
-# hole 13
-gac 13 4 4
-gps 
-gpl 
-gpt
-pause
-# hole 14
-gac 14 5 7
-gps 
-gpl 
-gpt
-pause
-# hole 15
-gac 15 5 5
-gps 
-gpl 
-gpt
-pause
-# hole 16
-gac 16 4 6
-gps 
-gpl 
-gpt
-pause
-# hole 17
-gac 17 4 8
-gps 
-gpl 
-gpt
-pause
-# hole 18
-gac 18 6 7
-gps 
-gpl 
-gpt
+gas 1 gross=[6,8]
+gas 2 gross=[4,4]
+gas 3 gross=[6,7]
+gas 4 gross=[4,5]
+gas 5 gross=[4,5]
+gas 6 gross=[6,5]
+gas 7 gross=[4,4]
+gas 8 gross=[6,7]
+gas 9 gross=[4,5] pause=enable
+gas 10 gross=[5,7]
+gas 11 gross=[6,8]
+gas 12 gross=[4,6]
+gas 13 gross=[4,4]
+gas 14 gross=[5,7]
+gas 15 gross=[5,5]
+gas 16 gross=[4,6]
+gas 17 gross=[4,8]
+gas 18 gross=[6,7]  pause=enable

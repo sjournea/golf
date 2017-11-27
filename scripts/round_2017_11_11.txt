@@ -6,119 +6,30 @@ gad spanky Championship
 gad reload Championship
 # add games
 gag gross
-#gag net
-#gag stableford stableford_type='Spanish' jokers=((1,10),(2,11),(3,12),(4,13))
+gag net
+gag stableford stableford_type='Spanish' jokers=((1,10),(2,11),(3,12),(4,13))
 gag vegas teams=((0,3),(1,2))
 # start game
 gst
 gps
 gpl
 gpt
-pause
-# hole 1
-gac 1 4 3 6 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 2
-gac 2 3 4 3 4
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 3
-gac 3 5 5 6 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 4
-gac 4 8 7 6 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 5
-gac 5 5 6 4 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 6
-gac 6 6 6 7 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 7
-gac 7 2 4 6 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 8
-gac 8 5 7 6 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 9
-gac 9 9 4 7 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
 pause enable
-# hole 10
-gac 10 6 5 6 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 11
-gac 11 6 5 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 12
-gac 12 4 7 6 6
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 13
-gac 13 6 7 7 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 14
-gac 14 5 4 5 5
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 15
-gac 15 6 6 6 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 16
-gac 16 5 6 5 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 17
-gac 17 4 4 5 4
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
-pause
-# hole 18
-gac 18 8 3 7 7
-gps gross net skins
-gpl gross net skins
-gpt gross net skins
+gas 1 gross=[4,3,6,6]
+gas 2 gross=[3,4,3,4]
+gas 3 gross=[5,5,6,7]
+gas 4 gross=[8,7,6,7]
+gas 5 gross=[5,6,4,6]
+gas 6 gross=[6,6,7,6]
+gas 7 gross=[2,4,6,5]
+gas 8 gross=[5,7,6,6]
+gas 9 gross=[9,4,7,7] pause=enable
+gas 10 gross=[6,5,6,5]
+gas 11 gross=[6,5,5,5]
+gas 12 gross=[4,7,6,6]
+gas 13 gross=[6,7,7,7]
+gas 14 gross=[5,4,5,5]
+gas 15 gross=[6,6,6,7]
+gas 16 gross=[5,6,5,7]
+gas 17 gross=[4,4,5,4]
+gas 18 gross=[8,3,7,7] pause=enable

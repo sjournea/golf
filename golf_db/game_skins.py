@@ -25,18 +25,13 @@ In both cases the other players each lose a skin.
     # find min handicap in all players
     min_handicap = min([gs.course_handicap for gs in self.scores])
     for pl in self.scores:
-      # gross start
       # net start
-      pl.net = {
-        'score' : [None for _ in range(len(self.golf_round.course.holes))], 
-        'bump': self.golf_round.course.calcBumps(pl.course_handicap - min_handicap),
-      }
-      pl.skins = {
-        'skin': [0 for _ in range(len(self.golf_round.course.holes))],
-        'in': 0,
-        'out': 0,
-        'total': 0,
-     }
+      pl._nets = [None for _ in range(len(self.golf_round.course.holes))]
+      pl._bumps = self.golf_round.course.calcBumps(pl.course_handicap - min_handicap)
+      pl._skins = [0 for _ in range(len(self.golf_round.course.holes))]
+      pl._in = 0
+      pl._out = 0
+      pl._total = 0
     # skins carryover set to 1
     self.carryover = 1
     self.dctScorecard['header'] = '{0:*^93}'.format(' Skins ')
@@ -46,22 +41,22 @@ In both cases the other players each lose a skin.
     """add scores for a hole."""
     for gs, gross in zip(self.scores, lstGross):
       # update net
-      gs.net['score'][index] = gross - gs.net['bump'][index]
+      gs._nets[index] = gross - gs._bumps[index]
 
     # Find net winner on this hole
-    net_scores = [sc.net['score'][index] for sc in self.scores]
+    net_scores = [sc._nets[index] for sc in self.scores]
     net_scores.sort()
     if net_scores[0] < net_scores[1]:
       # we have a winner
       for sc in self.scores:
-        if sc.net['score'][index] == net_scores[0]:
+        if sc._nets[index] == net_scores[0]:
           win = self.carryover * (len(self.scores)-1)
-          sc.skins['skin'][index] += win
+          sc._skins[index] += win
         else:
-          sc.skins['skin'][index] -= self.carryover
-        sc.skins['out'] = sum(sc.skins['skin'][:9])
-        sc.skins['in'] = sum(sc.skins['skin'][9:])
-        sc.skins['total'] = sc.skins['in'] + sc.skins['out']
+          sc._skins[index] -= self.carryover
+        sc._out = sum(sc._skins[:9])
+        sc._in = sum(sc._skins[9:])
+        sc._total = sc._in + sc._out
       self.carryover = 1
     else:
       self.carryover += 1
@@ -69,42 +64,41 @@ In both cases the other players each lose a skin.
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     lstPlayers = []
-    for n,score in enumerate(self.scores):
-      dct = {'player': score.player }
-      line = '{:<6}'.format(score.player.nick_name)
-      skins = score.skins
-      for skin in skins['skin'][:9]:
+    for n,sc in enumerate(self.scores):
+      dct = {'player': sc.player }
+      dct['in'] = sc._in
+      dct['out'] = sc._out
+      dct['total'] = sc._total
+      line = '{:<6}'.format(sc.player.nick_name)
+      for skin in sc._skins[:9]:
         sk = '{:+d}'.format(skin) if skin != 0 else ''
         line += ' {:>3}'.format(sk)
-      line += ' {:>+4d}'.format(skins['out'])
-      for skin in skins['skin'][9:]:
+      line += ' {:>+4d}'.format(sc._out)
+      for skin in sc._skins[9:]:
         sk = '{:+d}'.format(skin) if skin != 0 else ''
         line += ' {:>3}'.format(sk)
-      line += ' {:>+4d} {:>+4d}'.format(skins['in'], skins['total'])
+      line += ' {:>+4d} {:>+4d}'.format(sc._in, sc._total)
       dct['line'] = line
-      dct['in'] = skins['in']
-      dct['out'] = skins['out']
-      dct['total'] = skins['total']
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
     board = []
-    scores = sorted(self.scores, key=lambda score: score.skins['total'], reverse=True)
+    scores = sorted(self.scores, key=lambda score: score._total, reverse=True)
     pos = 1
     prev_total = None
-    for score in scores:
+    for sc in scores:
       score_dct = {
-        'player': score.player,
-        'total' : score.skins['total'],
+        'player': sc.player,
+        'total' : sc._total,
       }
       if prev_total != None and score_dct['total'] < prev_total:
         pos += 1
 
       prev_total = score_dct['total']
       score_dct['pos'] = pos
-      for n,net in enumerate(score.net['score']):
+      for n,net in enumerate(sc._nets):
         if net is None:
           break
       else:
@@ -117,7 +111,7 @@ In both cases the other players each lose a skin.
     return self.dctLeaderboard
 
   def getStatus(self, **kwargs):
-    for n,net in enumerate(self.scores[0].net['score']):
+    for n,net in enumerate(self.scores[0]._nets):
       if net is None:
         self.dctStatus['next_hole'] = n+1
         self.dctStatus['par'] = self.golf_round.course.holes[n].par
@@ -125,8 +119,8 @@ In both cases the other players each lose a skin.
         bumps = []
         bump_line = []
         for sc in self.scores:
-          if sc.net['bump'][n] > 0:
-            dct = {'player': sc.player, 'bumps': sc.net['bump'][n]}
+          if sc._bumps[n] > 0:
+            dct = {'player': sc.player, 'bumps': sc._bumps[n]}
             bumps.append(dct)
             bump_line.append('{}{}'.format(sc.player.nick_name, '({})'.format(dct['bumps']) if dct['bumps'] > 1 else ''))
         self.dctStatus['bumps'] = bumps
