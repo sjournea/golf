@@ -38,13 +38,13 @@ class GolfMatchGameTest(unittest.TestCase):
     g = MatchGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl.net['score'], 18*[None])
-      self.assertEqual(len(pl.net['bump']), 18)
-      self.assertEquals(pl.match['hole'], 18*[None])
-      self.assertEquals(pl.match['score'], 18*[None])
-      self.assertEquals(pl.match['in'], 0)
-      self.assertEquals(pl.match['out'], 0)
-      self.assertEquals(pl.match['total'], 0)
+      self.assertEquals(pl._score, 18*[None])
+      self.assertEqual(len(pl._bumps), 18)
+      self.assertEquals(pl._hole, 18*[None])
+      self.assertEquals(pl._score, 18*[None])
+      self.assertEquals(pl._in, 0)
+      self.assertEquals(pl._out, 0)
+      self.assertEquals(pl._total, 0)
       
   def test_game_add_score(self):
     g = MatchGame(self.gr, self.gr.scores)
