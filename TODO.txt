@@ -3,15 +3,12 @@ Bugs
 Golf game TODO 11/23/17
   Python prototype
     * getDescription() -- full game description.
-    * Games need to share code.
-      - put in GolfGame class for now. 
     * Games use less then all players
-    * Games support teams
-      - Match - best ball
-    * More Games
+    * Games
       Nassau - support press(?)
       Wolf
-      Snake - 3 putts - need to track putts  
+      Junk games
+        Snake - 3 putts - need to track putts  
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
    * Mongo DB working
@@ -19,6 +16,8 @@ Golf game TODO 11/23/17
        - toDict(), fromDict()
        - __eq__, __ne__ for testing.
     - GolfCourse, GolfPlayers, GolfRound (no games)
+    
+Mobile version - iOS
    * Move python into folder, including venv.
      - create folder structure.
      - platforms
