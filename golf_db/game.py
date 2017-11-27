@@ -58,4 +58,23 @@ class GolfGame(object):
     pass
 
 
+class GolfTeam:
+  """Base class for all golf teams."""
+  __metaclass__ = ABCMeta
+  def __init__(self, players, **kwargs):
+    self.name = kwargs.get('name')
+    self.players = players[:]
+    if not self.name:
+      self.name = '/'.join([pl.getInitials() for pl in self.players])
 
+  @abstractmethod
+  def setup(self, course, min_handicap):
+    pass
+
+  @abstractmethod
+  def calculate_score(self, index):
+    pass
+
+  @abstractmethod
+  def update_points(self, index, other_team):
+    pass

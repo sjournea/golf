@@ -1,20 +1,16 @@
 """ game_vegas.py - Vegas Golf Game class."""
-from .game import GolfGame
+from .game import GolfGame, GolfTeam
 from .exceptions import GolfException
 
-class Team:
+class VegasTeam(GolfTeam):
   MAX_HANDICAP = 18
   def __init__(self, players, **kwargs):
-    self.name = kwargs.get('name')
-    self.players = players[:]
+    super(VegasTeam, self).__init__(players, **kwargs)
     # calc handicap
     self.handicap = sum([pl.course_handicap for pl in self.players])
     self.total_bumps = 0
-    if not self.name:
-      self.name = '/'.join([pl.getInitials() for pl in self.players])
 
   def setup(self, course, min_handicap):
-    print 'setup() - min_handicap:{}'.format(min_handicap)
     self.course = course
     # calculate total bumps but limit to max allowed
     self.total_bumps = self.handicap - min_handicap
@@ -123,7 +119,7 @@ first team receives 18 - 16 = 2 strokes. When a bump is used it is always applie
 
   def start(self):
     # create teams
-    self.team_list = [Team([self.scores[i1], self.scores[i2]]) for n,(i1,i2) in enumerate(self.teams)]
+    self.team_list = [VegasTeam([self.scores[i1], self.scores[i2]]) for n,(i1,i2) in enumerate(self.teams)]
     # calculate min handicap from team handicaps
     min_handicap = min([team.handicap for team in self.team_list])
     # setup players - initialize all bumps to 0    
