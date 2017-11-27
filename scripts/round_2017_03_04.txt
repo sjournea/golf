@@ -8,6 +8,7 @@ gad reload Blue
 gag gross
 gag net
 gag skins
+gag bestball teams=[(0,3),(1,2)]
 # start game
 gst
 gps

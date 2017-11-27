@@ -1,6 +1,7 @@
 """game_factory.py -- factory for games."""
 from .exceptions import GolfException
 from .game_gross import GrossGame
+from .game_best_ball import BestBallGame
 from .game_net import NetGame
 from .game_skins import SkinsGame
 from .game_six_point import SixPointGame
@@ -10,6 +11,7 @@ from .game_stableford import StablefordGame
 from .game_vegas import VegasGame
 
 dctGames = { 
+  'bestball': BestBallGame,
   'skins': SkinsGame,
   'gross': GrossGame,
   'net': NetGame,
