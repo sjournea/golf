@@ -1,7 +1,12 @@
 from .player import GolfPlayer
 
 class GolfScore(object):
-  """Golf Score for a player."""
+  """Golf Score for a player in a round.
+  
+  player - GolfPlayer
+  tee - which tee used on course.
+  course_handicap - 
+  """
   def __init__(self, dct=None):
     super(GolfScore, self).__init__()
     self.player = GolfPlayer()
