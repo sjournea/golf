@@ -10,6 +10,12 @@ class GolfScore(object):
     if dct:
       self.fromDict(dct)
       
+  def getFullName(self):
+    return self.player.getFullName()
+  
+  def getInitials(self):
+    return self.player.getInitials()
+  
   def toDict(self):
     return {'player': self.player.toDict(),
             'tee': self.tee,
