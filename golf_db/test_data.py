@@ -554,6 +554,40 @@ poppy_ridge_zinfandel_merlot_tees = [
   {'gender': 'womens', 'name': 'Gold',  'rating': 70.4, 'slope': 123 },
 ]
 
+metro_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 73.9, 'slope': 131 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 71.9, 'slope': 128 },
+  {'gender': 'mens',   'name': 'White',      'rating': 69.8, 'slope': 122 },
+  {'gender': 'mens',   'name': 'Silver',     'rating': 69.1, 'slope': 121 },
+  {'gender': 'mens',   'name': 'Red',        'rating': 67.5, 'slope': 116 },
+  {'gender': 'mens',   'name': 'Gold',       'rating': 65.2, 'slope': 112 },
+  {'gender': 'womens', 'name': 'White',      'rating': 74.9, 'slope': 126 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 72.1, 'slope': 120 },
+  {'gender': 'womens', 'name': 'Gold',       'rating': 69.5, 'slope': 115 },
+]
+
+metro_men_holes = (
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':   7},
+  {'par': 5, 'handicap':  15},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':   9},
+  {'par': 5, 'handicap':  11},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   1},
+
+  {'par': 5, 'handicap':   2},
+  {'par': 4, 'handicap':  14},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  16},
+  {'par': 4, 'handicap':   4},
+  {'par': 3, 'handicap':   8},
+  {'par': 4, 'handicap':  10},
+  {'par': 5, 'handicap':   6},
+  {'par': 4, 'handicap':  12},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -600,10 +634,11 @@ DBGolfCourses = (
   {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
   {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
   {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
+  {'name': 'Metropolitan Golf Links',          'holes': metro_men_holes, 'tees': metro_tees},  
 )
 
 GolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 20.9, 'gender': 'man'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.5, 'gender': 'man'},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.4, 'gender': 'man'},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
   {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 19.3, 'gender': 'man'},
@@ -613,14 +648,14 @@ GolfPlayers = (
 )
 
 DBGolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 19.2, 'gender': 'man'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.5, 'gender': 'man'},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.4, 'gender': 'man'},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
   {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 19.3, 'gender': 'man'},
   {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bamba',  'handicap': 31.8, 'gender': 'woman'},
   {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frog',   'handicap': 11.2, 'gender': 'woman'},
-  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6,  'gender': 'woman'},
-  {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'Tech',    'handicap': 22.5, 'gender': 'man'},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap':  8.6,  'gender': 'woman'},
+  {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'Tech',   'handicap': 22.1, 'gender': 'man'},
   {'email':'spike@tl.com',    'first_name': 'John',  'last_name': 'Molcillo', 'nick_name': 'Spike',  'handicap': 17.5, 'gender': 'man'},
 )
 
