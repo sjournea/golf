@@ -28,6 +28,11 @@ class GolfGame(object):
     lst = [lstScores[n] for n in self.players]
     self.addScore(hole_index, lst)
 
+  def setPutts(self, hole_index, lstPutts):
+    """set gross scores for a hole."""
+    lst = [lstPutts[n] for n in self.players]
+    self.addPutts(hole_index, lst)
+
   @abstractmethod
   def start(self):
     """Start the game."""
@@ -36,6 +41,10 @@ class GolfGame(object):
   @abstractmethod
   def addScore(self, hole_index, lstScores):
     """add scores for a hole."""
+    pass
+
+  def addPutts(self, hole_index, lstPutts):
+    """add putts for a hole."""
     pass
 
   @abstractmethod
