@@ -9,6 +9,7 @@ gag gross
 gag net 
 gag stableford stableford_type='British'
 gag putts
+gag snake
 # start game
 gst 
 gps 
