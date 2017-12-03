@@ -34,7 +34,7 @@ In both cases the other players each lose a skin.
       pl._total = 0
     # skins carryover set to 1
     self.carryover = 1
-    self.dctScorecard['header'] = '{0:*^93}'.format(' Skins ')
+    self.dctScorecard['header'] = '{0:*^98}'.format(' Skins ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Skins Thru'
 
   def addScore(self, index, lstGross):

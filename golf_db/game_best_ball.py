@@ -115,7 +115,7 @@ Four-Person Best Two Balls	 	 90%	 95%
     self.win = None
     self.final = False
     self.match_score = None
-    self.dctScorecard['header'] = '{0:*^93}'.format(' BestBall - Match Play')
+    self.dctScorecard['header'] = '{0:*^98}'.format(' BestBall - Match Play')
     self.dctLeaderboard['hdr'] = 'Pos Name   Points Thru'
 
   def addScore(self, index, lstGross):

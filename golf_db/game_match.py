@@ -34,7 +34,7 @@ Handicaps are used in match play.
     self.win = None
     self.final = False
     self.match_score = None
-    self.dctScorecard['header'] = '{0:*^93}'.format(' Match ')
+    self.dctScorecard['header'] = '{0:*^98}'.format(' Match ')
 
   def addScore(self, index, lstGross):
     """add scores for a hole."""

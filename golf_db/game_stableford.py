@@ -42,7 +42,7 @@ class StablefordGame(GolfGame):
       pl._out = 0
       pl._total = 0
       pl._jokers = self.jokers[n] if self.stableford_type == 'Spanish' else None
-    self.dctScorecard['header'] = '{0:*^93}'.format(' Stableford ')
+    self.dctScorecard['header'] = '{0:*^98}'.format(' Stableford ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Points Thru'
 
   def _calc_score(self, net_score):

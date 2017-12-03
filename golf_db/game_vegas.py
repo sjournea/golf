@@ -129,7 +129,7 @@ first team receives 18 - 16 = 2 strokes. When a bump is used it is always applie
     for team in self.team_list:
       team.setup(self.golf_round.course, min_handicap)
     # setup responses 
-    self.dctScorecard['header'] = '{0:*^93}'.format(' Vegas ')
+    self.dctScorecard['header'] = '{0:*^98}'.format(' Vegas ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Points Thru'
 
     for team in self.team_list:

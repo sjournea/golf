@@ -45,7 +45,7 @@ At the end of the match, all the points are totaled, with the low-point-total pl
       sc._in = 0
       sc._out = 0
       sc._total = 0
-    self.dctScorecard['header'] = '{0:*^93}'.format(' {} '.format(self.TITLE))
+    self.dctScorecard['header'] = '{0:*^98}'.format(' {} '.format(self.TITLE))
     self.dctLeaderboard['hdr'] = 'Pos Name  Points Thru'
 
   def addScore(self, index, lstGross):

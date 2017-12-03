@@ -34,7 +34,7 @@ The bumps will be added to the lowest handicap holes on the course being played.
       pl._out = 0
       pl._total = 0
     # add header to scorecard
-    self.dctScorecard['header'] = '{0:*^93}'.format(' Net ')
+    self.dctScorecard['header'] = '{0:*^98}'.format(' Net ')
     self.dctLeaderboard['hdr'] = 'Pos Name     Net Thru'
 
   def addScore(self, index, lstGross):
