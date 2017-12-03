@@ -90,7 +90,8 @@ class GolfCourse(object):
     if ESC:
       hdr += '  ESC'
       
-    return { 'hdr': hdr,
+    return { 'title': '{0:*^98}'.format(' '+self.name+' '),
+             'hdr': hdr,
              'par': par,
              'hdcp': hdcp,
            }
