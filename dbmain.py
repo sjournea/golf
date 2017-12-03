@@ -276,20 +276,33 @@ class GolfMenu(Menu):
         print player['line']
 
   def _roundLeaderboard(self):
+    length = 22
+    lstLines = [None for _ in range(10)]
+    def update_line(index, msg):
+      if lstLines[index] is None:
+        lstLines[index] = '{:<22}'.format(msg)
+      else:
+        lstLines[index] += ' {:<22}'.format(msg)
+
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     for n in xrange(self.golf_round.getGameCount()):
-      dctLeaderboard = self.golf_round.getLeaderboard(n)
-      print dctLeaderboard['hdr']
-      for dct in dctLeaderboard['leaderboard']:
-        print dct['line']
+      game = self.golf_round.getGame(n)
+      dctLeaderboard = game.getLeaderboard()
+      update_line(0, '{0:*^22}'.format(' '+ game.short_description+ ' '))
+      update_line(1, dctLeaderboard['hdr'])
+      for i,dct in enumerate(dctLeaderboard['leaderboard']):
+        update_line(i+2, dct['line'])
+    for line in [line for line in lstLines if line is not None]:
+      print line
 
   def _roundStatus(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     for n in xrange(self.golf_round.getGameCount()):
-      dctStatus = self.golf_round.getStatus(n)
-      print '{:>2} - {}'.format(n, dctStatus['line'])
+      game = self.golf_round.getGame(n)
+      dctStatus = game.getStatus()
+      print '{:<15} - {}'.format(game.short_description, dctStatus['line'])
 
   def _roundDump(self):
     """ dump scorecard, leaderboard, status."""

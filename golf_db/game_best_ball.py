@@ -62,6 +62,7 @@ class BestBallTeam(GolfTeam):
 
 class BestBallGame(GolfGame):
   """The Best ball golf game."""
+  short_description = 'BestBall'
   description = """
 Two-Person Best Ball: Two golfers play as a team, each with their own ball. The best score on each hole is taken as the 'Team' Score.
 Best ball games can be played as match or as medal for 9 holes, 18 holes, or even as a Nassau. 

@@ -4,6 +4,7 @@ from .game_putts import PuttGame
 
 class SnakeGame(PuttGame):
   """3 putt game."""
+  short_description = 'Snake'
   description = """
 All 3 putts will punished.
 """

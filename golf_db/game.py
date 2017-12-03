@@ -7,6 +7,7 @@ class GolfGame(object):
   """Base class for all golf games."""
   __metaclass__ = ABCMeta
   description = """<Description not set>"""  
+  short_description = '<Not set>'
   
   def __init__(self, golf_round, scores, **kwargs):
     self.golf_round = golf_round

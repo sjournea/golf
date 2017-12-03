@@ -78,6 +78,7 @@ class VegasTeam(GolfTeam):
 
 class VegasGame(GolfGame):
   """The Vegas golf game."""
+  short_description = 'Vegas'
   description = """
 The key to Vegas is in the comparison of scores at the end of the hole.
 After the hole, each score becomes a digit in the overall team score.

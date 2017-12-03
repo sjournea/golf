@@ -5,6 +5,7 @@ from .exceptions import GolfException
 
 class SixPointGame(GolfGame):
   """Six point golf game."""
+  short_description = 'Six Point'
   description = """
 In the Six Point Game, three players compete for six points per hole.
 Before the game, the players should agree to how much each point is worth

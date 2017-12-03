@@ -4,6 +4,7 @@ from .game import GolfGame
 
 class PuttGame(GolfGame):
   """Who has the fewest putts."""
+  short_description = 'Putts'
   description = """
 Who has the fewest putts in the round. Who has the best short game.
 """
