@@ -246,13 +246,18 @@ class GolfMenu(Menu):
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     hole = int(self.lstCmd[1])
     pause_command = 'pause'
+    lstGross, lstPutts = None, None
     for arg in self.lstCmd[2:]:
       lst = arg.split('=')
       if lst[0] == 'gross':
         lstGross = eval(lst[1])
+      elif lst[0] == 'putts':
+        lstPutts = eval(lst[1])
       elif lst[0] == 'pause':
         pause_command += ' '+ lst[1]
-    self.golf_round.addScores(hole, lstGross)
+    if lstGross is None:
+      raise InputException('gross must be set with gas command.')
+    self.golf_round.addScores(hole, lstGross, lstPutts=lstPutts)
     self._roundDump()
     self.pushCommands([pause_command])
     
@@ -261,11 +266,12 @@ class GolfMenu(Menu):
       raise InputException( 'Golf round not created')
     for n in xrange(self.golf_round.getGameCount()):
       dct = self.golf_round.getScorecard(n)
-      print dct['header']
       if n == 0:
+        print dct['course']['title']
         print dct['course']['hdr']
         print dct['course']['par']
         print dct['course']['hdcp']
+      print dct['header']
       for player in dct['players']:
         print player['line']
 
