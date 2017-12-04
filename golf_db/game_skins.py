@@ -3,6 +3,7 @@ from .game import GolfGame
 
 class SkinsGame(GolfGame):
   """The Skins game."""
+  short_description = 'Skins'
   description = """
 Skins is very much a match play format, but it is usually played between three or four players.
 Each hole is played separately, and is won by the player with the lowest score on the hole -- that golfer wins 'the skin'.

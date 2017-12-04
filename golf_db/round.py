@@ -81,24 +81,20 @@ class GolfRound(object):
     for game in self.games:
       game.start()
 
-  def addScores(self, hole, lstGross, lstPutts=None):
+  def addScores(self, hole, lstGross, options=None):
     """Add some scores for this round.
 
     Args:
       hole : hole number, 1-18.
       lstGross : gross score for each player.
-      lstPutts : putts for each player.
+      options : dictionary of additional arguments.
     """
     if hole < 1 or hole > len(self.course.holes):
       raise GolfException('hole number must be in 1-{}'.format(len(self.course.holes)))
     if len(lstGross) != len(self.scores):
       raise GolfException('gross scores do not match number of players')
-    if lstPutts and len(lstPutts) != len(self.scores):
-      raise GolfException('putts do not match number of players')
     for game in self.games:
-      game.setGrossScore(hole-1, lstGross)
-      if lstPutts:
-        game.setPutts(hole-1, lstPutts)
+      game.setGrossScore(hole-1, lstGross, options)
 
   def getScorecard(self, index, **kwargs):
     """Scorecard for game."""

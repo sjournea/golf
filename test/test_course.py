@@ -80,7 +80,8 @@ class GolfCourseTestCase(unittest.TestCase):
     # validate fail, no holes
     with self.assertRaises(DocValidateFail):
       course.validate()
-    # validate pass after adding holes
+    # validate pass after adding holes and name
+    course.name = 'Fall River'
     course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
     course.validate()
     # force a bad handicap so validate fails
@@ -228,16 +229,17 @@ class GolfCourseTestCase(unittest.TestCase):
       {'par': 5, 'handicap':  10},
     ]
     course = GolfCourse()
+    course.name = 'Fall River'
     course.holes = [GolfHole(dct=dct) for dct in fall_river_men_holes]
     
     dct = course.getScorecard()
-    self.assertEqual(len(dct), 3)
-    for key in ['hdr', 'par', 'hdcp']:
+    self.assertEqual(len(dct), 4)
+    for key in ['hdr', 'par', 'hdcp', 'title']:
       self.assertIn(key, dct)
     self.assertNotIn('ESC', dct['hdr'])
       
     dct = course.getScorecard(ESC=1)
-    self.assertEqual(len(dct), 3)
-    for key in ['hdr', 'par', 'hdcp']:
+    self.assertEqual(len(dct), 4)
+    for key in ['hdr', 'par', 'hdcp', 'title']:
       self.assertIn(key, dct)
     self.assertIn('ESC', dct['hdr'])

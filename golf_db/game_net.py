@@ -7,6 +7,7 @@ from .game import GolfGame
 
 class NetGame(GolfGame):
   """Basic net golf game. For us weekenders."""
+  short_description = 'Net'
   description = """
 One purpose of a golf handicap is to help players of different skill levels to create a fair match.
 Take the difference between each handicap (e.g. 25 - 13 = 12) and that is the number of strokes given to the higher handicap player.

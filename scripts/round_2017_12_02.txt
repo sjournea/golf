@@ -9,6 +9,7 @@ gag gross
 gag net 
 gag stableford stableford_type='British'
 gag putts
+gag snake snake_type='Hold'
 # start game
 gst 
 gps 
@@ -19,7 +20,8 @@ gas  1 gross=[6,5,6,7] putts=[2,2,2,3]
 gas  2 gross=[6,5,5,5] putts=[3,2,2,2]
 gas  3 gross=[6,8,7,5] putts=[2,2,2,1]
 gas  4 gross=[6,6,6,6] putts=[2,2,2,2]
-gas  5 gross=[5,5,5,4] putts=[2,3,4,3]
+#gas  5 gross=[5,5,5,4] putts=[2,3,4,3]
+gas  5 gross=[5,5,5,4] putts=[2,3,3,3] closest_to_pin=2
 gas  6 gross=[6,8,7,6] putts=[2,3,2,1]
 gas  7 gross=[4,3,6,3] putts=[1,1,2,2]
 gas  8 gross=[5,7,7,4] putts=[2,2,1,2]

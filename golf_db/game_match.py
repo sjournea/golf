@@ -5,6 +5,7 @@ from .exceptions import GolfException
 
 class MatchGame(GolfGame):
   """Match golf game."""
+  short_description = 'Match'
   description = """
 Match play is a hole-by-hole game where the lowest score wins the hole.
 If I shoot a five, and you shoot an eight, then in medal play I should gain three strokes.

@@ -1,9 +1,10 @@
 """ game_putts.py - GolfGame class."""
 from .game import GolfGame
-
+from .exceptions import GolfException
 
 class PuttGame(GolfGame):
   """Who has the fewest putts."""
+  short_description = 'Putts'
   description = """
 Who has the fewest putts in the round. Who has the best short game.
 """
@@ -19,8 +20,16 @@ Who has the fewest putts in the round. Who has the best short game.
     self.dctScorecard['header'] = '{0:*^98}'.format(' Putts ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Putts Thru'
   
+  def setOptions(self, options):
+    """Additional options parsed by each test."""
+    super(PuttGame, self).setOptions(options)
+    self._lst_putts = options.get('putts')
+    if not self._lst_putts:
+      raise GolfException('{} - must set putts in options'.format(self.__class__.__name__))
+
   def addScore(self, index, lstGross):
-    pass
+    """PuttGame just uses putts that is set with setOptions."""
+    self.addPutts(index, self._lst_putts)
   
   def addPutts(self, index, lstPutts):
     """add putts for a hole.

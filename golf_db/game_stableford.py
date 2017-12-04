@@ -4,6 +4,7 @@ from .exceptions import GolfException
 
 class StablefordGame(GolfGame):
   """The Stableford game."""
+  short_description = 'Stableford'
   dct_scoring = {
     'Classic': { -3: 8, -2: 5, -1: 2, 0: 0, 1: -1, 2:-2, 'min':8, 'max': -2},
     'British': { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':4, 'max': 0 },

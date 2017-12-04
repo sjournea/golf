@@ -5,6 +5,7 @@ from .game_six_point import SixPointGame
 
 class EightyOneGame(SixPointGame):
   """Eighty one golf game."""
+  short_description = '81'
   description = """
 Eighty One is similar to the Six Point Game, except that each hole is worth nine points (nine points times nine holes equals 81).
 The results are higher scores and higher pay-outs. The points break down as follows:
