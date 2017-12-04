@@ -247,17 +247,20 @@ class GolfMenu(Menu):
     hole = int(self.lstCmd[1])
     pause_command = 'pause'
     lstGross, lstPutts = None, None
+    options = {}
     for arg in self.lstCmd[2:]:
       lst = arg.split('=')
       if lst[0] == 'gross':
         lstGross = eval(lst[1])
-      elif lst[0] == 'putts':
-        lstPutts = eval(lst[1])
+      elif lst[0] in ('putts','closest_to_pin'):
+        options[lst[0]] = eval(lst[1])
       elif lst[0] == 'pause':
         pause_command += ' '+ lst[1]
+      else:
+        print 'unknown argument {}'.format(arg)
     if lstGross is None:
       raise InputException('gross must be set with gas command.')
-    self.golf_round.addScores(hole, lstGross, lstPutts=lstPutts)
+    self.golf_round.addScores(hole, lstGross, options)
     self._roundDump()
     self.pushCommands([pause_command])
     

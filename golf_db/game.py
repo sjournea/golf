@@ -24,15 +24,11 @@ class GolfGame(object):
     """Validate a game."""
     pass
 
-  def setGrossScore(self, hole_index, lstScores):
+  def setGrossScore(self, hole_index, lstScores, options):
     """set gross scores for a hole."""
+    self.setOptions(options if options else {})
     lst = [lstScores[n] for n in self.players]
     self.addScore(hole_index, lst)
-
-  def setPutts(self, hole_index, lstPutts):
-    """set gross scores for a hole."""
-    lst = [lstPutts[n] for n in self.players]
-    self.addPutts(hole_index, lst)
 
   @abstractmethod
   def start(self):
@@ -44,7 +40,11 @@ class GolfGame(object):
     """add scores for a hole."""
     pass
 
-  def addPutts(self, hole_index, lstPutts):
+  def setOptions(self, options):
+    """Additional options parsed by each test."""
+    pass
+  
+  def addPutts(self, hole_index, lstPutts, **kwargs):
     """add putts for a hole."""
     pass
 
