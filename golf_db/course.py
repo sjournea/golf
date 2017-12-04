@@ -41,6 +41,8 @@ class GolfCourse(object):
     return not self == other
 
   def validate(self):
+    if self.name is None:
+      raise DocValidateFail('name must be defined')
     if len(self.holes) != 18:
       raise DocValidateFail('Course must have 18 golf holes.')
     handicaps = [0 for n in range(len(self.holes))]
