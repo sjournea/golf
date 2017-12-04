@@ -51,7 +51,7 @@ Options:
       par = self.golf_round.course.holes[index].par
       if self._closest_to_pin is not None and lstGross[self._closest_to_pin] < par+1:
         winner = self.scores[self._closest_to_pin]
-        # par 
+        # only get points on par 3, not greens in regulation carryover
         value = 1 if par == 3 else 0
         winner._points[index] = value + self._carry
         self._carry = 0

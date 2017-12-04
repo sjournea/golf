@@ -2,13 +2,10 @@ Bugs
 
 Golf game TODO 11/23/17
   Python prototype
-    * getDescription() -- full game description.
     * Games use less then all players
     * Games
       Nassau - support press(?)
       Wolf
-      Junk games
-        Snake - 3 putts - need to track putts  
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
    * Mongo DB working
