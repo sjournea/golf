@@ -22,6 +22,12 @@ class GolfHoleTest(unittest.TestCase):
       self.assertEqual(g.par, dct['par'])
       self.assertEqual(g.handicap, dct['handicap'])
 
+  def test_isPar(self):
+    g = GolfHole(par=3, handicap=1)
+    self.assertTrue(g.isPar(3))
+    self.assertFalse(g.isPar(4))
+    self.assertFalse(g.isPar(5))
+
 class GolfHoleValidateTest(unittest.TestCase):
   def test_init(self):
     g = GolfHole()

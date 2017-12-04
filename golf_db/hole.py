@@ -22,6 +22,9 @@ class GolfHole(Doc):
       raise DocValidateFail('handicap must be an int')
     if self.handicap not in self.valid_handicaps:
       raise DocValidateFail('handicap must be {}'.format(self.valid_handicaps))
+
+  def isPar(self, par):
+    return self.par == par
     
   def __str__(self):
     return 'par {} handicap {}'.format(self.par, self.handicap)
