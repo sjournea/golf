@@ -7,29 +7,31 @@ gad reload Championship
 # add games
 gag gross
 gag net
-gag stableford stableford_type='Spanish' jokers=((1,10),(2,11),(3,12),(4,13))
-gag vegas teams=((0,3),(1,2))
+gag putts
+gag stableford stableford_type='British'
+gag snake snake_type='Hold'
+gag greenie
 # start game
 gst
 gps
 gpl
 gpt
 pause enable
-gas 1 gross=[4,3,6,6]
-gas 2 gross=[3,4,3,4]
-gas 3 gross=[5,5,6,7]
-gas 4 gross=[8,7,6,7]
-gas 5 gross=[5,6,4,6]
-gas 6 gross=[6,6,7,6]
-gas 7 gross=[2,4,6,5]
-gas 8 gross=[5,7,6,6]
-gas 9 gross=[9,4,7,7] pause=enable
-gas 10 gross=[6,5,6,5]
-gas 11 gross=[6,5,5,5]
-gas 12 gross=[4,7,6,6]
-gas 13 gross=[6,7,7,7]
-gas 14 gross=[5,4,5,5]
-gas 15 gross=[6,6,6,7]
-gas 16 gross=[5,6,5,7]
-gas 17 gross=[4,4,5,4]
-gas 18 gross=[8,3,7,7] pause=enable
+gas 1 gross=[4,3,6,6] putts=[1,1,2,1]
+gas 2 gross=[3,4,3,4] putts=[1,2,2,2] closest_to_pin=2
+gas 3 gross=[5,5,6,7] putts=[1,2,2,2]
+gas 4 gross=[8,7,6,7] putts=[1,2,3,2]
+gas 5 gross=[5,6,4,6] putts=[2,2,1,2]
+gas 6 gross=[6,6,7,6] putts=[2,2,2,2]
+gas 7 gross=[2,4,6,5] putts=[0,2,2,2]
+gas 8 gross=[5,7,6,6] putts=[2,3,3,3] closest_to_pin=2
+gas 9 gross=[9,4,7,7] putts=[3,1,3,3] closest_to_pin=0 pause=enable
+gas 10 gross=[6,5,6,5] putts=[1,1,1,1]
+gas 11 gross=[6,5,5,5] putts=[1,2,2,2]
+gas 12 gross=[4,7,6,6] putts=[1,3,2,2]
+gas 13 gross=[6,7,7,7] putts=[2,2,3,3] closest_to_pin=3
+gas 14 gross=[5,4,5,5] putts=[3,2,3,2] closest_to_pin=2
+gas 15 gross=[6,6,6,7] putts=[3,2,2,3] closest_to_pin=0
+gas 16 gross=[5,6,5,7] putts=[1,3,1,3] closest_to_pin=1
+gas 17 gross=[4,4,5,4] putts=[1,2,3,2] 
+gas 18 gross=[8,3,7,7] putts=[3,1,1,1] closest_to_pin=1 pause=enable
