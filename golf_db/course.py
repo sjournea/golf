@@ -142,6 +142,14 @@ class GolfCourse(object):
       esc = gross if gross < 10 else 10
     return esc
 
+  def lastPar(self, par):
+    """Return index of last par 3."""
+    last_index = None
+    for n,hole in enumerate(self.holes):
+      if hole.par == par:
+        last_index = n
+    return last_index
+    
   def __str__(self):
     return '{:<40} - {} holes - {} tees'.format(self.name, len(self.holes), len(
       self.tees))
