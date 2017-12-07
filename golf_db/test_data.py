@@ -588,6 +588,35 @@ metro_men_holes = (
   {'par': 4, 'handicap':  12},
 )
 
+summitpointe_tees = [
+  {'gender': 'mens',   'name': 'Summit',      'rating': 71.8, 'slope': 136 },
+  {'gender': 'mens',   'name': 'Club',        'rating': 70.4, 'slope': 134 },
+  {'gender': 'womens', 'name': 'Club',        'rating': 75.1, 'slope': 137 },
+  {'gender': 'mens',   'name': 'Forward',     'rating': 72.1, 'slope': 130 },
+]
+
+summitpointe_men_holes = (
+  {'par': 4, 'handicap':  15},
+  {'par': 5, 'handicap':   3},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':   7},
+  {'par': 3, 'handicap':  11},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':  13},
+
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':  16},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 5, 'handicap':  14},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':   6},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   4},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -635,6 +664,7 @@ DBGolfCourses = (
   {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
   {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
   {'name': 'Metropolitan Golf Links',          'holes': metro_men_holes, 'tees': metro_tees},  
+  {'name': 'Summitpointe Golf Club',           'holes': summitpointe_men_holes, 'tees': summitpointe_tees},  
 )
 
 GolfPlayers = (
