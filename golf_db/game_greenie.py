@@ -6,7 +6,7 @@ class GreenieGame(GolfGame):
   """Basic Par 3 games."""
   short_description = 'Greenie'
   description = """
-Closest shot to the pin on par 3 (on the green) and makes a par wins the hole.
+Closest shot to the pin on par 3 (on the green) and makes a par or better wins the hole.
 
 Options:
   double_birdie: Birdies are worth double points. 
@@ -49,7 +49,7 @@ Options:
     """
     if self.golf_round.course.holes[index].isPar(3) or self._use_green_in_regulation:
       par = self.golf_round.course.holes[index].par
-      if self._closest_to_pin is not None and lstGross[self._closest_to_pin] < par+1:
+      if self._closest_to_pin is not None and lstGross[self._closest_to_pin] <= par:
         winner = self.scores[self._closest_to_pin]
         # only get points on par 3, not greens in regulation carryover
         value = 1 if par == 3 else 0
