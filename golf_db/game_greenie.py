@@ -19,12 +19,6 @@ Options:
     self._double_birdie = kwargs.get('double_birdie', True)
     self._last_par_3_carry = kwargs.get('last_par_3_carry', True)
 
-  def _update_totals(self, dct):
-    """Update totals in a dictionary."""
-    dct['out'] = sum([sc for sc in dct['holes'][:9] if sc is not None])
-    dct['in']  = sum([sc for sc in dct['holes'][9:] if sc is not None])
-    dct['total'] = dct['in'] + dct['out']
-    
   def start(self):
     """Start the game."""
     for pl in self.scores:

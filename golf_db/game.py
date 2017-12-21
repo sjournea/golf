@@ -74,6 +74,12 @@ class GolfGame(object):
     """Complete a game. Overload for process when a game is complete."""
     pass
 
+  def _update_totals(self, dct):
+    """Update totals in a dictionary."""
+    dct['out'] = sum([sc for sc in dct['holes'][:9] if sc is not None])
+    dct['in']  = sum([sc for sc in dct['holes'][9:] if sc is not None])
+    dct['total'] = dct['in'] + dct['out']
+    
 
 class GolfTeam:
   """Base class for all golf teams."""
