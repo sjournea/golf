@@ -18,11 +18,15 @@ class GolfGame(object):
     self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
     self.dctLeaderboard = {}
     self.dctStatus = {}
+    self._wager = kwargs.get('wager')
     self.validate()
     
   def validate(self):
     """Validate a game."""
-    pass
+    if self._wager is not None:
+      self._wager = float(self._wager)
+      if self._wager <= 0:
+        raise GolfException('Wager must be float value > 0')
 
   def setGrossScore(self, hole_index, lstScores, options):
     """set gross scores for a hole."""
@@ -55,7 +59,10 @@ class GolfGame(object):
   
   @abstractmethod
   def getLeaderboard(self, **kwargs):
-    """Return leaderboard dictionary for this game."""
+    """Return leaderboard for this game.
+    
+    Will be list of dictionaries sorted in the order of 1st to last.
+    """
     pass
 
   @abstractmethod

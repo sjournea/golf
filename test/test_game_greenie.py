@@ -9,7 +9,7 @@ from golf_db.db import GolfDBAdmin
 #from golf_db.game import GolfGame, SkinsGame, NetGame
 from golf_db.game_greenie import GreenieGame
 #from golf_db.game_factory import GolfGa7meFactory
-#from golf_db.exceptions import GolfException
+from golf_db.exceptions import GolfException
 
 
 class GolfGameGreenieTest(unittest.TestCase):
@@ -36,35 +36,82 @@ class GolfGameGreenieTest(unittest.TestCase):
     self.assertEquals(g._carry_over, True)
     self.assertEquals(g._double_birdie, True)
     self.assertEquals(g._last_par_3_carry, True)
+    self.assertIsNone(g._wager)
 
     g = GreenieGame(self.gr, self.gr.scores, carry_over=False, double_birdie=False, last_par_3_carry=False)
     self.assertEquals(g._carry_over, False)
     self.assertEquals(g._double_birdie, False)
     self.assertEquals(g._last_par_3_carry, False)
+    self.assertIsNone(g._wager)
+    
+  def test_game_wager(self):
+    with self.assertRaises(GolfException):
+      g = GreenieGame(self.gr, self.gr.scores, wager=0.0)
+    
+    with self.assertRaises(GolfException):
+      g = GreenieGame(self.gr, self.gr.scores, wager=-45.0)
+ 
+    g = GreenieGame(self.gr, self.gr.scores, wager=1.0)
+    self.assertEqual(g._wager, 1.0)
     
   def test_game_start(self):
     g = GreenieGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl._points, 18*[None])
-      self.assertEquals(pl._in, 0)
-      self.assertEquals(pl._out, 0)
-      self.assertEquals(pl._total, 0)
+      self.assertEquals(pl.dct_points['holes'], 18*[None])
+      self.assertEquals(pl.dct_points['in'], 0)
+      self.assertEquals(pl.dct_points['out'], 0)
+      self.assertEquals(pl.dct_points['total'], 0)
+      self.assertIsNone(pl.dct_money)
     self.assertEquals(g._carry, 0)
     self.assertEquals(g._next_hole, 0)
     self.assertEquals(g._use_green_in_regulation, False)
     self.assertIn('header', g.dctScorecard)
     self.assertIn('hdr', g.dctLeaderboard)
     
+    g = GreenieGame(self.gr, self.gr.scores, wager=1.0)
+    g.start()
+    for pl in g.scores:
+      self.assertEquals(pl.dct_money['holes'], 18*[None])
+      self.assertEquals(pl.dct_money['in'], 0.0)
+      self.assertEquals(pl.dct_money['out'], 0.0)
+      self.assertEquals(pl.dct_money['total'], 0.0)
+    self.assertIn('header', g.dctScorecard)
+    self.assertIn('hdr', g.dctLeaderboard)
+
   def test_game_add_score(self):
     g = GreenieGame(self.gr, self.gr.scores)
     g.start()
-    g.setGrossScore(1, [4,4], options={'putts':[1,1]})
-    g.setGrossScore(2, [5,5], options={'putts':[1,1]})
-    g.setGrossScore(3, [3,3], options={'putts':[1,1], 'closest_to_pin':0})
-    g.setGrossScore(4, [4,4], options={'putts':[1,1]})
-    g.setGrossScore(5, [3,3], options={'putts':[1,1], 'closest_to_pin':1})
+    g.setGrossScore(0, [4,4], options={'putts':[1,1]})
+    g.setGrossScore(1, [5,5], options={'putts':[1,1]})
+    g.setGrossScore(2, [3,3], {'putts':[1,1], 'closest_to_pin':0})
+    self.assertEqual(g.scores[0].dct_points['holes'][2], 1)
+    self.assertEqual(g.scores[0].dct_points['out'], 1)
+    self.assertEqual(g.scores[0].dct_points['in'], 0)
+    self.assertEqual(g.scores[0].dct_points['total'], 1)
+    g.setGrossScore(3, [4,4], options={'putts':[1,1]})
+    g.setGrossScore(4, [3,3], options={'putts':[1,1], 'closest_to_pin':0})
+    self.assertEqual(g.scores[0].dct_points['holes'][4], 1)
+    self.assertEqual(g.scores[0].dct_points['out'], 2)
+    self.assertEqual(g.scores[0].dct_points['in'], 0)
+    self.assertEqual(g.scores[0].dct_points['total'], 2)
     
+    g = GreenieGame(self.gr, self.gr.scores, wager=1.0)
+    g.start()
+    g.setGrossScore(0, [4,4], options={'putts':[1,1]})
+    g.setGrossScore(1, [5,5], options={'putts':[1,1]})
+    g.setGrossScore(2, [3,3], {'putts':[1,1], 'closest_to_pin':0})
+    self.assertEqual(g.scores[0].dct_money['holes'][2], 2.0)
+    self.assertEqual(g.scores[0].dct_money['out'], 2.0)
+    self.assertEqual(g.scores[0].dct_money['in'], 0)
+    self.assertEqual(g.scores[0].dct_money['total'], 2)
+    g.setGrossScore(3, [4,4], options={'putts':[1,1]})
+    g.setGrossScore(4, [3,3], options={'putts':[1,1], 'closest_to_pin':0})
+    self.assertEqual(g.scores[0].dct_money['holes'][4], 2.0)
+    self.assertEqual(g.scores[0].dct_money['out'], 4.0)
+    self.assertEqual(g.scores[0].dct_money['in'], 0)
+    self.assertEqual(g.scores[0].dct_money['total'], 4)
+
   def test_game_scorecard(self):
     g = GreenieGame(self.gr, self.gr.scores)
     g.start()
