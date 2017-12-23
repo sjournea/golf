@@ -40,20 +40,9 @@ class StablefordGame(GolfGame):
     for n,pl in enumerate(self.scores):
       pl._score = [None for _ in range(len(self.golf_round.course.holes))]
       pl._bumps = self.golf_round.course.calcBumps(pl.course_handicap)
-      pl.dct_points = {
-        'holes': [None for _ in range(len(self.golf_round.course.holes))],
-        'in': 0,
-        'out': 0,
-        'total': 0,
-      }
+      pl.dct_points = self._init_dict()
       pl._jokers = self.jokers[n] if self.stableford_type == 'Spanish' else None
-      if self._wager:
-        pl.dct_money = {
-          'holes': [None for _ in range(len(self.golf_round.course.holes))],
-          'in': 0.0,
-          'out': 0.0,
-          'total': 0.0,
-        }
+      pl.dct_money = self._init_dict(score_type=float) if self._wager else None
     self.dctScorecard['header'] = '{0:*^98}'.format(' Stableford ')
     self._thru = 0
     if self._wager:

@@ -38,10 +38,10 @@ class GolfGrossGameTest(unittest.TestCase):
     g = GrossGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl._gross, 18*[None])
-      self.assertEquals(pl._in, 0)
-      self.assertEquals(pl._out, 0)
-      self.assertEquals(pl._total, 0)
+      self.assertEquals(pl.dct_gross['holes'], 18*[None])
+      self.assertEquals(pl.dct_gross['in'], 0)
+      self.assertEquals(pl.dct_gross['out'], 0)
+      self.assertEquals(pl.dct_gross['total'], 0)
       self.assertEquals(pl._esc, 0)
       
   def test_game_add_score(self):

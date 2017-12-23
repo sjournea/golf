@@ -23,21 +23,8 @@ Options:
     """Start the game."""
     for pl in self.scores:
       # points won
-      pl.dct_points = {
-        'holes': [None for _ in range(len(self.golf_round.course.holes))],
-        'in': 0,
-        'out': 0,
-        'total': 0,
-      }
-      if self._wager:
-        pl.dct_money = {
-          'holes': [None for _ in range(len(self.golf_round.course.holes))],
-          'in': 0.0,
-          'out': 0.0,
-          'total': 0.0,
-        }
-      else:
-        pl.dct_money = None
+      pl.dct_points = self._init_dict()
+      pl.dct_money = self._init_dict(score_type=float) if self._wager else None
     self._carry = 0
     self._next_hole = 0
     self._use_green_in_regulation = False

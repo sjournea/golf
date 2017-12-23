@@ -77,6 +77,18 @@ class GolfGame(object):
     """Complete a game. Overload for process when a game is complete."""
     pass
 
+  def _init_dict(self, score_type=int):
+    """Create and initialize scoring dictionary.
+      
+      add holes, in, out, total.
+    """
+    return {
+      'holes': [None for _ in range(len(self.golf_round.course.holes))],
+      'in' : score_type(0),
+      'out': score_type(0),
+      'total': score_type(0),
+    }
+
   def _update_totals(self, dct):
     """Update totals in a dictionary. If a value is None it is not added.
 

@@ -38,10 +38,10 @@ class GolfNetGameTest(unittest.TestCase):
     g = NetGame(self.gr, self.gr.scores)
     g.start()
     for pl in g.scores:
-      self.assertEquals(pl._net, 18*[None])
-      self.assertEquals(pl._in, 0)
-      self.assertEquals(pl._out, 0)
-      self.assertEquals(pl._total, 0)
+      self.assertEquals(pl.dct_net['holes'], 18*[None])
+      self.assertEquals(pl.dct_net['in'], 0)
+      self.assertEquals(pl.dct_net['out'], 0)
+      self.assertEquals(pl.dct_net['total'], 0)
       
   def test_game_add_score(self):
     g = NetGame(self.gr, self.gr.scores)
