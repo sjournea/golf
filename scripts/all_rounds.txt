@@ -11,4 +11,5 @@ pause ignore on
 < scripts/round_2017_11_21.txt
 < scripts/round_2017_11_22.txt
 < scripts/round_2017_12_02.txt
+< scripts/round_2017_12_19.txt
 x

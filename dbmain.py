@@ -278,7 +278,7 @@ class GolfMenu(Menu):
       for player in dct['players']:
         print player['line']
 
-  def _roundLeaderboard(self):
+  def _roundLeaderboard(self, **kwargs):
     length = 22
     lstLines = [None for _ in range(10)]
     def update_line(index, msg):
@@ -289,10 +289,11 @@ class GolfMenu(Menu):
 
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
+    header = '{0:-^22}' if kwargs.get('sort_type') == 'money' else '{0:*^22}'
     for n in xrange(self.golf_round.getGameCount()):
       game = self.golf_round.getGame(n)
-      dctLeaderboard = game.getLeaderboard()
-      update_line(0, '{0:*^22}'.format(' '+ game.short_description+ ' '))
+      dctLeaderboard = game.getLeaderboard(**kwargs)
+      update_line(0, header.format(' '+ game.short_description+ ' '))
       update_line(1, dctLeaderboard['hdr'])
       for i,dct in enumerate(dctLeaderboard['leaderboard']):
         update_line(i+2, dct['line'])
@@ -311,6 +312,7 @@ class GolfMenu(Menu):
     """ dump scorecard, leaderboard, status."""
     self._roundScorecard()
     self._roundLeaderboard()
+    self._roundLeaderboard(sort_type='money')
     self._roundStatus()
     
   def _createRound(self):

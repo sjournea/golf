@@ -41,9 +41,9 @@ Options:
     self._carry = 0
     self._next_hole = 0
     self._use_green_in_regulation = False
+    self._thru = 0
     # add header to scorecard
     self.dctScorecard['header'] = '{0:*^98}'.format(' '+ self.short_description + ' ')
-    self.dctLeaderboard['hdr'] = 'Pos Name   {:<6} Thru'.format('Money' if self._wager else 'Points') 
   
   def setOptions(self, options):
     """Additional options set for each add score."""
@@ -57,6 +57,7 @@ Options:
       index: hole index [0..holes-1]
       lstGross: list of gross scores for all players.
     """
+    self._thru = index+1
     if self.golf_round.course.holes[index].isPar(3) or self._use_green_in_regulation:
       par = self.golf_round.course.holes[index].par
       if self._closest_to_pin is not None and lstGross[self._closest_to_pin] <= par:
@@ -104,29 +105,30 @@ Options:
     return self.dctScorecard
 
   def getLeaderboard(self, **kwargs):
-    """Scorecard with all players."""
     board = []
-    scores = sorted(self.scores, key=lambda score: score.dct_points['total'], reverse=True)
+    sort_type = kwargs.get('sort_type', 'points')
+    if sort_type == 'money' and self._wager:
+      self.dctLeaderboard['hdr'] = 'Pos Name  Money  Thru'
+      scores = sorted(self.scores, key=lambda score: score.dct_money['total'], reverse=True)
+      sort_by = 'money'
+    else:
+      self.dctLeaderboard['hdr'] = 'Pos Name  Points Thru'
+      scores = sorted(self.scores, key=lambda score: score.dct_points['total'], reverse=True)
+      sort_by = 'total'
     pos = 1
     prev_total = None
-    for score in scores:
+    for sc in scores:
       score_dct = {
-        'player': score.player,
-        'total' : score.dct_points['total'],
-        'money' : score.dct_money['total'] if self._wager else None,
+        'player': sc.player,
+        'total' : sc.dct_points['total'],
+        'money' : sc.dct_money['total'] if self._wager else None,
       }
-      if prev_total != None and score_dct['total'] > prev_total:
+      if prev_total != None and score_dct[sort_by] != prev_total:
         pos += 1
-      prev_total = score_dct['total']
+      prev_total = score_dct[sort_by]
       score_dct['pos'] = pos
-      
-      for n,point in enumerate(score.dct_points['holes']):
-        if point is None:
-          break
-      else:
-        n += 1
-      score_dct['thru'] = n
-      if self._wager:
+      score_dct['thru'] = self._thru
+      if sort_by == 'money':
         money = '--' if score_dct['money'] == 0.0 else '${:<2g}'.format(score_dct['money'])
         score_dct['line'] = '{:<3} {:<6} {:^5} {:>4}'.format(
           score_dct['pos'], score_dct['player'].nick_name, money, score_dct['thru'])
@@ -157,3 +159,13 @@ Options:
         line += ' Use all greens'
       self.dctStatus['line'] = line
     return self.dctStatus
+
+  @property
+  def total_payout(self):
+    """Overload to only count Par 3 holes."""
+    # calc total payout, game only uses Par 3
+    if self._wager:
+      holes = [hole for hole in self.golf_round.course.holes if hole.par == 3]
+      return len(holes)*self._wager*len(self.scores)
+    return None
+

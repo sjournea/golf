@@ -37,12 +37,14 @@ class GolfGameGreenieTest(unittest.TestCase):
     self.assertEquals(g._double_birdie, True)
     self.assertEquals(g._last_par_3_carry, True)
     self.assertIsNone(g._wager)
+    self.assertIsNone(g.total_payout)
 
     g = GreenieGame(self.gr, self.gr.scores, carry_over=False, double_birdie=False, last_par_3_carry=False)
     self.assertEquals(g._carry_over, False)
     self.assertEquals(g._double_birdie, False)
     self.assertEquals(g._last_par_3_carry, False)
     self.assertIsNone(g._wager)
+    self.assertIsNone(g.total_payout)
     
   def test_game_wager(self):
     with self.assertRaises(GolfException):
@@ -53,6 +55,7 @@ class GolfGameGreenieTest(unittest.TestCase):
  
     g = GreenieGame(self.gr, self.gr.scores, wager=1.0)
     self.assertEqual(g._wager, 1.0)
+    self.assertEqual(g.total_payout,1*2*5)
     
   def test_game_start(self):
     g = GreenieGame(self.gr, self.gr.scores)
@@ -67,7 +70,6 @@ class GolfGameGreenieTest(unittest.TestCase):
     self.assertEquals(g._next_hole, 0)
     self.assertEquals(g._use_green_in_regulation, False)
     self.assertIn('header', g.dctScorecard)
-    self.assertIn('hdr', g.dctLeaderboard)
     
     g = GreenieGame(self.gr, self.gr.scores, wager=1.0)
     g.start()
@@ -77,7 +79,6 @@ class GolfGameGreenieTest(unittest.TestCase):
       self.assertEquals(pl.dct_money['out'], 0.0)
       self.assertEquals(pl.dct_money['total'], 0.0)
     self.assertIn('header', g.dctScorecard)
-    self.assertIn('hdr', g.dctLeaderboard)
 
   def test_game_add_score(self):
     g = GreenieGame(self.gr, self.gr.scores)

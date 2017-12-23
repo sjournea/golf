@@ -31,10 +31,10 @@ class SnakeGame(PuttGame):
         }
     
     self._has_snake = None
+    self._thru = 0
     # update header to scorecard
     title = ' Snake - {} '.format(self._snake_type)
     self.dctScorecard['header'] = '{0:*^98}'.format(title)
-    self.dctLeaderboard['hdr'] = 'Pos Name  {:>6} Thru'.format('Money' if self._wager else 'Points')
   
   def setOptions(self, options):
     """Additional options parsed by each test."""
@@ -48,6 +48,7 @@ class SnakeGame(PuttGame):
       index: hole index [0..holes-1]
       lstPutts: list of putts for all players.
     """
+    self._thru = index+1
     if self._snake_type == 'Hold':
       snake_winner = None
       lst_three_putts = []
@@ -89,7 +90,7 @@ class SnakeGame(PuttGame):
           self._has_snake = snake_winner
       # snake automatic payout on 9 and 18
       if index in (8, 17) and self._has_snake:
-        self._has_snake._three_putts[index] = -1
+        self._has_snake.dct_points['holes'][index] = -1
         self._has_snake = None
     else:
       for gs, putt in zip(self.scores, lstPutts):
@@ -119,30 +120,32 @@ class SnakeGame(PuttGame):
     return self.dctScorecard
 
   def getLeaderboard(self, **kwargs):
-    """Scorecard with all players."""
     board = []
-    scores = sorted(self.scores, key=lambda score: score.dct_points['total'], reverse=True)
+    sort_type = kwargs.get('sort_type', 'points')
+    if sort_type == 'money' and self._wager:
+      self.dctLeaderboard['hdr'] = 'Pos Name   Money Thru'
+      scores = sorted(self.scores, key=lambda score: score.dct_money['total'], reverse=True)
+      sort_by = 'money'
+    else:
+      self.dctLeaderboard['hdr'] = 'Pos Name  Points Thru'
+      scores = sorted(self.scores, key=lambda score: score.dct_points['total'], reverse=True)
+      sort_by = 'total'
     pos = 1
     prev_total = None
-    for score in scores:
+    for sc in scores:
       score_dct = {
-        'player': score.player,
-        'total' : score.dct_points['total'],
-        'money' : score.dct_money['total'] if self._wager else None,
+        'player': sc.player,
+        'total' : sc.dct_points['total'],
+        'money' : sc.dct_money['total'] if self._wager else None,
       }
-      if prev_total != None and score_dct['total'] > prev_total:
+      if prev_total != None and score_dct[sort_by] != prev_total:
         pos += 1
-      prev_total = score_dct['total']
+      prev_total = score_dct[sort_by]
       score_dct['pos'] = pos
-      for n,putt in enumerate(score.dct_points['holes']):
-        if putt is None:
-          break
-      else:
-        n += 1
-      score_dct['thru'] = n
-      if self._wager:
-        money = '--' if score_dct['money'] == 0.0 else '${:<2g}'.format(score_dct['money'])
-        score_dct['line'] = '{:<3} {:<6} {:^5} {:>4}'.format(
+      score_dct['thru'] = self._thru
+      if sort_by == 'money':
+        money = '---' if score_dct['money'] == 0.0 else '${:2g}'.format(score_dct['money'])
+        score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
           score_dct['pos'], score_dct['player'].nick_name, money, score_dct['thru'])
       else:
         score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(

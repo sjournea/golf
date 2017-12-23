@@ -7,10 +7,10 @@ gad spanky Blue
 # add games
 gag gross
 gag net 
-gag stableford stableford_type='British'
+gag stableford stableford_type='British' wager=0.50
 gag putts
-gag snake snake_type='Hold'
-gag greenie
+gag snake snake_type='Hold' wager=0.50 
+gag greenie wager=1.0
 # start game
 gst 
 gps 
