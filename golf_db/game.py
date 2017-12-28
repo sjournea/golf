@@ -32,7 +32,13 @@ class GolfGame(object):
         raise GolfException('Wager must be float value > 0')
 
   def setGrossScore(self, hole_index, lstScores, options):
-    """set gross scores for a hole."""
+    """set gross scores for a hole.
+
+    Args:
+      hole_index: [0..17]
+      lstScores: list of the gross scores.
+      options: doctionary of additional values for this hole_index.
+    """
     self.setOptions(options if options else {})
     lst = [lstScores[n] for n in self.players]
     self.addScore(hole_index, lst)
@@ -64,7 +70,8 @@ class GolfGame(object):
   def getLeaderboard(self, **kwargs):
     """Return leaderboard for this game.
     
-    Will be list of dictionaries sorted in the order of 1st to last.
+    Returns:
+      list of dictionaries sorted in the order of 1st to last.
     """
     pass
 
