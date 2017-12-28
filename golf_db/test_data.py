@@ -617,6 +617,131 @@ summitpointe_men_holes = (
   {'par': 4, 'handicap':   4},
 )
 
+boundary_oak_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 74.2, 'slope': 133 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 72.4, 'slope': 129 },
+  {'gender': 'mens',   'name': 'White',      'rating': 71.0, 'slope': 126 },
+  {'gender': 'mens',   'name': 'Gold',       'rating': 68.2, 'slope': 119 },
+  {'gender': 'womens', 'name': 'White',      'rating': 76.8, 'slope': 128 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 72.3, 'slope': 122 },
+]
+
+boundary_oak_men_holes = (
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':  18},
+  {'par': 5, 'handicap':   8},
+  {'par': 4, 'handicap':   2},
+  {'par': 5, 'handicap':  12},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':  14},
+  {'par': 4, 'handicap':   4},
+
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':  11},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   9},
+  {'par': 5, 'handicap':   1},
+  {'par': 4, 'handicap':   3},
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  15},
+  {'par': 5, 'handicap':   5},
+)
+
+bridges_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 74.5, 'slope': 147 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 73.4, 'slope': 141 },
+  {'gender': 'mens',   'name': 'White',      'rating': 71.1, 'slope': 139 },
+  {'gender': 'mens',   'name': 'Gold',       'rating': 68.9, 'slope': 134 },
+  {'gender': 'womens', 'name': 'White',      'rating': 77.0, 'slope': 143 },
+  {'gender': 'womens', 'name': 'Gold',       'rating': 74.6, 'slope': 137 },
+  {'gender': 'womens', 'name': 'Green',      'rating': 71.8, 'slope': 130 },
+]
+
+bridges_men_holes = (
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':  13},
+  {'par': 5, 'handicap':   3},
+  {'par': 3, 'handicap':  11},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':  15},
+  {'par': 5, 'handicap':   7},
+  {'par': 4, 'handicap':   9},
+
+  {'par': 4, 'handicap':  18},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':   8},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':   4},
+  {'par': 5, 'handicap':  10},
+)
+
+spring_valley_tees = [
+  {'gender': 'mens',   'name': 'Blue',    'rating': 68.9, 'slope': 116 },
+  {'gender': 'mens',   'name': 'White',   'rating': 67.5, 'slope': 113 },
+  {'gender': 'mens',   'name': 'Silver',  'rating': 65.1, 'slope': 109 },
+  {'gender': 'mens',   'name': 'Combo',   'rating': 68.4, 'slope': 115 },
+  {'gender': 'womens', 'name': 'White',   'rating': 72.7, 'slope': 123 },
+  {'gender': 'womens', 'name': 'Silver',  'rating': 69.9, 'slope': 117 },
+  {'gender': 'womens', 'name': 'Red',     'rating': 70.0, 'slope': 119 },
+  {'gender': 'womens', 'name': 'Combo',   'rating': 69.4, 'slope': 116 },
+]
+
+spring_valley_men_holes = (
+  {'par': 4, 'handicap':  11},
+  {'par': 3, 'handicap':   9},
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':  17},
+  {'par': 5, 'handicap':   1},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   3},
+
+  {'par': 5, 'handicap':   4},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':  18},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':   8},
+  {'par': 3, 'handicap':  16},
+  {'par': 5, 'handicap':  12},
+  {'par': 4, 'handicap':   6},
+)
+
+hillcrest_tees = [
+  {'gender': 'mens',   'name': 'Black',   'rating': 72.9, 'slope': 126 },
+  {'gender': 'mens',   'name': 'Blue',    'rating': 70.9, 'slope': 121 },
+  {'gender': 'mens',   'name': 'White',   'rating': 69.0, 'slope': 116 },
+  {'gender': 'mens',   'name': 'Gold',    'rating': 67.3, 'slope': 114 },
+  {'gender': 'womens', 'name': 'Red',     'rating': 70.5, 'slope': 119 },
+]
+
+hillcrest_men_holes = (
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':  15},
+  {'par': 3, 'handicap':  11},
+  {'par': 5, 'handicap':   3},
+  {'par': 4, 'handicap':   7},
+  {'par': 4, 'handicap':   9},
+  {'par': 5, 'handicap':   1},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   5},
+
+  {'par': 5, 'handicap':   8},
+  {'par': 4, 'handicap':  12},
+  {'par': 4, 'handicap':  18},
+  {'par': 5, 'handicap':   2},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   4},
+)
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -665,6 +790,10 @@ DBGolfCourses = (
   {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
   {'name': 'Metropolitan Golf Links',          'holes': metro_men_holes, 'tees': metro_tees},  
   {'name': 'Summitpointe Golf Club',           'holes': summitpointe_men_holes, 'tees': summitpointe_tees},  
+  {'name': 'Boundary Oak Golf Course',         'holes': boundary_oak_men_holes, 'tees': boundary_oak_tees},  
+  {'name': 'The Bridges Golf Club',            'holes': bridges_men_holes, 'tees': bridges_tees},  
+  {'name': 'Spring Valley Golf Course',        'holes': spring_valley_men_holes, 'tees': spring_valley_tees},  
+  {'name': 'Hillcrest Golf Club',              'holes': hillcrest_men_holes, 'tees': hillcrest_tees},  
 )
 
 GolfPlayers = (
