@@ -1,9 +1,9 @@
 from .exceptions import DocValidateFail
 from .hole import GolfHole
 from .exceptions import GolfException
+from util.proto import Proto
 
-
-class GolfCourse(object):
+class GolfCourse(Proto):
   """Golf course object
   
   Members:

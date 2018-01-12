@@ -742,6 +742,36 @@ hillcrest_men_holes = (
   {'par': 3, 'handicap':  16},
   {'par': 4, 'handicap':   4},
 )
+
+los_positas_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 71.9, 'slope': 130 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 70.3, 'slope': 125 },
+  {'gender': 'mens',   'name': 'White',      'rating': 68.2, 'slope': 120 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 70.3, 'slope': 121 },
+]
+
+los_positas_men_holes = (
+  {'par': 4, 'handicap':   3},
+  {'par': 5, 'handicap':   9},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':   7},
+  {'par': 4, 'handicap':  17},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   1},
+
+  {'par': 4, 'handicap':   8},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  14},
+  {'par': 5, 'handicap':   2},
+  {'par': 4, 'handicap':   4},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   6},
+  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':  10},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -794,10 +824,11 @@ DBGolfCourses = (
   {'name': 'The Bridges Golf Club',            'holes': bridges_men_holes, 'tees': bridges_tees},  
   {'name': 'Spring Valley Golf Course',        'holes': spring_valley_men_holes, 'tees': spring_valley_tees},  
   {'name': 'Hillcrest Golf Club',              'holes': hillcrest_men_holes, 'tees': hillcrest_tees},  
+  {'name': 'Los Positas Golf Course',          'holes': los_positas_men_holes, 'tees': los_positas_tees},  
 )
 
 GolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.5, 'gender': 'man'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.3, 'gender': 'man'},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 17.4, 'gender': 'man'},
   {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
   {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 19.3, 'gender': 'man'},

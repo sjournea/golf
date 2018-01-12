@@ -63,7 +63,6 @@ class SnakeGame(PuttGame):
         if self._has_snake and self._has_snake == snake_winner:
           # immediate payout and release snake
           self._has_snake.dct_points['holes'][index] = -1
-          self._update_totals(self._has_snake.dct_points)
           self._has_snake = None
           if self._wager:
             # payout all other players
@@ -73,7 +72,6 @@ class SnakeGame(PuttGame):
                 sc.dct_money['holes'][index] = -self._wager*(len(self.scores)-1)
               else:
                 sc.dct_money['holes'][index] = self._wager
-              self._update_totals(sc.dct_money)
         else:
           self._has_snake = snake_winner
       # snake automatic payout on 9 and 18
@@ -84,7 +82,10 @@ class SnakeGame(PuttGame):
       for gs, putt in zip(self.scores, lstPutts):
         if putt > 2:
           gs.dct_points['holes'][index] = -1 
-          self._update_totals(gs.dct_points)
+    for pl in self.scores:
+      self._update_totals(pl.dct_points)
+      if self._wager:
+        self._update_totals(pl.dct_money)
     
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
