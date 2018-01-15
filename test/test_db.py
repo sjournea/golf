@@ -3,7 +3,8 @@ import unittest
 from golf_db.round import GolfRound
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
-from golf_db.db import GolfDB, GolfDBAdmin, GolfDBException
+from golf_db.db import GolfDB, GolfDBAdmin
+from golf_db.exceptions import GolfDBException
 from golf_db.player import GolfPlayer
 
 class DBTestType(unittest.TestCase):
