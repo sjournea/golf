@@ -13,6 +13,9 @@ class DBTestType(unittest.TestCase):
   def test_type_mongo(self):
     db = GolfDB(database='golf_test', db_type='mongo')
 
+  def test_type_local(self):
+    db = GolfDB(database='golf_test', db_type='local')
+
   def test_type_rest_api(self):
     with self.assertRaises(GolfDBException):
       db = GolfDB(database='golf_test', db_type='rest_api')
@@ -22,8 +25,23 @@ class DBTestType(unittest.TestCase):
       db = GolfDB(database='golf_test', db_type='dbase')
 
 class DBTestInit(unittest.TestCase):
-  def test_create(self):
+  def test_create_mongo(self):
     db = GolfDBAdmin(database='golf_test')
+    db.create()
+    dctDatabases = db.databases()
+    self.assertIn('golf_test', dctDatabases)
+    collections = dctDatabases['golf_test']
+    expected_collections = [u'courses', u'players',u'rounds']
+    self.assertEqual(len(collections), len(expected_collections))
+    for exp in expected_collections:
+      self.assertIn(exp, collections)
+    # test remove
+    db.remove()
+    dctDatabases = db.databases()
+    self.assertNotIn('golf_test', dctDatabases)
+
+  def test_create_local(self):
+    db = GolfDBAdmin(database='golf_test', db_type='local')
     db.create()
     dctDatabases = db.databases()
     self.assertIn('golf_test', dctDatabases)
@@ -42,12 +60,11 @@ class DBTestInit(unittest.TestCase):
     with self.assertRaises(AttributeError):
       db.create()
     
-class DBTestAPI(unittest.TestCase):
-
-  @classmethod
-  def setUpClass(cls):
-    cls.db = GolfDBAdmin(database='golf_test')
-    cls.db.create()
+class DBTestAPI:
+  #@classmethod
+  #def setUpClass(cls):
+    #cls.db = GolfDBAdmin(database='golf_test')
+    #cls.db.create()
       
   def test_course_api(self):
     #cnt = self.db.courseCount()
@@ -100,4 +117,17 @@ class DBTestAPI(unittest.TestCase):
     r = self.db.roundFind(rounds[1].course.name, dbclass=GolfRound)[0]
     #print r
     self.assertEqual(r, rounds[1])
-    
+
+
+class DBTestAPI_Mongo(DBTestAPI, unittest.TestCase):
+  @classmethod
+  def setUpClass(cls):
+    cls.db = GolfDBAdmin(database='golf_test')
+    cls.db.create()
+
+
+class DBTestAPI_Local(DBTestAPI, unittest.TestCase):
+  @classmethod
+  def setUpClass(cls):
+    cls.db = GolfDBAdmin(database='golf_test', db_type='local')
+    cls.db.create()
