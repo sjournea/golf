@@ -368,7 +368,7 @@ class GolfMenu(Menu):
 def main():
   DEF_LOG_ENABLE = 'dbmain'
   DEF_DATABASE = 'golf'
-  DEF_DB_TYPE = 'mongo'
+  DEF_DB_TYPE = 'local'
   # build the command line arguments
   from optparse import OptionParser
   parser = OptionParser()
