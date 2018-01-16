@@ -8,6 +8,9 @@ class DocValidateFail(GolfException):
   """Doc class validate fails."""
   pass
 
+class GolfDBException(GolfException):
+  pass
+
 
 
 
