@@ -8,22 +8,15 @@ Golf game TODO 11/23/17
       Wolf
    * AddPlayer Form
      First name, Last name, nick name, handicap, gender
-   * Mongo DB working
+   * Local database
+     - REST API
      - GolfGame class needs doc support
        - toDict(), fromDict()
        - __eq__, __ne__ for testing.
     - GolfCourse, GolfPlayers, GolfRound (no games)
     
-Mobile version - iOS
-   * Move python into folder, including venv.
-     - create folder structure.
-     - platforms
-        shared
-        python
-          venv
-        swift
-          xcode
+Mobile version - iOS - Pythonista
+   * installed stash shell for github access.
+   
     
-  iPhone - Swift
-    * Get old baseball xcode project workin on new Mac.
 

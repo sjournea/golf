@@ -1,6 +1,6 @@
 """db.py - databae wrapper for golf objects.
 """
-from .db_connect_mongo import DBConnectMongo
+import platform
 from .db_connect_local import DBConnectLocal
 from .exceptions import GolfDBException
 
@@ -11,21 +11,22 @@ log = TLLog.getLogger( 'golfdb' )
 class GolfDB(object):
   """Database wrapper for golf objects."""
   DATABASE = 'golf'
+
+  connections = {'local': DBConnectLocal }
+  if platform.uname()[0] == 'Linux':
+    from .db_connect_mongo import DBConnectMongo
+    connections['mongo'] = DBConnectMongo
   
   def __init__(self, **kwargs):
-    self.db_type = kwargs.get('db_type', 'mongo')
+    self.db_type = kwargs.get('db_type', 'local')
     self.database = kwargs.get('database', self.DATABASE)
     self.conn = None
     self._setup_connection(**kwargs)
 
   def _setup_connection(self, **kwargs):
     """Create all parameters needed for db_type."""
-    if self.db_type == 'mongo':
-      self.conn = DBConnectMongo(self, **kwargs)
-    elif self.db_type == 'local':
-      self.conn = DBConnectLocal(self, **kwargs)
-    elif self.db_type == 'rest_api':
-      raise GolfDBException('db_type "{}" not implemented (yet).'.format(self.db_type))
+    if self.db_type in GolfDB.connections:
+      self.conn = GolfDB.connections[self.db_type](self, **kwargs)
     else:
       raise GolfDBException('db_type "{}" not supported.'.format(self.db_type))
 

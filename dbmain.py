@@ -16,7 +16,6 @@ from golf_db.course import GolfCourse
 from golf_db.round import GolfRound
 from golf_db.game_factory import GolfGameList
 from golf_db.db import GolfDB, GolfDBAdmin
-from util.db_mongo import MongoDB
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
 

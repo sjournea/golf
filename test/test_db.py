@@ -27,7 +27,7 @@ class DBTestType(unittest.TestCase):
 
 class DBTestInit(unittest.TestCase):
   def test_create_mongo(self):
-    db = GolfDBAdmin(database='golf_test')
+    db = GolfDBAdmin(database='golf_test', db_type='mongo')
     db.create()
     dctDatabases = db.databases()
     self.assertIn('golf_test', dctDatabases)
