@@ -772,6 +772,57 @@ los_positas_men_holes = (
   {'par': 5, 'handicap':  10},
 )
 
+pacific_grove_tees = [
+  {'gender': 'mens',   'name': 'Blue',       'rating': 67.9, 'slope': 113 },
+  {'gender': 'mens',   'name': 'White',      'rating': 67.0, 'slope': 110 },
+  {'gender': 'womens', 'name': 'White',      'rating': 72.3, 'slope': 120 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 70.2, 'slope': 116 },
+]
+
+pacific_grove_men_holes = (
+  {'par': 3, 'handicap':  15},
+  {'par': 3, 'handicap':   9},
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':  17},
+  {'par': 5, 'handicap':   7},
+  {'par': 5, 'handicap':   1},
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   3},
+  {'par': 3, 'handicap':   5},
+
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':   4},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   6},
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':   8},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':  14},
+)
+
+pacific_grove_women_holes = (
+  {'par': 3, 'handicap':  17},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   9},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':   3},
+  {'par': 5, 'handicap':   1},
+  {'par': 4, 'handicap':   7},
+  {'par': 5, 'handicap':   5},
+  {'par': 4, 'handicap':  13},
+
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':   2},
+  {'par': 4, 'handicap':  14},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':  10},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   6},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
@@ -825,6 +876,7 @@ DBGolfCourses = (
   {'name': 'Spring Valley Golf Course',        'holes': spring_valley_men_holes, 'tees': spring_valley_tees},  
   {'name': 'Hillcrest Golf Club',              'holes': hillcrest_men_holes, 'tees': hillcrest_tees},  
   {'name': 'Los Positas Golf Course',          'holes': los_positas_men_holes, 'tees': los_positas_tees},  
+  {'name': 'Pacific Grove Golf Links',         'holes': pacific_grove_men_holes, 'tees': pacific_grove_tees},  
 )
 
 GolfPlayers = (
