@@ -150,9 +150,12 @@ class GolfCourse(Proto):
         last_index = n
     return last_index
     
+  def course_par(self):
+    return sum([hole.par for hole in self.holes])
+  
   def __str__(self):
-    return '{:<40} - {} holes - {} tees'.format(self.name, len(self.holes), len(
-      self.tees))
+    return '{:<40} - {} holes - {} tees par:{}'.format(self.name, len(self.holes), len(
+      self.tees), self.course_par())
   
   def __repr__(self):
     return 'GolfCourse(dct={})'.format(self.toDict())
