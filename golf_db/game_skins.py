@@ -21,6 +21,10 @@ Each person brings a skin to the hole, and the winner of the hole wins a skin fr
 For a threesome this means that the winner wins two skins on a hole. For a foursome, this means three skins.
 In both cases the other players each lose a skin. 
 """
+  def __init__(self, golf_round, scores, **kwargs):
+    super(SkinsGame, self).__init__(golf_round, scores, **kwargs)
+    self._use_carryover = kwargs.get('use_carryover', True)
+
   def start(self):
     """Start the skins game."""
     # find min handicap in all players
@@ -37,7 +41,7 @@ In both cases the other players each lose a skin.
     self.carryover = 1
     self.dctScorecard['header'] = '{0:*^98}'.format(' Skins ')
     self.dctLeaderboard['hdr'] = 'Pos Name   Skins Thru'
-
+    
   def addScore(self, index, lstGross):
     """add scores for a hole."""
     for gs, gross in zip(self.scores, lstGross):
@@ -60,7 +64,8 @@ In both cases the other players each lose a skin.
         sc._total = sc._in + sc._out
       self.carryover = 1
     else:
-      self.carryover += 1
+      if self._use_carryover:
+        self.carryover += 1
   
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
