@@ -823,6 +823,57 @@ pacific_grove_women_holes = (
   {'par': 4, 'handicap':   6},
 )
 
+redwood_canyon_tees = [
+  {'gender': 'mens',   'name': 'Blue',       'rating': 68.2, 'slope': 118 },
+  {'gender': 'mens',   'name': 'White',      'rating': 66.9, 'slope': 116 },
+  {'gender': 'womens', 'name': 'Red',        'rating': 71.8, 'slope': 124 },
+  {'gender': 'womens', 'name': 'Gold',       'rating': 70.3, 'slope': 120 },
+]
+
+redwood_canyon_men_holes = (
+  {'par': 4, 'handicap':   1},
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  13},
+  {'par': 5, 'handicap':   3},
+  {'par': 3, 'handicap':  11},
+  {'par': 4, 'handicap':  15},
+  {'par': 3, 'handicap':   9},
+  {'par': 4, 'handicap':  17},
+  {'par': 5, 'handicap':   5},
+
+  {'par': 4, 'handicap':   2},
+  {'par': 4, 'handicap':  18},
+  {'par': 5, 'handicap':   8},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':  12},
+  {'par': 4, 'handicap':   4},
+  {'par': 3, 'handicap':   6},
+  {'par': 4, 'handicap':  10},
+  {'par': 5, 'handicap':  14},
+)
+
+redwood_canyon_women_holes = (
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':  17},
+  {'par': 5, 'handicap':   3},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   9},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':  11},
+  {'par': 5, 'handicap':   1},
+
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':  14},
+  {'par': 5, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  12},
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   8},
+  {'par': 5, 'handicap':   4},
+)
+
 los_lagos_tees = [
   {'gender': 'mens',   'name': 'Blue',       'rating': 65.4, 'slope': 113 },
   {'gender': 'mens',   'name': 'White',      'rating': 63.6, 'slope': 108 },
@@ -909,6 +960,7 @@ DBGolfCourses = (
   {'name': 'Los Positas Golf Course',          'holes': los_positas_men_holes, 'tees': los_positas_tees},  
   {'name': 'Pacific Grove Golf Links',         'holes': pacific_grove_men_holes, 'tees': pacific_grove_tees},  
   {'name': 'Los Lagos Golf Course',            'holes': los_lagos_men_holes, 'tees': los_lagos_tees},  
+  {'name': 'Redwood Canyon Golf Course',       'holes': redwood_canyon_men_holes, 'tees': redwood_canyon_tees},  
 )
 
 GolfPlayers = (
@@ -922,10 +974,10 @@ GolfPlayers = (
 )
 
 DBGolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 19.3, 'gender': 'man'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.6, 'gender': 'man'},
   {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 18.0, 'gender': 'man'},
-  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
-  {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 21.0, 'gender': 'man'},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 18.7, 'gender': 'man'},
+  {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 26.0, 'gender': 'man'},
   {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bamba',  'handicap': 38.8, 'gender': 'woman'},
   {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frog',   'handicap': 11.2, 'gender': 'woman'},
   {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap':  8.6,  'gender': 'woman'},
