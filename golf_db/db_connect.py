@@ -10,7 +10,7 @@ class DBConnect:
   
   @abstractmethod
   def databases(self, **kwargs):
-    """Return dictionaries of database names with list of collection namess """
+    """Return dictionaries of database names with list of collection names. """
     pass
 
   @abstractmethod
