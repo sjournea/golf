@@ -16,6 +16,7 @@ class GolfCourse(Proto):
     self.name = None
     self.holes = []
     self.tees = []
+    self.id = None
     if dct:
       self.fromDict(dct)
    
@@ -25,16 +26,20 @@ class GolfCourse(Proto):
     if self.holes:
       self.holes = [GolfHole(dct=hole_dct) for hole_dct in dct['holes']]
     self.tees = dct.get('tees', [])
+    self.id = dct.get('id')
   
   def toDict(self):
     return { 'name': self.name,
              'holes': [hole.toDict() for hole in self.holes],
-             'tees': self.tees, }
+             'tees': self.tees,
+             'id': self.id,
+           }
   
   def __eq__(self, other):
     return (self.name == other.name and
             self.holes == other.holes and
-            self.tees == other.tees
+            self.tees == other.tees and 
+            self.id == other.id
            )
 
   def __ne__(self, other):

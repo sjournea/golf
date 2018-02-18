@@ -906,22 +906,22 @@ los_lagos_men_holes = (
 )
 
 GolfCourses = (
-  {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees},
-  {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees},
-  {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees},
-  {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees},
-  {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees},
-  {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees},
-  {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees },  
-  {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees },  
-  {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees},  
-  {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees},  
-  {'name': 'Poppy Ridge Merlot/Zinfandel',     'holes': poppy_ridge_merlot_zinfandel_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
-  {'name': 'Poppy Ridge Merlot/Chardonnay',    'holes': poppy_ridge_merlot_chardonnay_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
-  {'name': 'Poppy Ridge Chardonnay/Merlot',    'holes': poppy_ridge_chardonnay_merlot_holes, 'tees': poppy_ridge_merlot_chardonnay_tees},  
-  {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
-  {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees},  
-  {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees},  
+  {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees, 'id':1},
+  {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees, 'id':2},
+  {'name': 'Diablo Grande',   'holes': diablo_grande_men_holes, 'tees':diablo_grande_tees, 'id':3},
+  {'name': 'Poppy Hills',     'holes': poppy_hills_men_holes, 'tees':poppy_hills_tees, 'id':4},
+  {'name': 'Lake Chabot',     'holes': lake_chabot_holes, 'tees':lake_chabot_tees, 'id':5},
+  {'name': 'Delta View',      'holes': delta_view_holes, 'tees': delta_view_tees, 'id':6},
+  {'name': 'The Villages',    'holes': villages_men_holes, 'tees': villages_tees, 'id':7 },  
+  {'name': 'Skywest',         'holes': skywest_mens_holes, 'tees': skywest_tees, 'id':8 },  
+  {'name': 'Fall River',      'holes': fall_river_men_holes, 'tees': fall_river_tees, 'id':9},  
+  {'name': 'Monarch Bay',     'holes': monarch_bay_men_holes, 'tees': monarch_bay_tees, 'id':10},  
+  {'name': 'Poppy Ridge Merlot/Zinfandel',     'holes': poppy_ridge_merlot_zinfandel_holes, 'tees': poppy_ridge_zinfandel_merlot_tees, 'id':11},  
+  {'name': 'Poppy Ridge Merlot/Chardonnay',    'holes': poppy_ridge_merlot_chardonnay_holes, 'tees': poppy_ridge_merlot_chardonnay_tees, 'id':12},  
+  {'name': 'Poppy Ridge Chardonnay/Merlot',    'holes': poppy_ridge_chardonnay_merlot_holes, 'tees': poppy_ridge_merlot_chardonnay_tees, 'id':13},  
+  {'name': 'Poppy Ridge Chardonnay/Zinfandel', 'holes': poppy_ridge_chardonnay_zinfandel_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees, 'id':14},  
+  {'name': 'Poppy Ridge Zinfandel/Chardonnay', 'holes': poppy_ridge_zinfandel_chardonnay_holes, 'tees': poppy_ridge_chardonnay_zinfandel_tees, 'id':15},  
+  {'name': 'Poppy Ridge Zinfandel/Merlot',     'holes': poppy_ridge_zinfandel_merlot_holes, 'tees': poppy_ridge_zinfandel_merlot_tees, 'id':16},  
 )
 
 DBGolfCourses = (
@@ -964,13 +964,13 @@ DBGolfCourses = (
 )
 
 GolfPlayers = (
-  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.3, 'gender': 'man'},
-  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 18.0, 'gender': 'man'},
-  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man'},
-  {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 22.6, 'gender': 'man'},
-  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman'},
-  {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frenchie', 'handicap': 11.2, 'gender': 'woman'},
-  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman'},
+  {'email':'sjournea@tl.com', 'first_name': 'Steve', 'last_name': 'Journeay', 'nick_name': 'Hammy',  'handicap': 18.3, 'gender': 'man', 'id': 1},
+  {'email':'snake@tl.com',    'first_name': 'Chris', 'last_name': 'Jensen',   'nick_name': 'Snake',  'handicap': 18.0, 'gender': 'man', 'id': 2},
+  {'email':'spanky@tl.com',   'first_name': 'Rob',   'last_name': 'Sullivan', 'nick_name': 'Spanky', 'handicap': 17.0, 'gender': 'man', 'id': 3},
+  {'email':'reload@tl.com',   'first_name': 'Mike',  'last_name': 'Davis',    'nick_name': 'Reload', 'handicap': 22.6, 'gender': 'man', 'id': 4},
+  {'email':'bomba@tl.com',    'first_name': 'Rhonda','last_name': 'Journeay', 'nick_name': 'Bomba',  'handicap': 31.8, 'gender': 'woman', 'id': 5},
+  {'email':'ruby@tl.com',     'first_name': 'Ruby',  'last_name': 'Journeay', 'nick_name': 'Frenchie', 'handicap': 11.2, 'gender': 'woman', 'id': 6},
+  {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap': 8.6, 'gender': 'woman', 'id': 7},
 )
 
 DBGolfPlayers = (

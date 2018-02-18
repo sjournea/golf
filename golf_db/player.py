@@ -13,8 +13,9 @@ class GolfPlayer(Doc):
     nick_name  - string
     handicap   - float
     gender     - string; man or woman
+    id         - database player id
   """
-  fields = ['email', 'first_name', 'last_name', 'nick_name', 'handicap', 'gender']
+  fields = ['id', 'email', 'first_name', 'last_name', 'nick_name', 'handicap', 'gender']
   valid_genders = ['man', 'woman']
   
   def validate(self):
