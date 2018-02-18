@@ -34,11 +34,16 @@ class SQLMenu(Menu):
     self.url = kwargs.get('url')
     self.db = Database(self.url)
     # add menu items
-    self.addMenuItem( MenuItem( 'dc', '',        'create golf database.',   self._createDatabase) )
-    self.addMenuItem( MenuItem( 'pli', '',       'player insert.',          self._playerInsert) )
-    self.addMenuItem( MenuItem( 'pll', '',       'player list.',            self._playerList) )
-    self.addMenuItem( MenuItem( 'plu', '',       'player update.',          self._playerUpdate) )
-    self.addMenuItem( MenuItem( 'plr', '',       'player remove.',          self._playerRemove) )
+    self.addMenuItem( MenuItem( 'dc', '',        
+        'create golf database.', self._createDatabase) )
+    self.addMenuItem( MenuItem( 'pli', '',       
+        'player insert.', self._playerInsert) )
+    self.addMenuItem( MenuItem( 'pll', '',       
+        'player list.', self._playerList) )
+    self.addMenuItem( MenuItem( 'plu', '<email> <key,value>', 
+        'player update.', self._playerUpdate) )
+    self.addMenuItem( MenuItem( 'plr', '',       
+        'player remove.', self._playerRemove) )
     self.updateHeader()
 
   def updateHeader(self):
@@ -48,29 +53,59 @@ class SQLMenu(Menu):
     self.db.create_tables()
     
   def _playerInsert(self):
-    for arg in self.lstCmd[2:]:
-      lst = arg.split('=')
-      if lst[0] == 'gross':
-        lstGross = eval(lst[1])
+    """Inserts ALL players from DBGolfPlayers."""
     session = self.db.Session()
-    for dct in DBGolfPlayers:
-      player = Player(**dct)
+    if self.lstCmd[1] == 'testdata':
+      for dct in DBGolfPlayers:
+        player = Player(**dct)
+        session.add(player)
+    else:
+      dct = {}
+      for values in self.lstCmd[1:]:
+        lst = values.split('=')
+        dct[lst[0]] = eval(lst[1])
+      player = Player(**dct) 
       session.add(player)
     session.commit()
     
   def _playerList(self):
+    """List all players in database."""
     session = self.db.Session()
     players = session.query(Player).all()
     print '{} players'.format(len(players))
     for n,player in enumerate(players):
-      print '  {:<2}:{}'.format(n+1,player)
+      gp = player.makeGolfPlayer()
+      print '  {:<2}:{}'.format(n+1,gp)
 
   def _playerRemove(self):
+    """Remove ALL players from database.
+    plr <email>|all
+    """
     session = self.db.Session()
     query = session.query(Player)
-    players = query.all()
+    if self.lstCmd[1] == 'all':
+      players = query.all()
+    else:
+      player = query.filter(Player.email == self.lstCmd[1]).first()
+      players = [player]
     for player in players:
       session.delete(player)
+    session.commit()
+
+  def _playerUpdate(self):
+    """Update a player record.
+    plu <email> <key=value> ...
+    """
+    session = self.db.Session()
+    email = self.lstCmd[1]
+    query = session.query(Player)
+    player = query.filter(Player.email == email).first()
+    for values in self.lstCmd[2:]:
+      lst = values.split('=')
+      if hasattr(player, lst[0]):
+        setattr(player, lst[0], eval(lst[1]))
+      else:
+        raise InputException('player has no attribute "{}"'.format(lst[0]))
     session.commit()
 
 def main():

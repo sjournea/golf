@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
+from .player import GolfPlayer
 from .test_data import DBGolfCourses, DBGolfPlayers
 from .exceptions import GolfDBException
 from util.tl_logger import TLLog
@@ -19,15 +19,33 @@ class Player(Base):
   __tablename__ = 'players'
   player_id = Column(Integer(), primary_key=True)
   email = Column(String(132), nullable=False, unique=True)
-  first_name = Column(String(20))
-  last_name = Column(String(20))
-  nick_name = Column(String(20))
-  handicap = Column(Float())
-  gender = Column(Enum('man', 'woman', name='genders'))
+  first_name = Column(String(20), default='')
+  last_name = Column(String(20), default='')
+  nick_name = Column(String(20), default='')
+  handicap = Column(Float(), default=0.0)
+  gender = Column(Enum('man', 'woman', name='genders'), nullable=False)
+  
+  def makeGolfPlayer(self):
+    dct = {
+      'email': self.email,
+      'last_name': self.last_name,
+      'first_name': self.first_name,
+      'nick_name': self.nick_name,
+      'handicap': self.handicap,
+      'gender': self.gender,
+    }
+    return GolfPlayer(dct=dct)
+  
+  def getFullName(self):
+    return '{} {}'.format(self.first_name, self.last_name)
+  
+  def getInitials(self):
+    return self.first_name[0] + self.last_name[0]
   
   def __str__(self):
-    return 'Player {:<20} {:<10} {:<10} {:<10} handicap:{:5.1f} gender:{}'.format(
-      self.email, self.first_name, self.last_name, self.nick_name, self.handicap, self.gender)
+    return '{:<15} - {:<6} {:<10} {:<8} {:<5} handicap {:.1f}'.format(
+        self.email, self.first_name, self.last_name, self.nick_name, self.gender, self.handicap)
+
 
 class Course(Base):
   __tablename__ = 'courses'
