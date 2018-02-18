@@ -44,6 +44,14 @@ class SQLMenu(Menu):
         'player update.', self._playerUpdate) )
     self.addMenuItem( MenuItem( 'plr', '',       
         'player remove.', self._playerRemove) )
+    self.addMenuItem( MenuItem( 'coi', 'testdata',       
+        'course insert.', self._courseInsert) )
+    self.addMenuItem( MenuItem( 'col', '',       
+        'course list.', self._courseList) )
+    self.addMenuItem( MenuItem( 'cou', '<name> <key,value>', 
+        'course update.', self._courseUpdate) )
+    self.addMenuItem( MenuItem( 'cor', '',       
+        'course remove.', self._courseRemove) )
     self.updateHeader()
 
   def updateHeader(self):
@@ -57,7 +65,8 @@ class SQLMenu(Menu):
     session = self.db.Session()
     if self.lstCmd[1] == 'testdata':
       for dct in DBGolfPlayers:
-        player = Player(**dct)
+        pl = GolfPlayer(dct=dct)
+        player = Player(email=pl.email, dict_value=str(pl.toDict()))
         session.add(player)
     else:
       dct = {}
@@ -74,7 +83,7 @@ class SQLMenu(Menu):
     players = session.query(Player).all()
     print '{} players'.format(len(players))
     for n,player in enumerate(players):
-      gp = player.makeGolfPlayer()
+      gp = player.makeGolf()
       print '  {:<2}:{}'.format(n+1,gp)
 
   def _playerRemove(self):
@@ -107,6 +116,53 @@ class SQLMenu(Menu):
       else:
         raise InputException('player has no attribute "{}"'.format(lst[0]))
     session.commit()
+
+  def _courseInsert(self):
+    """Inserts courses to database."""
+    session = self.db.Session()
+    if self.lstCmd[1] == 'testdata':
+      for dct in DBGolfCourses:
+        co = GolfCourse(dct=dct)
+        course = Course(name=co.name, dict_value=str(co.toDict()))
+        session.add(course)
+    else:
+      raise InputException('only testdata allowed for courses insert.')
+    session.commit()
+    
+  def _courseList(self):
+    """List all courses in database."""
+    session = self.db.Session()
+    query = session.query(Course)
+    match = 'all'
+    if len(self.lstCmd) > 1:
+      query = query.filter(Course.name.like('%{}%'.format(self.lstCmd[1])))
+      match = 'name contains "{}"'.format(self.lstCmd[1])
+    courses = query.all()
+    print '{} courses - {}'.format(len(courses), match)
+    for n,course in enumerate(courses):
+      co = course.makeGolf()
+      print '  {:<2}:{}'.format(n+1,co)
+
+  def _courseRemove(self):
+    """Remove course from database.
+    cor <name>|all
+    """
+    session = self.db.Session()
+    query = session.query(Course)
+    if self.lstCmd[1] == 'all':
+      courses = query.all()
+    else:
+      course = query.filter(Course.name.like('%{}%'.format(self.lstCmd[1]))).first()
+      courses = [course]
+    for course in courses:
+      session.delete(course)
+    session.commit()
+
+  def _courseUpdate(self):
+    """Update a course record.
+    cou <name> <key=value> ...
+    """
+    raise InputException('course update not implemented (yet)')
 
 def main():
   DEF_LOG_ENABLE = 'sqlmain'
