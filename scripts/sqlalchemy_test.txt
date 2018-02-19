@@ -1,0 +1,7 @@
+# test script for sqlalchemy database
+os rm golf.sqlite
+dc
+pli testdata
+pll
+coi testdata
+col

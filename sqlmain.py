@@ -21,7 +21,7 @@ from golf_db.test_data import DBGolfCourses, DBGolfPlayers
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
 
-from golf_db.db_sqlalchemy import Player,Course,Round,Database
+from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee
 
 TLLog.config('logs/sqlmain.log', defLogLevel=logging.INFO )
 
@@ -65,8 +65,7 @@ class SQLMenu(Menu):
     session = self.db.Session()
     if self.lstCmd[1] == 'testdata':
       for dct in DBGolfPlayers:
-        pl = GolfPlayer(dct=dct)
-        player = Player(email=pl.email, dict_value=str(pl.toDict()))
+        player = Player(**dct)
         session.add(player)
     else:
       dct = {}
@@ -83,8 +82,7 @@ class SQLMenu(Menu):
     players = session.query(Player).all()
     print '{} players'.format(len(players))
     for n,player in enumerate(players):
-      gp = player.makeGolf()
-      print '  {:<2}:{}'.format(n+1,gp)
+      print '  {:<2}:{}'.format(n+1,player)
 
   def _playerRemove(self):
     """Remove ALL players from database.
@@ -123,7 +121,13 @@ class SQLMenu(Menu):
     if self.lstCmd[1] == 'testdata':
       for dct in DBGolfCourses:
         co = GolfCourse(dct=dct)
-        course = Course(name=co.name, dict_value=str(co.toDict()))
+        course = Course(name=co.name)
+        for n,gh in enumerate(co.holes):
+          hole = Hole(par=gh.par, handicap=gh.handicap, num=n+1, course=course)
+          session.add(hole)
+        for gt in co.tees:
+          tee = Tee(gender=gt['gender'], name=gt['name'], rating=gt['rating'], slope=gt['slope'], course=course)
+          session.add(tee)
         session.add(course)
     else:
       raise InputException('only testdata allowed for courses insert.')
@@ -140,8 +144,7 @@ class SQLMenu(Menu):
     courses = query.all()
     print '{} courses - {}'.format(len(courses), match)
     for n,course in enumerate(courses):
-      co = course.makeGolf()
-      print '  {:<2}:{}'.format(n+1,co)
+      print '  {:<2}:{}'.format(n+1,course)
 
   def _courseRemove(self):
     """Remove course from database.
