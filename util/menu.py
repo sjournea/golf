@@ -1,5 +1,5 @@
 """ menu.py """
-import pdb, traceback
+import pdb, traceback, os
 import datetime,time
 
 from tl_logger import TLLog
@@ -50,6 +50,7 @@ class Menu(object):
     self._lstBuiltInMenuItems = [
             MenuItem( '?',  '',                        'show help'),
             MenuItem( 'x',  '',                        'exit program'),
+            MenuItem( 'os', '',                        'Run OS command'),
             MenuItem( '<',  '<script file>',           'read commands from a file'),
             MenuItem( 's',  'sleep <delay>',           'sleep for delay (sec)'),
             MenuItem( '',   '<any command> --repeat',  'Adding --repeat will cause this command to be repeated'),
@@ -173,6 +174,13 @@ class Menu(object):
           if self._cmd_file:
             self._cmd_files.append(self._cmd_file)
           self._cmd_file = FileInput( self.lstCmd[1] )
+          continue
+
+        # OS commands
+        if self.lstCmd[0] == 'os':
+          # if open command file then stack
+          command = ' '.join(self.lstCmd[1:])
+          os.system(command)
           continue
 
         # show help
