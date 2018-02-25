@@ -92,7 +92,6 @@ class Course(Base):
     par += '{:>4} {:>4}'.format(self.in_tot, self.total)
     if ESC:
       hdr += '  ESC'
-      
     return { 'title': '{0:*^98}'.format(' '+self.name+' '),
              'hdr': hdr,
              'par': par,
@@ -107,15 +106,24 @@ class Course(Base):
       self.tees), self.course_par())
 
 
-#class Result(Base):
-  #__tablename__ = 'results'
-  #result_id = Column(Integer(), primary_key=True)
-  #player_id = Column(Integer(), ForeignKey('players.player_id'), nullable=False)
-  #course_id = Column(Integer(), ForeignKey('courses.course_id'), nullable=False)
-  #date_played = Column(Date(), nullable=False)
-  #dict_value = Column(Text(), nullable=False)
-  
+class Score(Base):
+  __tablename__ = 'scores'
+  score_id = Column(Integer(), primary_key=True)
+  result_id = Column(Integer(), ForeignKey('results.result_id'), nullable=False)
+  num = Column(Integer(), nullable=False)
+  gross = Column(Integer(), nullable=False)
+  putts = Column(Integer())
+  result = relationship("Result", back_populates="results")
 
+
+class Result(Base):
+  __tablename__ = 'results'
+  result_id = Column(Integer(), primary_key=True)
+  round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
+  player_id = Column(Integer(), ForeignKey('players.player_id'), nullable=False)
+  results = relationship("Score", order_by=Score.score_id, back_populates="result")  
+  round = relationship("Round", back_populates="results")  
+  
 
 class Round(Base):
   __tablename__ = 'rounds'
@@ -123,6 +131,7 @@ class Round(Base):
   course_id =  Column(Integer(), ForeignKey('courses.course_id'), nullable=False)
   date_played = Column(Date(), nullable=False, default=datetime.date.today())
   dict_value = Column(Text(), nullable=False)
+  results = relationship("Result", order_by=Result.result_id, back_populates="round")  
 
 
 class Database(object):

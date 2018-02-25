@@ -5,3 +5,5 @@ pli testdata
 pll
 coi testdata
 col
+cos Positas
+cos Lagos

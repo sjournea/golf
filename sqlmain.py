@@ -52,6 +52,8 @@ class SQLMenu(Menu):
         'course update.', self._courseUpdate) )
     self.addMenuItem( MenuItem( 'cor', '',       
         'course remove.', self._courseRemove) )
+    self.addMenuItem( MenuItem( 'cos', '',
+        'Get a scorecard', self._courseGetScorecard))
     self.updateHeader()
 
   def updateHeader(self):
@@ -166,6 +168,18 @@ class SQLMenu(Menu):
     cou <name> <key=value> ...
     """
     raise InputException('course update not implemented (yet)')
+
+  def _courseGetScorecard(self):
+    if len(self.lstCmd) < 2:
+      raise InputException('Not enough arguments for {} command'.format(self.lstCmd[0]))
+    session = self.db.Session()
+    query = session.query(Course).filter(Course.name.like('%{}%'.format(self.lstCmd[1])))
+    course = query.first()
+    print course
+    dct = course.getScorecard()
+    print dct['hdr']
+    print dct['par']
+    print dct['hdcp']
 
 def main():
   DEF_LOG_ENABLE = 'sqlmain'
