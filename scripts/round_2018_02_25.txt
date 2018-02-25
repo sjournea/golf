@@ -1,0 +1,34 @@
+# create a round and add players scores
+gcr "Los Lagos" 2018-02-25
+gad sjournea White
+gad ricky White
+# add games
+gag gross
+gag net use_full_net=True
+gag skins wager=1.0 use_carryover=False
+gag putts
+# start game
+gst 
+gps 
+gpl
+gpt
+pause enable
+gas  1 gross=[]   putts=[] 
+gas  2 gross=[]   putts=[] 
+gas  3 gross=[]   putts=[] 
+gas  4 gross=[]   putts=[] 
+gas  5 gross=[]   putts=[] 
+gas  6 gross=[]   putts=[] 
+gas  7 gross=[]   putts=[] 
+gas  8 gross=[]   putts=[] 
+gas  9 gross=[]   putts=[] pause=enable
+
+gas 10 gross=[]   putts=[] 
+gas 11 gross=[]   putts=[] 
+gas 12 gross=[]   putts=[] 
+gas 13 gross=[]   putts=[] 
+gas 14 gross=[]   putts=[] 
+gas 15 gross=[]   putts=[] 
+gas 16 gross=[]   putts=[] 
+gas 17 gross=[]   putts=[] 
+gas 18 gross=[]   putts=[] pause=enable

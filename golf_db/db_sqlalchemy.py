@@ -107,6 +107,7 @@ class Course(Base):
 
 
 class Score(Base):
+  """Player score for a single hole."""
   __tablename__ = 'scores'
   score_id = Column(Integer(), primary_key=True)
   result_id = Column(Integer(), ForeignKey('results.result_id'), nullable=False)
@@ -117,6 +118,7 @@ class Score(Base):
 
 
 class Result(Base):
+  """Player score for a round. References Score records."""
   __tablename__ = 'results'
   result_id = Column(Integer(), primary_key=True)
   round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
