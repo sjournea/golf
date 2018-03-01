@@ -1,6 +1,5 @@
 """db_sqlalchemy.py"""
 import datetime
-import enum
 
 from sqlalchemy import Table, Column, ForeignKey
 from sqlalchemy import Integer, Float, String, Enum, Text, Date

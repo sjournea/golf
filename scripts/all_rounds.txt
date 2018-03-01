@@ -17,4 +17,13 @@ pause ignore on
 < scripts/round_2018_01_13.txt
 < scripts/round_2018_01_15.txt
 < scripts/round_2018_01_20.txt
+< scripts/round_2018_01_27.txt
+< scripts/round_2018_01_28.txt
+< scripts/round_2018_02_03.txt
+< scripts/round_2018_02_10.txt
+< scripts/round_2018_02_17.txt
+< scripts/round_2018_02_19_1.txt
+< scripts/round_2018_02_19_2.txt
+< scripts/round_2018_02_24.txt
+< scripts/round_2018_02_25.txt
 x
