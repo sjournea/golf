@@ -59,6 +59,18 @@ class SQLMenu(Menu):
         'Create a Round of Golf',      self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>',
         'Add player to Round of Golf', self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gst', '',
+        'Start Round of Golf',         self._roundStart))
+    #self.addMenuItem( MenuItem( 'gps', '<game>...',
+         #'Print Game Scorecards',               self._roundScorecard))
+    #self.addMenuItem( MenuItem( 'gpl', '<game>...',
+         #'Print Game Leaderboards',             self._roundLeaderboard))
+    #self.addMenuItem( MenuItem( 'gpt', '<game>...',
+        #'Print Game Status',                   self._roundStatus))
+    #self.addMenuItem( MenuItem( 'gpd', '',
+       #'Print Game Scorecards, Leaderboards, Status',                   self._roundDump))
+    self.addMenuItem( MenuItem( 'gas', '<hole> gross=<gross..> <pause=enable>',
+       'Add Scores',                 self._roundScore))
     self.updateHeader()
 
   def updateHeader(self):
@@ -227,6 +239,51 @@ class SQLMenu(Menu):
     session.add(result)
     session.commit()
 
+  def _roundStart(self):
+    if self._round_id is None:
+      raise InputException( 'Golf round not created')
+    # TODO: Is this even needed
+    # self.golf_round.start()
+
+  def _roundScore(self):
+    """ gas <hole> gross=<list> [pause=enable]"""
+    if self._round_id is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    hole = int(self.lstCmd[1])
+    pause_command = 'pause'
+    lstGross, lstPutts = None, None
+    options = {}
+    for arg in self.lstCmd[2:]:
+      lst = arg.split('=')
+      if lst[0] == 'gross':
+        lstGross = eval(lst[1])
+      elif lst[0] == 'putts':
+        lstPutts = eval(lst[1])
+      elif lst[0] in ('closest_to_pin'):
+        options[lst[0]] = eval(lst[1])
+      elif lst[0] == 'pause':
+        pause_command += ' '+ lst[1]
+      else:
+        raise InputException('Unknown argument {}'.format(arg))
+    if lstGross is None:
+      raise InputException('gross must be set with gas command.')
+    #
+    session = self.db.Session()
+    # get round
+    golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    results = session.query(Result).filter(Result.round == golf_round).all()
+    for n,result in enumerate(results):
+      score = Score(num=hole, gross=lstGross[n], result=result)
+      if lstPutts:
+        score.putts = lstPutts[n]
+      session.add(score)
+    session.commit()
+    
+    # TDOD: when game complete
+    #self._roundDump()
+    self.pushCommands([pause_command])
 
 def main():
   DEF_LOG_ENABLE = 'sqlmain'
