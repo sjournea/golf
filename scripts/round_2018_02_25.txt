@@ -13,22 +13,21 @@ gps
 gpl
 gpt
 pause enable
-gas  1 gross=[]   putts=[] 
-gas  2 gross=[]   putts=[] 
-gas  3 gross=[]   putts=[] 
-gas  4 gross=[]   putts=[] 
-gas  5 gross=[]   putts=[] 
-gas  6 gross=[]   putts=[] 
-gas  7 gross=[]   putts=[] 
-gas  8 gross=[]   putts=[] 
-gas  9 gross=[]   putts=[] pause=enable
-
-gas 10 gross=[]   putts=[] 
-gas 11 gross=[]   putts=[] 
-gas 12 gross=[]   putts=[] 
-gas 13 gross=[]   putts=[] 
-gas 14 gross=[]   putts=[] 
-gas 15 gross=[]   putts=[] 
-gas 16 gross=[]   putts=[] 
-gas 17 gross=[]   putts=[] 
-gas 18 gross=[]   putts=[] pause=enable
+gas  1 gross=[7,8]   putts=[2,2] 
+gas  2 gross=[4,4]   putts=[2,1] 
+gas  3 gross=[4,3]   putts=[2,2] 
+gas  4 gross=[8,5]   putts=[2,2] 
+gas  5 gross=[3,4]   putts=[2,2] 
+gas  6 gross=[5,9]   putts=[2,3] 
+gas  7 gross=[3,4]   putts=[1,3] 
+gas  8 gross=[6,5]   putts=[2,1] 
+gas  9 gross=[8,9]   putts=[2,4] pause=enable
+gas 10 gross=[7,6]   putts=[3,3] 
+gas 11 gross=[5,6]   putts=[2,3] 
+gas 12 gross=[4,6]   putts=[3,2] 
+gas 13 gross=[6,4]   putts=[2,2] 
+gas 14 gross=[4,4]   putts=[2,2] 
+gas 15 gross=[5,6]   putts=[1,3] 
+gas 16 gross=[3,5]   putts=[2,2] 
+gas 17 gross=[5,5]   putts=[2,2] 
+gas 18 gross=[6,8]   putts=[2,4] pause=enable
