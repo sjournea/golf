@@ -7,3 +7,8 @@ coi testdata
 col
 cos Positas
 cos Lagos
+#
+gcr "Los Lagos" 2018-02-25
+# add players
+gad sjournea White
+gad ricky White

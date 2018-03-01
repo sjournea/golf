@@ -21,7 +21,7 @@ from golf_db.test_data import DBGolfCourses, DBGolfPlayers
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
 
-from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee
+from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee,Result,Score
 
 TLLog.config('logs/sqlmain.log', defLogLevel=logging.INFO )
 
@@ -33,6 +33,7 @@ class SQLMenu(Menu):
     super(SQLMenu, self).__init__(cmdFile)
     self.url = kwargs.get('url')
     self.db = Database(self.url)
+    self._round_id = None
     # add menu items
     self.addMenuItem( MenuItem( 'dc', '',        
         'create golf database.', self._createDatabase) )
@@ -54,6 +55,10 @@ class SQLMenu(Menu):
         'course remove.', self._courseRemove) )
     self.addMenuItem( MenuItem( 'cos', '',
         'Get a scorecard', self._courseGetScorecard))
+    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>',
+        'Create a Round of Golf',      self._roundCreate))
+    self.addMenuItem( MenuItem( 'gad', '<email> <tee>',
+        'Add player to Round of Golf', self._roundAddPlayer))
     self.updateHeader()
 
   def updateHeader(self):
@@ -180,6 +185,48 @@ class SQLMenu(Menu):
     print dct['hdr']
     print dct['par']
     print dct['hdcp']
+
+  def _roundCreate(self):
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    course_name = self.lstCmd[1]
+    dtPlay = datetime.datetime.strptime(self.lstCmd[2], "%Y-%m-%d")
+    # session
+    session = self.db.Session()
+    query = session.query(Course).filter(Course.name.like('%{}%'.format(self.lstCmd[1])))
+    course = query.first()
+    golf_round = Round(course_id=course.course_id, date_played=dtPlay)
+    session.add(golf_round)
+    session.commit()
+    # save round id
+    self._round_id = golf_round.round_id
+    print 'new round id = {}'.format(golf_round.round_id)
+
+  def _roundAddPlayer(self):
+    # gap <email like> <tee>
+    if self._round_id is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 3:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+
+    session = self.db.Session()
+    # get round
+    golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    # find player
+    player = session.query(Player).filter(Player.email.like('%{}%'.format(self.lstCmd[1])) == self._round_id).one()
+    # get tee
+    tee = session.query(Tee).filter(
+      Tee.course_id == golf_round.course_id,
+      Tee.gender == player.genderPlural,
+      Tee.name == self.lstCmd[2]).one()
+    # Create Result
+    result = Result(round=golf_round, player_id=player.player_id, tee_id=tee.tee_id)
+    result.calcCourseHandicap(player, tee)
+    
+    print result
+    session.add(result)
+    session.commit()
+
 
 def main():
   DEF_LOG_ENABLE = 'sqlmain'

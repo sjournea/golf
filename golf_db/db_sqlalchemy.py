@@ -31,6 +31,11 @@ class Player(Base):
   def getInitials(self):
     return self.first_name[0] + self.last_name[0]
   
+  dct_plural_gender = {'man': 'mens', 'woman': 'womens'}
+  @property
+  def genderPlural(self):
+    return self.dct_plural_gender[self.gender]
+  
   def __str__(self):
     return '{:<15} - {:<6} {:<10} {:<8} {:<5} handicap {:.1f}'.format(
         self.email, self.first_name, self.last_name, self.nick_name, self.gender, self.handicap)
@@ -123,8 +128,14 @@ class Result(Base):
   result_id = Column(Integer(), primary_key=True)
   round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
   player_id = Column(Integer(), ForeignKey('players.player_id'), nullable=False)
+  tee_id = Column(Integer(), ForeignKey('tees.tee_id'), nullable=False)
+  course_handicap = Column(Integer())
   results = relationship("Score", order_by=Score.score_id, back_populates="result")  
   round = relationship("Round", back_populates="results")  
+
+  def calcCourseHandicap(self, player, tee):
+    """Course Handicap = Handicap Index * Slope rating / 113."""
+    self.course_handicap = int(round(player.handicap * tee.slope / 113))
   
 
 class Round(Base):
@@ -132,7 +143,7 @@ class Round(Base):
   round_id = Column(Integer(), primary_key=True)
   course_id =  Column(Integer(), ForeignKey('courses.course_id'), nullable=False)
   date_played = Column(Date(), nullable=False, default=datetime.date.today())
-  dict_value = Column(Text(), nullable=False)
+  dict_value = Column(Text())
   results = relationship("Result", order_by=Result.result_id, back_populates="round")  
 
 
