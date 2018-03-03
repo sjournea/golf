@@ -13,15 +13,15 @@ gcr "Los Lagos" 2018-02-25
 gad sjournea White
 gad ricky White
 # add games
-##gag gross
-##gag net use_full_net=True
-##gag skins wager=1.0 use_carryover=False
-##gag putts
+gag gross
+## gag net use_full_net=True
+## gag skins wager=1.0 use_carryover=False
+## gag putts
 # start game
 gst 
-##gps 
-##gpl
-##gpt
+## gps 
+## gpl
+## gpt
 pause enable
 gas  1 gross=[7,8]   putts=[2,2] 
 gas  2 gross=[4,4]   putts=[2,1] 

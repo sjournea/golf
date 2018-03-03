@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
+#from .game_factory import 
 from .exceptions import GolfDBException
 from util.tl_logger import TLLog
 
@@ -136,6 +137,17 @@ class Result(Base):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = int(round(player.handicap * tee.slope / 113))
   
+class Game(Base):
+  """Games played in a round."""
+  __tablename__ = 'games'
+  game_id = Column(Integer(), primary_key=True)
+  round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
+  game_type = Column(String(32))
+  dict_value = Column(Text())
+  round = relationship("Round", back_populates="games")
+  
+def LoadGameDict(self):
+  
 
 class Round(Base):
   __tablename__ = 'rounds'
@@ -144,6 +156,7 @@ class Round(Base):
   date_played = Column(Date(), nullable=False, default=datetime.date.today())
   dict_value = Column(Text())
   results = relationship("Result", order_by=Result.result_id, back_populates="round")  
+  games = relationship("Game", order_by=Game.game_id, back_populates="round")  
 
 
 class Database(object):

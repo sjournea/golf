@@ -16,12 +16,13 @@ from golf_db.course import GolfCourse
 from golf_db.round import GolfRound
 from golf_db.game_factory import GolfGameList
 from golf_db.test_data import DBGolfCourses, DBGolfPlayers
+from golf_db.game_factory import GolfGameFactory
 
 # from golf_db.db import GolfDB, GolfDBAdmin
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
 
-from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee,Result,Score
+from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee,Result,Score,Game
 
 TLLog.config('logs/sqlmain.log', defLogLevel=logging.INFO )
 
@@ -59,6 +60,8 @@ class SQLMenu(Menu):
         'Create a Round of Golf',      self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>',
         'Add player to Round of Golf', self._roundAddPlayer))
+    self.addMenuItem( MenuItem( 'gag', '<game> <players>',
+        'Add game to Round of Golf',   self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',
         'Start Round of Golf',         self._roundStart))
     #self.addMenuItem( MenuItem( 'gps', '<game>...',
@@ -244,6 +247,33 @@ class SQLMenu(Menu):
       raise InputException( 'Golf round not created')
     # TODO: Is this even needed
     # self.golf_round.start()
+
+  def _roundAddGame(self):
+    if self._round_id is None:
+      raise InputException( 'Golf round not created')
+    if len(self.lstCmd) < 2:
+      raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
+    game_type = self.lstCmd[1]
+
+    players = None
+    dct = {}
+    for arg in self.lstCmd[2:]:
+      lst = arg.split('=')
+      if lst[0] == 'players':
+        players = eval(lst[1])
+      else:
+        dct[lst[0]] = eval(lst[1])
+
+    session = self.db.Session()
+    # get round
+    golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    # Create Game
+    game_class = GolfGameFactory(game_type)
+    # game_instance = game_class(round, ) 
+    game = Game(round=golf_round, game_type=game_type)
+    session.add(game)
+    session.commit()
+    print game
 
   def _roundScore(self):
     """ gas <hole> gross=<list> [pause=enable]"""
