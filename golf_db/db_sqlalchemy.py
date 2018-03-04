@@ -1,4 +1,5 @@
 """db_sqlalchemy.py"""
+import ast
 import datetime
 
 from sqlalchemy import Table, Column, ForeignKey
@@ -7,7 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
-#from .game_factory import 
+from .sql_game_factory import SqlGolfGameFactory 
 from .exceptions import GolfDBException
 from util.tl_logger import TLLog
 
@@ -68,6 +69,7 @@ class Course(Base):
   name = Column(String(132), nullable=False, unique=True)  
   holes = relationship("Hole", order_by=Hole.hole_id, back_populates="course")  
   tees = relationship("Tee", order_by=Tee.tee_id, back_populates="course")  
+  round = relationship("Round", back_populates="course")  
 
   def setStats(self):
     """Par totals."""
@@ -106,6 +108,28 @@ class Course(Base):
   def course_par(self):
     return sum([hole.par for hole in self.holes])
 
+  def calcESC(self, hole_index, gross, course_handicap):
+    """Determine ESC post value for this gross score."""
+    esc = gross
+    if course_handicap < 10:
+      # Max double bogey
+      max_gross = self.holes[hole_index].par + 2
+      esc = gross if gross < max_gross else max_gross
+    elif course_handicap < 20:
+      # Max value of 7
+      esc = gross if gross < 7 else 7
+    elif course_handicap < 30:
+      # Max value of 8
+      esc = gross if gross < 8 else 8
+    elif course_handicap < 40:
+      # Max value of 9
+      esc = gross if gross < 9 else 9
+    else:
+      # course_handicap >= 40
+      # Max value of 10
+      esc = gross if gross < 10 else 10
+    return esc
+
   def __str__(self):
     return '{:<40} - {} holes - {} tees par:{}'.format(self.name, len(self.holes), len(
       self.tees), self.course_par())
@@ -119,7 +143,7 @@ class Score(Base):
   num = Column(Integer(), nullable=False)
   gross = Column(Integer(), nullable=False)
   putts = Column(Integer())
-  result = relationship("Result", back_populates="results")
+  result = relationship("Result", back_populates="scores")
 
 
 class Result(Base):
@@ -130,8 +154,10 @@ class Result(Base):
   player_id = Column(Integer(), ForeignKey('players.player_id'), nullable=False)
   tee_id = Column(Integer(), ForeignKey('tees.tee_id'), nullable=False)
   course_handicap = Column(Integer())
-  results = relationship("Score", order_by=Score.score_id, back_populates="result")  
+  scores = relationship("Score", order_by=Score.num, back_populates="result")  
   round = relationship("Round", back_populates="results")  
+  #player = relationship("Player", uselist=False, back_populates="result")
+  player = relationship("Player", uselist=False)
 
   def calcCourseHandicap(self, player, tee):
     """Course Handicap = Handicap Index * Slope rating / 113."""
@@ -146,17 +172,61 @@ class Game(Base):
   dict_value = Column(Text())
   round = relationship("Round", back_populates="games")
   
-def LoadGameDict(self):
-  
+  def CreateGame(self):
+    game_class = SqlGolfGameFactory(self.game_type)
+    game = game_class(self.round)
+    game.update()
+    return game
+
+  #def Update(self):
+    #game_class = SqlGolfGameFactory(self.game_type)
+    #self.game = game_class(self.round)
+    #self.game.update()
+    
 
 class Round(Base):
   __tablename__ = 'rounds'
   round_id = Column(Integer(), primary_key=True)
   course_id =  Column(Integer(), ForeignKey('courses.course_id'), nullable=False)
   date_played = Column(Date(), nullable=False, default=datetime.date.today())
-  dict_value = Column(Text())
+  course = relationship("Course", uselist=False)
   results = relationship("Result", order_by=Result.result_id, back_populates="round")  
   games = relationship("Game", order_by=Game.game_id, back_populates="round")  
+  
+  def addScores(self, session, hole, dct_scores):
+    """Add some scores for this round.
+
+    Args:
+      session: sqalchemy session.
+      hole : hole number, 1-number of holes on course.
+      dct_scores: dictionary of scare data.
+        lstGross - list of gross scores per player (required)
+        lstPutts - list of putts per player.
+    """
+    if hole < 1 or hole > len(self.course.holes):
+      raise GolfException('hole number must be in 1-{}'.format(len(self.course.holes)))
+    lstGross = dct_scores['lstGross']
+    lstPutts = dct_scores.get('lstPutts')
+    if len(lstGross) != len(self.results):
+      raise GolfException('gross scores do not match number of players')
+    if lstPutts and len(lstPutts) != len(self.results):
+      raise GolfException('putts do not match number of players')
+    # update scores
+    for n,result in enumerate(self.results):
+      score = Score(num=hole, gross=lstGross[n], result=result)
+      if lstPutts:
+        score.putts = lstPutts[n]
+      session.add(score)
+    ## update all games
+    #for game in self.games:
+      #game.Update()
+
+  def addGame(self, session, game_type):
+      # Create Game
+      game_class = SqlGolfGameFactory(game_type)
+      # game_instance = game_class(round, ) 
+      game = Game(round=self, game_type=game_type)
+      session.add(game)
 
 
 class Database(object):

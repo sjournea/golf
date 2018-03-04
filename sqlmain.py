@@ -16,7 +16,6 @@ from golf_db.course import GolfCourse
 from golf_db.round import GolfRound
 from golf_db.game_factory import GolfGameList
 from golf_db.test_data import DBGolfCourses, DBGolfPlayers
-from golf_db.game_factory import GolfGameFactory
 
 # from golf_db.db import GolfDB, GolfDBAdmin
 from util.menu import MenuItem, Menu, InputException, FileInput
@@ -267,13 +266,8 @@ class SQLMenu(Menu):
     session = self.db.Session()
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
-    # Create Game
-    game_class = GolfGameFactory(game_type)
-    # game_instance = game_class(round, ) 
-    game = Game(round=golf_round, game_type=game_type)
-    session.add(game)
+    golf_round.addGame(session, game_type)
     session.commit()
-    print game
 
   def _roundScore(self):
     """ gas <hole> gross=<list> [pause=enable]"""
@@ -303,17 +297,67 @@ class SQLMenu(Menu):
     session = self.db.Session()
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
-    results = session.query(Result).filter(Result.round == golf_round).all()
-    for n,result in enumerate(results):
-      score = Score(num=hole, gross=lstGross[n], result=result)
-      if lstPutts:
-        score.putts = lstPutts[n]
-      session.add(score)
+
+    dct_score_data = {
+      'lstGross': lstGross,
+      'lstPutts': lstPutts,
+      'options': options,
+    }
+    golf_round.addScores(session, hole, dct_score_data)
     session.commit()
     
-    # TDOD: when game complete
-    #self._roundDump()
+    self._roundDump()
     self.pushCommands([pause_command])
+
+  def _roundDump(self):
+    """ dump scorecard, leaderboard, status."""
+    session = self.db.Session()
+    # get round
+    golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    games = [game.CreateGame() for game in golf_round.games]
+
+    self._roundScorecard(golf_round, games)
+    self._roundLeaderboard(golf_round, games)
+    self._roundLeaderboard(golf_round, games, sort_type='money')
+    self._roundStatus(golf_round, games)
+
+  def _roundScorecard(self, golf_round, games):
+    dct = golf_round.course.getScorecard(ESC=True)
+    print dct['title']
+    print dct['hdr']
+    print dct['par']
+    print dct['hdcp']
+    for game in games:
+      dct = game.getScorecard()
+      print dct['header']
+      for player in dct['players']:
+        print player['line']
+
+  def _roundLeaderboard(self, golf_round, games, **kwargs):
+    length = 22
+    lstLines = [None for _ in range(10)]
+    def update_line(index, msg):
+      if lstLines[index] is None:
+        lstLines[index] = '{:<22}'.format(msg)
+      else:
+        lstLines[index] += ' {:<22}'.format(msg)
+
+    header = '{0:-^22}' if kwargs.get('sort_type') == 'money' else '{0:*^22}'
+    for game in games:
+      dctLeaderboard = game.getLeaderboard(**kwargs)
+      update_line(0, header.format(' '+ game.short_description+ ' '))
+      update_line(1, dctLeaderboard['hdr'])
+      for i,dct in enumerate(dctLeaderboard['leaderboard']):
+        update_line(i+2, dct['line'])
+    for line in [line for line in lstLines if line is not None]:
+      print line
+
+  def _roundStatus(self, golf_round, games):
+    for game in games:
+      dctStatus = game.getStatus()
+      print '{:<15} - {}'.format(game.short_description, dctStatus['line'])
+
+
 
 def main():
   DEF_LOG_ENABLE = 'sqlmain'
