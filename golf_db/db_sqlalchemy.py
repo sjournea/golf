@@ -130,6 +130,29 @@ class Course(Base):
       esc = gross if gross < 10 else 10
     return esc
 
+  def calcBumps(self, handicap):
+    """Determine bumps basid in this handicap.
+
+    Args:
+      handicap: course handicap.
+    Returns:
+      list of bumps for each hole.
+    """
+    bumps = [0 for _ in range(len(self.holes))]
+    # handicap > 18 will bump all holes
+    while handicap > 17:
+      bumps = [x+1 for x in bumps]
+      handicap -= 18
+    # now handicaps < 18
+    if handicap > 0:
+      for bp in xrange(handicap % 18, 0, -1):
+        for n,hole in enumerate(self.holes):
+          if hole.handicap == bp:
+            bumps[n] += 1
+            break
+    return bumps
+
+
   def __str__(self):
     return '{:<40} - {} holes - {} tees par:{}'.format(self.name, len(self.holes), len(
       self.tees), self.course_par())
@@ -169,20 +192,20 @@ class Game(Base):
   game_id = Column(Integer(), primary_key=True)
   round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
   game_type = Column(String(32))
+  game_options = Column(String(32))
   dict_value = Column(Text())
   round = relationship("Round", back_populates="games")
-  
+
   def CreateGame(self):
     game_class = SqlGolfGameFactory(self.game_type)
-    game = game_class(self.round)
+    if self.game_options:
+      options = ast.literal_eval(self.game_options)
+      game = game_class(self.round, **options)
+    else:
+      game = game_class(self.round)
     game.update()
     return game
 
-  #def Update(self):
-    #game_class = SqlGolfGameFactory(self.game_type)
-    #self.game = game_class(self.round)
-    #self.game.update()
-    
 
 class Round(Base):
   __tablename__ = 'rounds'
@@ -217,15 +240,14 @@ class Round(Base):
       if lstPutts:
         score.putts = lstPutts[n]
       session.add(score)
-    ## update all games
-    #for game in self.games:
-      #game.Update()
 
-  def addGame(self, session, game_type):
+  def addGame(self, session, game_type, options=None):
       # Create Game
       game_class = SqlGolfGameFactory(game_type)
-      # game_instance = game_class(round, ) 
+      # game_instance = game_class(round, )
       game = Game(round=self, game_type=game_type)
+      if options:
+        game.game_options = str(options)
       session.add(game)
 
 

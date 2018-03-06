@@ -28,60 +28,30 @@ class SqlGolfGame(object):
       if self._wager <= 0:
         raise GolfException('Wager must be float value > 0')
 
-  
   @abstractmethod
   def update(self):
     """Overload to update the game."""
     pass
 
-  #def setGrossScore(self, hole_index, lstScores, options):
-    #"""set gross scores for a hole.
 
-    #Args:
-      #hole_index: [0..17]
-      #lstScores: list of the gross scores.
-      #options: doctionary of additional values for this hole_index.
-    #"""
-    #self.setOptions(options if options else {})
-    #lst = [lstScores[n] for n in self.players]
-    #self.addScore(hole_index, lst)
-
-  #@abstractmethod
-  #def start(self):
-    #"""Start the game."""
-    #pass
-
-  #@abstractmethod
-  #def addScore(self, hole_index, lstScores):
-    #"""add scores for a hole."""
-    #pass
-
-  #def setOptions(self, options):
-    #"""Additional options parsed by each test."""
-    #pass
+  @abstractmethod
+  def getScorecard(self, **kwargs):
+    """Return scorecard dictionary for this game."""
+    pass
   
-  #def addPutts(self, hole_index, lstPutts, **kwargs):
-    #"""add putts for a hole."""
-    #pass
-
-  #@abstractmethod
-  #def getScorecard(self, **kwargs):
-    #"""Return scorecard dictionary for this game."""
-    #pass
-  
-  #@abstractmethod
-  #def getLeaderboard(self, **kwargs):
-    #"""Return leaderboard for this game.
+  @abstractmethod
+  def getLeaderboard(self, **kwargs):
+    """Return leaderboard for this game.
     
-    #Returns:
-      #list of dictionaries sorted in the order of 1st to last.
-    #"""
-    #pass
+    Returns:
+      list of dictionaries sorted in the order of 1st to last.
+    """
+    pass
 
-  #@abstractmethod
-  #def getStatus(self, **kwargs):
-    #"""Return simple status for state of game."""
-    #pass
+  @abstractmethod
+  def getStatus(self, **kwargs):
+    """Return simple status for state of game."""
+    pass
 
   #def complete(self):
     #"""Complete a game. Overload for process when a game is complete."""
@@ -119,6 +89,41 @@ class SqlGolfGame(object):
     #for sc in self.scores:
       #dct = sc.dct_money
       #dct['total'] = dct['in'] + dct['out'] + dct.get('overall', 0)
+
+class GamePlayer(object):
+  def __init__(self, game, result):
+    self.game = game
+    self.result = result
+    self.player = result.player
+
+  def _init_dict(self, score_type=int):
+    """Create and initialize scoring dictionary.
+      
+      add holes, in, out, total.
+    """
+    return {
+      'holes': [None for _ in range(len(self.game.golf_round.course.holes))],
+      'in' : score_type(0),
+      'out': score_type(0),
+      'total': score_type(0),
+    }
+
+  def update_totals(self, dct):
+    """Update totals in a dictionary. If a value is None it is not added.
+
+       dct must contain the following keys:
+         holes: list of number scores
+         in: total for holes 10..18
+         out: total for holes 1..9
+         total: in + out + overall (if set).
+    """
+    dct['out'] = sum([sc for sc in dct['holes'][:9] if sc is not None])
+    dct['in']  = sum([sc for sc in dct['holes'][9:] if sc is not None])
+    dct['total'] = dct['in'] + dct['out'] + dct.get('overall', 0)
+
+  def _calc_bumps(self, min_handicap):
+    return self.game.golf_round.course.calcBumps(self.result.course_handicap - min_handicap)
+
 
 #class SqlGolfTeam:
   #"""Base class for all golf teams."""

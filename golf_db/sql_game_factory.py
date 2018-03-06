@@ -1,9 +1,11 @@
 """sql_game_factory.py -- factory for games."""
 from .exceptions import GolfException
 from .sql_game_gross import SqlGameGross
+from .sql_game_net import SqlGameNet
 
 dctGames = { 
   'gross': SqlGameGross,
+  'net': SqlGameNet,
 }
 
 def SqlGolfGameFactory(game):

@@ -266,7 +266,7 @@ class SQLMenu(Menu):
     session = self.db.Session()
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
-    golf_round.addGame(session, game_type)
+    golf_round.addGame(session, game_type, dct)
     session.commit()
 
   def _roundScore(self):

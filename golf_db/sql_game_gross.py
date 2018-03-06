@@ -1,40 +1,12 @@
 """ game_gross.py - GolfGame class."""
-from .sql_game import SqlGolfGame
+from .sql_game import SqlGolfGame, GamePlayer
 
 
-class GamePlayer:
+class GrossPlayer(GamePlayer):
   def __init__(self, game, result):
-    self.game = game
-    self.result = result
-    self.player = result.player
+    super(GrossPlayer, self).__init__(game, result)
     self.dct_gross = self._init_dict()
     self.esc = 0
-
-  def _init_dict(self, score_type=int):
-    """Create and initialize scoring dictionary.
-      
-      add holes, in, out, total.
-    """
-    return {
-      'holes': [None for _ in range(len(self.game.golf_round.course.holes))],
-      'in' : score_type(0),
-      'out': score_type(0),
-      'total': score_type(0),
-    }
-
-  def update_totals(self, dct):
-    """Update totals in a dictionary. If a value is None it is not added.
-
-       dct must contain the following keys:
-         holes: list of number scores
-         in: total for holes 10..18
-         out: total for holes 1..9
-         total: in + out + overall (if set).
-    """
-    dct['out'] = sum([sc for sc in dct['holes'][:9] if sc is not None])
-    dct['in']  = sum([sc for sc in dct['holes'][9:] if sc is not None])
-    dct['total'] = dct['in'] + dct['out'] + dct.get('overall', 0)
-
 
   
 class SqlGameGross(SqlGolfGame):
@@ -45,7 +17,7 @@ Basic golf game, the players simply add up their scores and compare. You score 9
 """
   def _start(self):
     """Start the game."""
-    self._players = [GamePlayer(self, result) for result in self.golf_round.results]
+    self._players = [GrossPlayer(self, result) for result in self.golf_round.results]
     # add header to scorecard
     self.dctScorecard['course'] = self.golf_round.course.getScorecard(ESC=1)
     self.dctScorecard['header'] = '{0:*^98}'.format(' Gross ')
