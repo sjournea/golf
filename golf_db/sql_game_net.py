@@ -8,7 +8,7 @@ class NetPlayer(GamePlayer):
   def __init__(self, game, result, min_handicap):
     super(NetPlayer, self).__init__(game, result)
     self.dct_net = self._init_dict()
-    self._bumps = self._calc_bumps(min_handicap)
+    self._bumps = self.calc_bumps(min_handicap)
 
 
 class SqlGameNet(SqlGolfGame):
@@ -40,7 +40,7 @@ The bumps will be added to the lowest handicap holes on the course being played.
     self._start()
     for pl, result in zip(self._players, self.golf_round.results):
       for n,score in enumerate(result.scores):
-        # update gross 
+        # update net 
         pl.dct_net['holes'][n] = score.gross - pl._bumps[n]
       pl.update_totals(pl.dct_net)
 

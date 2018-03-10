@@ -2,10 +2,12 @@
 from .exceptions import GolfException
 from .sql_game_gross import SqlGameGross
 from .sql_game_net import SqlGameNet
+from .sql_game_skins import SqlSkinsGame
 
 dctGames = { 
   'gross': SqlGameGross,
   'net': SqlGameNet,
+  'skins': SqlSkinsGame
 }
 
 def SqlGolfGameFactory(game):

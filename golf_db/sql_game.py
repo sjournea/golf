@@ -121,7 +121,7 @@ class GamePlayer(object):
     dct['in']  = sum([sc for sc in dct['holes'][9:] if sc is not None])
     dct['total'] = dct['in'] + dct['out'] + dct.get('overall', 0)
 
-  def _calc_bumps(self, min_handicap):
+  def calc_bumps(self, min_handicap):
     return self.game.golf_round.course.calcBumps(self.result.course_handicap - min_handicap)
 
 
