@@ -10,7 +10,7 @@ class PuttsPlayer(GamePlayer):
   
 class SqlGamePutts(SqlGolfGame):
   """Basic gross game. Man's golf."""
-  short_description = 'Putts``'
+  short_description = 'Putts'
   description = """
 Who has the fewest putts in the round. Must be on the green to be a putt.
 """

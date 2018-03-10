@@ -5,11 +5,9 @@ from .exceptions import GolfException
 class StablefordPlayer(GamePlayer):
   def __init__(self, game, result):
     super(StablefordPlayer, self).__init__(game, result)
-    self._nets = self._init_dict()
     self._bumps = self.calc_bumps(0)
     self.dct_points = self._init_dict()
     self._jokers = game.jokers[n] if game.stableford_type == 'Spanish' else None
-    print(self._bumps)
 
 class SqlGameStableford(SqlGolfGame):
   """The Stableford game."""
@@ -136,14 +134,14 @@ class SqlGameStableford(SqlGolfGame):
     return self.dctLeaderboard
 
   def getStatus(self, **kwargs):
-    for n,net in enumerate(self._players[0].dct_points):
-      if net is None:
+    for n,points in enumerate(self._players[0].dct_points['holes']):
+      if points is None:
         self.dctStatus['next_hole'] = n+1
         self.dctStatus['par'] = self.golf_round.course.holes[n].par
         self.dctStatus['handicap'] = self.golf_round.course.holes[n].handicap
         bumps = []
         bump_line = []
-        for sc in self.scores:
+        for sc in self._players:
           if sc._bumps[n] > 0:
             dct = {'player': sc.player, 'bumps': sc._bumps[n]}
             bumps.append(dct)

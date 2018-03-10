@@ -6,6 +6,7 @@ import datetime
 import logging
 #import ConfigParser
 import os
+import readline
 import traceback
 import threading
 #import time,datetime,re,os,traceback,pdb
