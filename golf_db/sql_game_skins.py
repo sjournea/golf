@@ -10,7 +10,7 @@ class SkinsPlayer(GamePlayer):
     self.dct_skins = self._init_dict()
 
 
-class SqlSkinsGame(SqlGolfGame):
+class SqlGameSkins(SqlGolfGame):
   """The Skins game."""
   short_description = 'Skins'
   description = """
@@ -31,7 +31,7 @@ For a threesome this means that the winner wins two skins on a hole. For a fours
 In both cases the other players each lose a skin. 
 """
   def __init__(self, golf_round, **kwargs):
-    super(SqlSkinsGame, self).__init__(golf_round, **kwargs)
+    super(SqlGameSkins, self).__init__(golf_round, **kwargs)
     self._use_carryover = kwargs.get('use_carryover', True)
 
   def _start(self):
