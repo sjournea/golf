@@ -4,12 +4,14 @@ from .sql_game_gross import SqlGameGross
 from .sql_game_net import SqlGameNet
 from .sql_game_skins import SqlGameSkins
 from .sql_game_putts import SqlGamePutts
+from .sql_game_stableford import SqlGameStableford
 
 dctGames = { 
   'gross': SqlGameGross,
   'net': SqlGameNet,
   'skins': SqlGameSkins,
   'putts': SqlGamePutts,
+  'stableford': SqlGameStableford,
 }
 
 def SqlGolfGameFactory(game):

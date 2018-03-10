@@ -244,8 +244,7 @@ class SQLMenu(Menu):
   def _roundStart(self):
     if self._round_id is None:
       raise InputException( 'Golf round not created')
-    # TODO: Is this even needed
-    # self.golf_round.start()
+    self._roundDump()
 
   def _roundAddGame(self):
     if self._round_id is None:
@@ -318,7 +317,6 @@ class SQLMenu(Menu):
 
     self._roundScorecard(golf_round, games)
     self._roundLeaderboard(golf_round, games)
-    self._roundLeaderboard(golf_round, games, sort_type='money')
     self._roundStatus(golf_round, games)
 
   def _roundScorecard(self, golf_round, games):
