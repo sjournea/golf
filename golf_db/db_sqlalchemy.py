@@ -190,6 +190,9 @@ class Result(Base):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = int(round(player.handicap * tee.slope / 113))
   
+  def get_completed_holes(self):
+    return len(self.scores)
+  
 class Game(Base):
   """Games played in a round."""
   __tablename__ = 'games'
@@ -271,6 +274,8 @@ class Round(Base):
       game = Game(round=self, game_type=game_type, dict_data=str(dict_data))
       session.add(game)
 
+  def get_completed_holes(self):
+    return max([result.get_completed_holes() for result in self.results])
 
 class Database(object):
   def __init__(self, url):

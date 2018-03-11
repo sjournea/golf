@@ -54,42 +54,6 @@ class SqlGolfGame(object):
     """Return simple status for state of game."""
     pass
 
-  #def complete(self):
-    #"""Complete a game. Overload for process when a game is complete."""
-    #pass
-
-  #@property
-  #def total_payout(self):
-    #"""Return total payout if wager is set."""
-    #return len(self.golf_round.course.holes)*self._wager*len(self.scores) if self._wager else None
-
-  #def _calc_money_from_points(self):
-    #"""Determine the money totals from points.
-
-       #Currently supports payment methods.
-        #2-2-2: 1/3 front 9, 1/3 back 9, 1/3 overall.
-    #"""
-    #def sort_calc(points_key, money_key, split):
-      #scores = sorted(self.scores, key=lambda score: score.dct_points[points_key], reverse=True)
-      #scores = [sc for sc in scores if sc.dct_points[points_key] == scores[0].dct_points[points_key]]
-      #pay = (self.total_payout/split)/len(scores) 
-      #log.info('_calc_money_from_points() - {} - pay:{} scores:{}'.format(points_key, pay, [sc.player.nick_name for sc in scores]))
-      #for sc in scores:
-        #sc.dct_money[money_key] = pay
-      
-    #log.info('_calc_money_from_points() - total_payout:{}'.format(self.total_payout))
-    ## assumes dct_points is already updated.
-    #for sc in self.scores:
-      #sc.dct_money = {'in':0, 'out':0, 'total':0, 'overall':0 }
-    #if self._thru >= 9:
-      #sort_calc('out', 'out', 3)
-    #if self._thru == 18:
-      #sort_calc('in', 'in', 3)
-      #sort_calc('total', 'overall', 3)
-    ## update money total
-    #for sc in self.scores:
-      #dct = sc.dct_money
-      #dct['total'] = dct['in'] + dct['out'] + dct.get('overall', 0)
 
 class GamePlayer(object):
   def __init__(self, game, result):
@@ -126,23 +90,24 @@ class GamePlayer(object):
     return self.game.golf_round.course.calcBumps(self.result.course_handicap - min_handicap)
 
 
-#class SqlGolfTeam:
-  #"""Base class for all golf teams."""
-  #__metaclass__ = ABCMeta
-  #def __init__(self, players, **kwargs):
-    #self.name = kwargs.get('name')
-    #self.players = players[:]
-    #if not self.name:
-      #self.name = '/'.join([pl.getInitials() for pl in self.players])
+class SqlGolfTeam(object):
+  """Base class for all golf teams."""
+  __metaclass__ = ABCMeta
+  def __init__(self, game, players, **kwargs):
+    self.game = game
+    self.name = kwargs.get('name')
+    self.players = players[:]
+    if not self.name:
+      self.name = '/'.join([pl.player.getInitials() for pl in self.players])
 
-  #@abstractmethod
-  #def setup(self, course, min_handicap):
-    #pass
+  @abstractmethod
+  def setup(self, min_handicap):
+    pass
 
-  #@abstractmethod
-  #def calculate_score(self, index):
-    #pass
+  @abstractmethod
+  def calculate_score(self, index):
+    pass
 
-  #@abstractmethod
-  #def update_points(self, index, other_team):
-    #pass
+  @abstractmethod
+  def update_points(self, index, other_team):
+    pass
