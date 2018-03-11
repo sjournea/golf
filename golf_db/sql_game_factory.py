@@ -6,6 +6,7 @@ from .sql_game_skins import SqlGameSkins
 from .sql_game_putts import SqlGamePutts
 from .sql_game_stableford import SqlGameStableford
 from .sql_game_greenie import SqlGameGreenie
+from .sql_game_snake import SqlGameSnake
 
 dctGames = { 
   'gross': SqlGameGross,
@@ -14,6 +15,7 @@ dctGames = {
   'putts': SqlGamePutts,
   'stableford': SqlGameStableford,
   'greenie': SqlGameGreenie,
+  'snake': SqlGameSnake,
 }
 
 def SqlGolfGameFactory(game):

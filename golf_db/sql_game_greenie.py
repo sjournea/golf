@@ -74,13 +74,14 @@ Options:
         if self._double_birdie and gross < par:
           # birdie or better
           winner.dct_points['holes'][index] *= 2
-          pl.update_totals(winner.dct_points)
         if self._wager:
           winner.dct_money['holes'][index] = winner.dct_points['holes'][index]*len(self._players)
-          pl.update_totals(winner.dct_money)
       else:
         if self._carry_over and par == 3:
           self._carry += 1
+    for pl in self._players:
+      pl.update_totals(pl.dct_points)
+      pl.update_totals(pl.dct_money)
       
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""

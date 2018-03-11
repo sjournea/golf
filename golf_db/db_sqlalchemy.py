@@ -216,7 +216,6 @@ class Game(Base):
     self.dict_data = str(value)
     
   def add_hole_dict_data(self, hole_num, dct_data):
-    print('add_hole_dict_data() hole_num:{} dct_data:{}'.format(hole_num, dct_data))
     dct = self.game_data
     dct[hole_num] = dct_data
     self.game_data = dct
@@ -262,7 +261,6 @@ class Round(Base):
         if game.game_type in options:
           golf_game = session.query(Game).filter(Game.round == self, Game.game_type == game.game_type).one()
           golf_game.add_hole_dict_data(hole, options[game.game_type])
-          print(golf_game.game_data)
           session.commit()
 
   def addGame(self, session, game_type, options=None):
