@@ -19,8 +19,8 @@ One purpose of a golf handicap is to help players of different skill levels to c
 Take the difference between each handicap (e.g. 25 - 13 = 12) and that is the number of strokes given to the higher handicap player.
 The bumps will be added to the lowest handicap holes on the course being played.
 """
-  def __init__(self, golf_round, **kwargs):
-    super(SqlGameNet, self).__init__(golf_round, **kwargs)
+  def __init__(self,game, golf_round, **kwargs):
+    super(SqlGameNet, self).__init__(game, golf_round, **kwargs)
     self.use_full_net = kwargs.get('use_full_net', False)
 
   def _start(self):

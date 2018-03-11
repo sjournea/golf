@@ -30,8 +30,8 @@ Each person brings a skin to the hole, and the winner of the hole wins a skin fr
 For a threesome this means that the winner wins two skins on a hole. For a foursome, this means three skins.
 In both cases the other players each lose a skin. 
 """
-  def __init__(self, golf_round, **kwargs):
-    super(SqlGameSkins, self).__init__(golf_round, **kwargs)
+  def __init__(self, game, golf_round, **kwargs):
+    super(SqlGameSkins, self).__init__(game, golf_round, **kwargs)
     self._use_carryover = kwargs.get('use_carryover', True)
 
   def _start(self):

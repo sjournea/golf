@@ -152,7 +152,10 @@ class Course(Base):
             break
     return bumps
 
-
+  def get_holes_with_par(self, par):
+    """Return list of holes with par argument."""
+    return [hole for hole in self.holes if hole.par == par]
+  
   def __str__(self):
     return '{:<40} - {} holes - {} tees par:{}'.format(self.name, len(self.holes), len(
       self.tees), self.course_par())
@@ -166,6 +169,7 @@ class Score(Base):
   num = Column(Integer(), nullable=False)
   gross = Column(Integer(), nullable=False)
   putts = Column(Integer())
+  # ADD text field for score options; snake_closest_3_putt, greenie_closest
   result = relationship("Result", back_populates="scores")
 
 
@@ -191,20 +195,31 @@ class Game(Base):
   __tablename__ = 'games'
   game_id = Column(Integer(), primary_key=True)
   round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
-  game_type = Column(String(32))
-  game_options = Column(String(32))
-  dict_value = Column(Text())
+  game_type = Column(String(32), nullable=False)
+  dict_data = Column(Text, default="{}")
   round = relationship("Round", back_populates="games")
 
   def CreateGame(self):
     game_class = SqlGolfGameFactory(self.game_type)
-    if self.game_options:
-      options = ast.literal_eval(self.game_options)
-      game = game_class(self.round, **options)
-    else:
-      game = game_class(self.round)
+    self._game_data = self.game_data
+    game = game_class(self, self.round, **self._game_data['options'])
+    game.validate()
     game.update()
     return game
+
+  @property
+  def game_data(self):
+    return ast.literal_eval(self.dict_data)
+  
+  @game_data.setter
+  def game_data(self, value):
+    self.dict_data = str(value)
+    
+  def add_hole_dict_data(self, hole_num, dct_data):
+    print('add_hole_dict_data() hole_num:{} dct_data:{}'.format(hole_num, dct_data))
+    dct = self.game_data
+    dct[hole_num] = dct_data
+    self.game_data = dct
 
 
 class Round(Base):
@@ -240,14 +255,22 @@ class Round(Base):
       if lstPutts:
         score.putts = lstPutts[n]
       session.add(score)
+    #print('dct_scores:{}'.format(dct_scores))
+    options = dct_scores.get('options')
+    if options:
+      for game in self.games:
+        if game.game_type in options:
+          golf_game = session.query(Game).filter(Game.round == self, Game.game_type == game.game_type).one()
+          golf_game.add_hole_dict_data(hole, options[game.game_type])
+          print(golf_game.game_data)
+          session.commit()
 
   def addGame(self, session, game_type, options=None):
       # Create Game
+      dict_data = {'options': options} 
       game_class = SqlGolfGameFactory(game_type)
       # game_instance = game_class(round, )
-      game = Game(round=self, game_type=game_type)
-      if options:
-        game.game_options = str(options)
+      game = Game(round=self, game_type=game_type, dict_data=str(dict_data))
       session.add(game)
 
 

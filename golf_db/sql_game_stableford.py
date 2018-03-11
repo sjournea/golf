@@ -19,10 +19,10 @@ class SqlGameStableford(SqlGolfGame):
     'Spanish':  { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':4, 'max': 0 },
   }
 
-  def __init__(self, golf_round, **kwargs):
+  def __init__(self, game, golf_round, **kwargs):
     self.stableford_type = kwargs.get('stableford_type', 'Classic')
     self.jokers = kwargs.get('jokers')
-    super(SqlGameStableford, self).__init__(golf_round, **kwargs)
+    super(SqlGameStableford, self).__init__(game, golf_round, **kwargs)
 
   def validate(self):
     super(SqlGameStableford, self).validate()

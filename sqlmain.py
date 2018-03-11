@@ -285,7 +285,7 @@ class SQLMenu(Menu):
         lstGross = eval(lst[1])
       elif lst[0] == 'putts':
         lstPutts = eval(lst[1])
-      elif lst[0] in ('closest_to_pin'):
+      elif lst[0] in ('greenie','snake'):
         options[lst[0]] = eval(lst[1])
       elif lst[0] == 'pause':
         pause_command += ' '+ lst[1]

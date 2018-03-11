@@ -13,7 +13,8 @@ class SqlGolfGame(object):
   description = '<Description not set>'
   short_description = '<Not set>'
   
-  def __init__(self, golf_round, **kwargs):
+  def __init__(self, game, golf_round, **kwargs):
+    self.game = game
     self.golf_round = golf_round
     self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
     self.dctLeaderboard = {}
