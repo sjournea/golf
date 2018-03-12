@@ -130,6 +130,32 @@ class Course(Base):
       esc = gross if gross < 10 else 10
     return esc
 
+  def calcBumps(self, handicap):
+    """Determine bumps basid in this handicap.
+
+    Args:
+      handicap: course handicap.
+    Returns:
+      list of bumps for each hole.
+    """
+    bumps = [0 for _ in range(len(self.holes))]
+    # handicap > 18 will bump all holes
+    while handicap > 17:
+      bumps = [x+1 for x in bumps]
+      handicap -= 18
+    # now handicaps < 18
+    if handicap > 0:
+      for bp in xrange(handicap % 18, 0, -1):
+        for n,hole in enumerate(self.holes):
+          if hole.handicap == bp:
+            bumps[n] += 1
+            break
+    return bumps
+
+  def get_holes_with_par(self, par):
+    """Return list of holes with par argument."""
+    return [hole for hole in self.holes if hole.par == par]
+  
   def __str__(self):
     return '{:<40} - {} holes - {} tees par:{}'.format(self.name, len(self.holes), len(
       self.tees), self.course_par())
@@ -143,6 +169,7 @@ class Score(Base):
   num = Column(Integer(), nullable=False)
   gross = Column(Integer(), nullable=False)
   putts = Column(Integer())
+  # ADD text field for score options; snake_closest_3_putt, greenie_closest
   result = relationship("Result", back_populates="scores")
 
 
@@ -163,26 +190,39 @@ class Result(Base):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = int(round(player.handicap * tee.slope / 113))
   
+  def get_completed_holes(self):
+    return len(self.scores)
+  
 class Game(Base):
   """Games played in a round."""
   __tablename__ = 'games'
   game_id = Column(Integer(), primary_key=True)
   round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
-  game_type = Column(String(32))
-  dict_value = Column(Text())
+  game_type = Column(String(32), nullable=False)
+  dict_data = Column(Text, default="{}")
   round = relationship("Round", back_populates="games")
-  
+
   def CreateGame(self):
     game_class = SqlGolfGameFactory(self.game_type)
-    game = game_class(self.round)
+    self._game_data = self.game_data
+    game = game_class(self, self.round, **self._game_data['options'])
+    game.validate()
     game.update()
     return game
 
-  #def Update(self):
-    #game_class = SqlGolfGameFactory(self.game_type)
-    #self.game = game_class(self.round)
-    #self.game.update()
+  @property
+  def game_data(self):
+    return ast.literal_eval(self.dict_data)
+  
+  @game_data.setter
+  def game_data(self, value):
+    self.dict_data = str(value)
     
+  def add_hole_dict_data(self, hole_num, dct_data):
+    dct = self.game_data
+    dct[hole_num] = dct_data
+    self.game_data = dct
+
 
 class Round(Base):
   __tablename__ = 'rounds'
@@ -217,17 +257,25 @@ class Round(Base):
       if lstPutts:
         score.putts = lstPutts[n]
       session.add(score)
-    ## update all games
-    #for game in self.games:
-      #game.Update()
+    #print('dct_scores:{}'.format(dct_scores))
+    options = dct_scores.get('options')
+    if options:
+      for game in self.games:
+        if game.game_type in options:
+          golf_game = session.query(Game).filter(Game.round == self, Game.game_type == game.game_type).one()
+          golf_game.add_hole_dict_data(hole, options[game.game_type])
+          session.commit()
 
-  def addGame(self, session, game_type):
+  def addGame(self, session, game_type, options=None):
       # Create Game
+      dict_data = {'options': options} 
       game_class = SqlGolfGameFactory(game_type)
-      # game_instance = game_class(round, ) 
-      game = Game(round=self, game_type=game_type)
+      # game_instance = game_class(round, )
+      game = Game(round=self, game_type=game_type, dict_data=str(dict_data))
       session.add(game)
 
+  def get_completed_holes(self):
+    return max([result.get_completed_holes() for result in self.results])
 
 class Database(object):
   def __init__(self, url):

@@ -6,6 +6,7 @@ import datetime
 import logging
 #import ConfigParser
 import os
+import readline
 import traceback
 import threading
 #import time,datetime,re,os,traceback,pdb
@@ -227,7 +228,7 @@ class SQLMenu(Menu):
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
     # find player
-    player = session.query(Player).filter(Player.email.like('%{}%'.format(self.lstCmd[1])) == self._round_id).one()
+    player = session.query(Player).filter(Player.email.like('%{}%'.format(self.lstCmd[1]))).one()
     # get tee
     tee = session.query(Tee).filter(
       Tee.course_id == golf_round.course_id,
@@ -244,8 +245,7 @@ class SQLMenu(Menu):
   def _roundStart(self):
     if self._round_id is None:
       raise InputException( 'Golf round not created')
-    # TODO: Is this even needed
-    # self.golf_round.start()
+    self._roundDump()
 
   def _roundAddGame(self):
     if self._round_id is None:
@@ -266,7 +266,7 @@ class SQLMenu(Menu):
     session = self.db.Session()
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
-    golf_round.addGame(session, game_type)
+    golf_round.addGame(session, game_type, dct)
     session.commit()
 
   def _roundScore(self):
@@ -285,7 +285,7 @@ class SQLMenu(Menu):
         lstGross = eval(lst[1])
       elif lst[0] == 'putts':
         lstPutts = eval(lst[1])
-      elif lst[0] in ('closest_to_pin'):
+      elif lst[0] in ('greenie','snake'):
         options[lst[0]] = eval(lst[1])
       elif lst[0] == 'pause':
         pause_command += ' '+ lst[1]
@@ -318,7 +318,6 @@ class SQLMenu(Menu):
 
     self._roundScorecard(golf_round, games)
     self._roundLeaderboard(golf_round, games)
-    self._roundLeaderboard(golf_round, games, sort_type='money')
     self._roundStatus(golf_round, games)
 
   def _roundScorecard(self, golf_round, games):

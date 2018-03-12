@@ -1,0 +1,10 @@
+# delete sqlite database
+os rm golf.sqlite
+# create database
+dc
+# Add all players
+pli testdata
+pll
+# add all courses
+coi testdata
+col

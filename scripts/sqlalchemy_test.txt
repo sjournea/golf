@@ -14,9 +14,9 @@ gad sjournea White
 gad ricky White
 # add games
 gag gross
-## gag net use_full_net=True
-## gag skins wager=1.0 use_carryover=False
-## gag putts
+gag net use_full_net=True
+gag skins wager=1.0 use_carryover=True
+gag putts
 # start game
 gst 
 ## gps 

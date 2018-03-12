@@ -1,9 +1,29 @@
 """sql_game_factory.py -- factory for games."""
 from .exceptions import GolfException
 from .sql_game_gross import SqlGameGross
+from .sql_game_net import SqlGameNet
+from .sql_game_skins import SqlGameSkins
+from .sql_game_putts import SqlGamePutts
+from .sql_game_stableford import SqlGameStableford
+from .sql_game_greenie import SqlGameGreenie
+from .sql_game_snake import SqlGameSnake
+from .sql_game_best_ball import SqlGameBestBall
+from .sql_game_six_point import SqlGameSixPoint
+from .sql_game_eighty_one import SqlGameEightyOne
+from .sql_game_match import SqlGameMatch
 
 dctGames = { 
   'gross': SqlGameGross,
+  'net': SqlGameNet,
+  'skins': SqlGameSkins,
+  'putts': SqlGamePutts,
+  'stableford': SqlGameStableford,
+  'greenie': SqlGameGreenie,
+  'snake': SqlGameSnake,
+  'bestball': SqlGameBestBall,
+  'six_point': SqlGameSixPoint,
+  'eighty_one': SqlGameEightyOne,
+  'match': SqlGameMatch,
 }
 
 def SqlGolfGameFactory(game):

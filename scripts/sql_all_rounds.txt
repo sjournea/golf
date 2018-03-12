@@ -1,0 +1,31 @@
+# mother of all sql scripts
+pause ignore off
+< scripts/sqlite_db_clear.txt
+#< scripts/sql_round_2016_10_01.txt
+#< scripts/sql_round_2017_03_04.txt
+#< scripts/sql_round_2017_04_01.txt
+#< scripts/sql_round_2017_08_05.txt
+#< scripts/sql_round_2017_10_07.txt
+#< scripts/sql_round_2017_10_21.txt
+#< scripts/sql_round_2017_11_05.txt
+< scripts/sql_round_2017_11_11.txt
+#< scripts/round_2017_11_21.txt
+#< scripts/round_2017_11_22.txt
+#< scripts/round_2017_12_02.txt
+#< scripts/round_2017_12_19.txt
+#< scripts/round_2017_12_26.txt
+#< scripts/round_2018_01_06.txt
+#< scripts/round_2018_01_13.txt
+#< scripts/round_2018_01_15.txt
+#< scripts/round_2018_01_20.txt
+#< scripts/round_2018_01_27.txt
+#< scripts/round_2018_01_28.txt
+#< scripts/round_2018_02_03.txt
+#< scripts/round_2018_02_10.txt
+#< scripts/round_2018_02_17.txt
+#< scripts/round_2018_02_19_1.txt
+#< scripts/round_2018_02_19_2.txt
+#< scripts/round_2018_02_24.txt
+#< scripts/sql_round_2018_02_25.txt
+< scripts/sql_round_2018_03_04_.txt
+x
