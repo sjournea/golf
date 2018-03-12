@@ -19,11 +19,6 @@ class SqlGameStableford(SqlGolfGame):
     'Spanish':  { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':4, 'max': 0 },
   }
 
-  def __init__(self, game, golf_round, **kwargs):
-    self.stableford_type = kwargs.get('stableford_type', 'Classic')
-    self.jokers = kwargs.get('jokers')
-    super(SqlGameStableford, self).__init__(game, golf_round, **kwargs)
-
   def validate(self):
     super(SqlGameStableford, self).validate()
     if self.stableford_type not in self.dct_scoring:
@@ -41,7 +36,9 @@ class SqlGameStableford(SqlGolfGame):
         if joker[1] not in (10,11,12,13,14,15,16,17,18):
           raise GolfException('stableford_type Spanish joker[1] must be in 10-18.')
 
-  def _start(self):
+  def setup(self, **kwargs):
+    self.stableford_type = kwargs.get('stableford_type', 'Classic')
+    self.jokers = kwargs.get('jokers')
     self.dct_stableford = self.dct_scoring[self.stableford_type]
     # use full handicap for all players
     self._players = [StablefordPlayer(self, result) for result in self.golf_round.results]
@@ -50,7 +47,6 @@ class SqlGameStableford(SqlGolfGame):
 
   def update(self):
     """Update gross results for all scores so far."""
-    self._start()
     for pl, result in zip(self._players, self.golf_round.results):
       # calculate net
       for n, score in enumerate(result.scores):

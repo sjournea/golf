@@ -20,8 +20,8 @@ Options:
   carry_over: If nobody wins a par 3 then carries over to next par 3.
   last_par_3_carry: If nobody wins last par 3 then carry over to next hole and on green in regulation quailifies.  
 """
-  def __init__(self, game, golf_round, **kwargs):
-    super(SqlGameGreenie, self).__init__(game, golf_round, **kwargs)
+  def setup(self, **kwargs):
+    """setup the game."""
     self._carry_over = kwargs.get('carry_over', True)
     self._double_birdie = kwargs.get('double_birdie', True)
     self._last_par_3_carry = kwargs.get('last_par_3_carry', True)
@@ -29,9 +29,6 @@ Options:
     if self._last_par_3_carry:
       self._last_par_3 = self._holes[-1]
       self._holes += [hole.num for hole in self.golf_round.course.holes[self._last_par_3:]]
-    
-  def _start(self):
-    """Start the game."""
     self._players = [GreeniePlayer(self, result) for result in self.golf_round.results]
     self._carry = 0
     self._next_hole = 0
@@ -42,7 +39,6 @@ Options:
   
   def update(self):
     """Update gross results for all scores so far."""
-    self._start()
     dct_greens = {hole_num: None for hole_num in self._holes}
     for pl, result in zip(self._players, self.golf_round.results):
       for n, score in enumerate(result.scores):

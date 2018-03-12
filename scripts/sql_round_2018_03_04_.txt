@@ -1,6 +1,4 @@
 # create a round and add players scores
-< scripts/sqlite_db_clear.txt
-#
 gcr Zinfandel/Merlot 2018-02-10
 gad sjournea White
 gad snake White

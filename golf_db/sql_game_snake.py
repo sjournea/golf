@@ -12,21 +12,18 @@ class SqlGameSnake(SqlGolfGame):
   description = """
 3 putt a green and you could lose.
 """
-  def __init__(self, game, golf_round, **kwargs):
-    super(SqlGameSnake, self).__init__(game, golf_round, **kwargs)
-    self._snake_type = kwargs.get('snake_type', 'Points')
-    
-  def _start(self):
+  def setup(self, **kwargs):
     """Start the game."""
+    self._snake_type = kwargs.get('snake_type', 'Points')
     self._players = [SnakePlayer(self, result) for result in self.golf_round.results]
     self._has_snake = None
     # update header to scorecard
     title = ' Snake - {} '.format(self._snake_type)
     self.dctScorecard['header'] = '{0:*^98}'.format(title)
     self._thru = ''
+
   def update(self):
     """Update gross results for all scores so far."""
-    self._start()
     dct_three_putts = {hole.num: None for hole in self.golf_round.course.holes}
     for pl, result in zip(self._players, self.golf_round.results):
       for n, score in enumerate(result.scores):

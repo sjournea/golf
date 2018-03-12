@@ -30,12 +30,9 @@ Each person brings a skin to the hole, and the winner of the hole wins a skin fr
 For a threesome this means that the winner wins two skins on a hole. For a foursome, this means three skins.
 In both cases the other players each lose a skin. 
 """
-  def __init__(self, game, golf_round, **kwargs):
-    super(SqlGameSkins, self).__init__(game, golf_round, **kwargs)
-    self._use_carryover = kwargs.get('use_carryover', True)
-
-  def _start(self):
+  def setup(self, **kwargs):
     """Start the skins game."""
+    self._use_carryover = kwargs.get('use_carryover', True)
     # find min handicap in all players
     min_handicap = min([result.course_handicap for result in self.golf_round.results])
     self._players = [SkinsPlayer(self, result, min_handicap) for result in self.golf_round.results]
@@ -46,7 +43,6 @@ In both cases the other players each lose a skin.
 
   def update(self):
     """Update gross results for all scores so far."""
-    self._start()
     for pl, result in zip(self._players, self.golf_round.results):
       # calculate net
       for n, score in enumerate(result.scores):

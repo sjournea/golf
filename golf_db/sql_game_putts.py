@@ -14,7 +14,7 @@ class SqlGamePutts(SqlGolfGame):
   description = """
 Who has the fewest putts in the round. Must be on the green to be a putt.
 """
-  def _start(self):
+  def setup(self, **kwargs):
     """Start the game."""
     self._players = [PuttsPlayer(self, result) for result in self.golf_round.results]
     # add header to scorecard
@@ -24,7 +24,6 @@ Who has the fewest putts in the round. Must be on the green to be a putt.
   
   def update(self):
     """Update gross results for all scores so far."""
-    self._start()
     for pl, result in zip(self._players, self.golf_round.results):
       for n,score in enumerate(result.scores):
         # update gross 

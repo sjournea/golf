@@ -2,10 +2,10 @@
 pause ignore off
 < scripts/sqlite_db_clear.txt
 #< scripts/sql_round_2016_10_01.txt
-< scripts/sql_round_2017_03_04.txt
-#< scripts/round_2017_04_01.txt
-#< scripts/round_2017_08_05.txt
-#< scripts/round_2017_10_07.txt
+#< scripts/sql_round_2017_03_04.txt
+#< scripts/sql_round_2017_04_01.txt
+#< scripts/sql_round_2017_08_05.txt
+#< scripts/sql_round_2017_10_07.txt
 #< scripts/round_2017_10_21.txt
 #< scripts/round_2017_11_05.txt
 #< scripts/round_2017_11_11.txt
@@ -26,5 +26,6 @@ pause ignore off
 #< scripts/round_2018_02_19_1.txt
 #< scripts/round_2018_02_19_2.txt
 #< scripts/round_2018_02_24.txt
-< scripts/sql_round_2018_02_25.txt
+#< scripts/sql_round_2018_02_25.txt
+< scripts/sql_round_2018_03_04_.txt
 x

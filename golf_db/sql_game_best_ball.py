@@ -57,7 +57,7 @@ class SqlBestBallTeam(SqlGolfTeam):
       if self._total + to_play > 0:
         self._win = False
         self._status = ''
-    if self._win is None and to_play < 5:
+    if self._win is None and to_play > 0 and to_play < 5:
       self._status += ' {} to play'.format(to_play)
     return self._win
   

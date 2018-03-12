@@ -15,7 +15,7 @@ class SqlGameGross(SqlGolfGame):
   description = """
 Basic golf game, the players simply add up their scores and compare. You score 97. I score 96. I win.
 """
-  def _start(self):
+  def setup(self, **kwargs):
     """Start the game."""
     self._players = [GrossPlayer(self, result) for result in self.golf_round.results]
     # add header to scorecard
@@ -25,7 +25,6 @@ Basic golf game, the players simply add up their scores and compare. You score 9
   
   def update(self):
     """Update gross results for all scores so far."""
-    self._start()
     for pl, result in zip(self._players, self.golf_round.results):
       pl.esc = 0
       for n,score in enumerate(result.scores):
