@@ -12,7 +12,7 @@ class SqlBestBallTeam(SqlGolfTeam):
     self._in = 0
     self._out = 0
     self._total = 0
-    self._win = False
+    self._win = None
     self._status = 'All Square'
 
   @property
@@ -44,18 +44,21 @@ class SqlBestBallTeam(SqlGolfTeam):
   def update_status(self, to_play):
     if self._total == 0:
       self._status = 'All Square' if to_play > 0 else 'Draw'
-    elif self._total > 0:  
-      # In the 
+    if self._total > 0:  
+      # In the lead
       self._status = '{} Up'.format(self._total)
       if self._total > to_play:
         self._win = True
         if to_play > 0:
           self._status = '{} & {}'.format(self._total, to_play)
-    else: # total < 0
+    if self._total < 0:
+      # losing
       self._status = '{} Down'.format(abs(self._total))
       if self._total + to_play > 0:
         self._win = False
         self._status = ''
+    if self._win is None and to_play < 5:
+      self._status += ' {} to play'.format(to_play)
     return self._win
   
   def get_scorecard(self):
@@ -99,33 +102,31 @@ Two-Person Best Ball (match)	 	100%	100%
 Four-Person Best Ball	 	         80%	 90%
 Four-Person Best Two Balls	 	 90%	 95%
 """
-  def __init__(self, game, golf_round,  **kwargs):
-    super(SqlGameBestBall, self).__init__(game, golf_round, **kwargs)
-    self.use_full_net = True
-    self.teams = kwargs.get('teams', ((0,1),(2,3)))
-    self.winner = None
-    self.thru = None
+  def validate(self):
+    if len(self._players) != 4:
+      raise GolfException('Best ball game must have 4 players, {} found.'.format(len(self.scores)))
+    if len(self.teams) != 2:
+      raise GolfException('2 teams of 2 players must be set.')
+    lst = [0 for n in range(4)]
+    for team in self.teams:
+      if len(team) != 2:
+        raise GolfException('Teams must have 2 players.')
+      lst[team[0]] += 1 
+      lst[team[1]] += 1
+    for cnt in lst:
+      if cnt != 1:
+        raise GolfException('Malformed team.')
 
-  #def validate(self):
-    #if len(self._players) != 4:
-      #raise GolfException('Best ball game must have 4 players, {} found.'.format(len(self.scores)))
-    #if len(self.teams) != 2:
-      #raise GolfException('2 teams of 2 players must be set.')
-    #lst = [0 for n in range(4)]
-    #for team in self.teams:
-      #if len(team) != 2:
-        #raise GolfException('Teams must have 2 players.')
-      #lst[team[0]] += 1 
-      #lst[team[1]] += 1
-    #for cnt in lst:
-      #if cnt != 1:
-        #raise GolfException('Malformed team.')
   @property
   def final(self):
     return self.winner or self.to_play == 0
   
-  def _start(self):
+  def setup(self, **kwargs):
     """Start the match game."""
+    self.use_full_net = True
+    self.teams = kwargs.get('teams', ((0,1),(2,3)))
+    self.winner = None
+    self.thru = None
     # TODO - for stroke play will need to adjust handicap
     handicap_multiplier = 1
     # find min handicap in all players
@@ -155,7 +156,7 @@ Four-Person Best Two Balls	 	 90%	 95%
     for team in self.team_list:
       if team.update_status(self.to_play):
         self.winner = team
-    
+      
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
     self.dctScorecard['players'] = [team.get_scorecard() for team in self.team_list]

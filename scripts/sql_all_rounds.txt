@@ -1,9 +1,8 @@
 # mother of all sql scripts
 pause ignore off
 < scripts/sqlite_db_clear.txt
-< scripts/sql_round_2016_10_01.txt
-# < scripts/round_2016_10_01.txt
-#< scripts/round_2017_03_04.txt
+#< scripts/sql_round_2016_10_01.txt
+< scripts/sql_round_2017_03_04.txt
 #< scripts/round_2017_04_01.txt
 #< scripts/round_2017_08_05.txt
 #< scripts/round_2017_10_07.txt

@@ -228,7 +228,7 @@ class SQLMenu(Menu):
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
     # find player
-    player = session.query(Player).filter(Player.email.like('%{}%'.format(self.lstCmd[1])) == self._round_id).one()
+    player = session.query(Player).filter(Player.email.like('%{}%'.format(self.lstCmd[1]))).one()
     # get tee
     tee = session.query(Tee).filter(
       Tee.course_id == golf_round.course_id,
