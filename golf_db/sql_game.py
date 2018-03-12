@@ -20,6 +20,7 @@ class SqlGolfGame(object):
     self.dctLeaderboard = {}
     self.dctStatus = {}
     self._wager = kwargs.get('wager')
+    self.setup(**kwargs)
     self.validate()
     
   def validate(self):
@@ -28,6 +29,10 @@ class SqlGolfGame(object):
       self._wager = float(self._wager)
       if self._wager <= 0:
         raise GolfException('Wager must be float value > 0')
+
+  def setup(self, **kwargs):
+    """Overload to add custom initialization from __init__()."""
+    pass
 
   @abstractmethod
   def update(self):
