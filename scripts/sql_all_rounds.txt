@@ -6,9 +6,9 @@ pause ignore off
 #< scripts/sql_round_2017_04_01.txt
 #< scripts/sql_round_2017_08_05.txt
 #< scripts/sql_round_2017_10_07.txt
-< scripts/sql_round_2017_10_21.txt
-#< scripts/round_2017_11_05.txt
-#< scripts/round_2017_11_11.txt
+#< scripts/sql_round_2017_10_21.txt
+#< scripts/sql_round_2017_11_05.txt
+< scripts/sql_round_2017_11_11.txt
 #< scripts/round_2017_11_21.txt
 #< scripts/round_2017_11_22.txt
 #< scripts/round_2017_12_02.txt

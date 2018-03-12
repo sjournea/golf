@@ -39,6 +39,7 @@ Options:
   
   def update(self):
     """Update gross results for all scores so far."""
+    # TODO last_par_3_carry did not work.
     dct_greens = {hole_num: None for hole_num in self._holes}
     for pl, result in zip(self._players, self.golf_round.results):
       for n, score in enumerate(result.scores):
