@@ -23,7 +23,7 @@ Options:
   def setup(self, **kwargs):
     """setup the game."""
     self._carry_over = kwargs.get('carry_over', True)
-    self._double_birdie = kwargs.get('double_birdie', True)
+    self._double_birdie = kwargs.get('double_birdie', False)
     self._last_par_3_carry = kwargs.get('last_par_3_carry', True)
     self._holes = [hole.num for hole in self.golf_round.course.get_holes_with_par(3)]
     if self._last_par_3_carry:
@@ -39,7 +39,7 @@ Options:
   
   def update(self):
     """Update gross results for all scores so far."""
-    # TODO last_par_3_carry did not work.
+    #print('holes:{}'.format(self._holes)) 
     dct_greens = {hole_num: None for hole_num in self._holes}
     for pl, result in zip(self._players, self.golf_round.results):
       for n, score in enumerate(result.scores):
@@ -47,35 +47,40 @@ Options:
           if dct_greens[n+1] is None:
             dct_greens[n+1] = []
           par = self.golf_round.course.holes[n].par
-          if score.gross <= par and score.gross - score.putts == 1:
+          if score.gross <= par and score.gross - score.putts == par - 2:
             dct_greens[n+1].append((pl, score.gross))
+
+    self.thru = self.golf_round.get_completed_holes()
     hole_nums = sorted(dct_greens.keys())
-    for hole_num in hole_nums:
-      lst_winners = dct_greens[hole_num]
-      if lst_winners == None:
-        break
-      index = hole_num-1
-      par = self.golf_round.course.holes[index].par
-      if len(lst_winners) > 1:
-        if hole_num in self.game._game_data:
-          qualified = self.game._game_data[hole_num]['qualified']
-          lst_winners = [w for w in lst_winners if str(w[0].player.nick_name) == qualified]
+    for index in range(self.thru):
+      hole_num = index + 1
+      if hole_num in dct_greens:
+        lst_winners = dct_greens[hole_num]
+        par = self.golf_round.course.holes[index].par
+        #print('hole_num:{} par:{} lst_winners:{}'.format(hole_num, par, lst_winners)) 
+        # par 4 and 5 only valid if there is a carry
+        if par > 3 and self._carry == 0:
+          break
+        if len(lst_winners) > 1:
+          if hole_num in self.game._game_data:
+            qualified = self.game._game_data[hole_num]['qualified']
+            lst_winners = [w for w in lst_winners if str(w[0].player.nick_name) == qualified]
+          else:
+            raise Exception('Need to resolve multiple greenie winners')
+        if len(lst_winners) == 1:
+          winner, gross = lst_winners[0]
+          # only get points on par 3
+          value = 1 if par == 3 else 0
+          winner.dct_points['holes'][index] = value + self._carry
+          self._carry = 0
+          if self._double_birdie and gross < par:
+            # birdie or better
+            winner.dct_points['holes'][index] *= 2
+          if self._wager:
+            winner.dct_money['holes'][index] = winner.dct_points['holes'][index]*len(self._players)
         else:
-          raise Exception('Need to resolve multiple greenie winners')
-      if len(lst_winners) == 1:
-        winner, gross = lst_winners[0]
-        # only get points on par 3
-        value = 1 if par == 3 else 0
-        winner.dct_points['holes'][index] = value + self._carry
-        self._carry = 0
-        if self._double_birdie and gross < par:
-          # birdie or better
-          winner.dct_points['holes'][index] *= 2
-        if self._wager:
-          winner.dct_money['holes'][index] = winner.dct_points['holes'][index]*len(self._players)
-      else:
-        if self._carry_over and par == 3:
-          self._carry += 1
+          if self._carry_over and par == 3:
+            self._carry += 1
     for pl in self._players:
       pl.update_totals(pl.dct_points)
       pl.update_totals(pl.dct_money)
