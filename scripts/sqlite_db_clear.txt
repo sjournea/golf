@@ -1,5 +1,5 @@
-# delete sqlite database
-os rm golf.sqlite
+# remove existing database
+RM 
 # create database
 dc
 # Add all players

@@ -290,3 +290,10 @@ class Database(object):
     """Create all tables."""
     Base.metadata.create_all(self.engine)
   
+
+class DBAdmin(Database):
+  """Database wrapper for golf admin objects."""
+
+  def remove(self):
+    """Delete a database."""
+    Base.metadata.drop_all(self.engine)
