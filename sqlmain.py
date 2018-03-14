@@ -2,27 +2,25 @@
 """ dbmain.py - simple query test program for database """ 
 import ast
 import datetime
-#import sys
 import logging
-#import ConfigParser
 import os
-import readline
+import platform
+if platform.system() == 'Linux':
+  import readline
 import traceback
 import threading
-#import time,datetime,re,os,traceback,pdb
 
-from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
+#from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
-from golf_db.round import GolfRound
-from golf_db.game_factory import GolfGameList
+#from golf_db.round import GolfRound
+#from golf_db.game_factory import GolfGameList
 from golf_db.test_data import DBGolfCourses, DBGolfPlayers
 
-# from golf_db.db import GolfDB, GolfDBAdmin
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
 
-from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee,Result,Score,Game
+from golf_db.db_sqlalchemy import Player,Course,Round,Database,Hole,Tee,Result,Score,Game, DBAdmin
 
 TLLog.config('logs/sqlmain.log', defLogLevel=logging.INFO )
 
@@ -33,11 +31,13 @@ class SQLMenu(Menu):
     cmdFile = kwargs.get('cmdFile')
     super(SQLMenu, self).__init__(cmdFile)
     self.url = kwargs.get('url')
-    self.db = Database(self.url)
+    self.db = DBAdmin(self.url)
     self._round_id = None
     # add menu items
     self.addMenuItem( MenuItem( 'dc', '',        
         'create golf database.', self._createDatabase) )
+    self.addMenuItem( MenuItem( 'RM', '',        
+        'remove all data from golf database.', self._clearDatabase) )
     self.addMenuItem( MenuItem( 'pli', '',       
         'player insert.', self._playerInsert) )
     self.addMenuItem( MenuItem( 'pll', '',       
@@ -64,20 +64,15 @@ class SQLMenu(Menu):
         'Add game to Round of Golf',   self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',
         'Start Round of Golf',         self._roundStart))
-    #self.addMenuItem( MenuItem( 'gps', '<game>...',
-         #'Print Game Scorecards',               self._roundScorecard))
-    #self.addMenuItem( MenuItem( 'gpl', '<game>...',
-         #'Print Game Leaderboards',             self._roundLeaderboard))
-    #self.addMenuItem( MenuItem( 'gpt', '<game>...',
-        #'Print Game Status',                   self._roundStatus))
-    #self.addMenuItem( MenuItem( 'gpd', '',
-       #'Print Game Scorecards, Leaderboards, Status',                   self._roundDump))
     self.addMenuItem( MenuItem( 'gas', '<hole> gross=<gross..> <pause=enable>',
        'Add Scores',                 self._roundScore))
     self.updateHeader()
 
   def updateHeader(self):
     self.header = 'database url:{} - database:{}'.format(self.url, '???')
+
+  def _clearDatabase(self):
+    self.db.remove()
 
   def _createDatabase(self):
     self.db.create_tables()
