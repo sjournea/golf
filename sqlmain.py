@@ -10,11 +10,8 @@ if platform.system() == 'Linux':
 import traceback
 import threading
 
-#from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
-#from golf_db.round import GolfRound
-#from golf_db.game_factory import GolfGameList
 from golf_db.test_data import DBGolfCourses, DBGolfPlayers
 
 from util.menu import MenuItem, Menu, InputException, FileInput
@@ -56,6 +53,8 @@ class SQLMenu(Menu):
         'course remove.', self._courseRemove) )
     self.addMenuItem( MenuItem( 'cos', '',
         'Get a scorecard', self._courseGetScorecard))
+    self.addMenuItem( MenuItem( 'rol', '',       
+        'round list.', self._roundList) )
     self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>',
         'Create a Round of Golf',      self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>',
@@ -196,6 +195,26 @@ class SQLMenu(Menu):
     print dct['par']
     print dct['hdcp']
 
+  def _roundList(self):
+    """List all rounds in database."""
+    #dct = {}
+    #for arg in self.lstCmd[2:]:
+      #lst = arg.split('=')
+      #if lst[0] == '':
+        #players = eval(lst[1])
+      #else:
+        #dct[lst[0]] = eval(lst[1])
+
+    session = self.db.Session()
+    query = session.query(Round)
+    #if len(self.lstCmd) > 1:
+      #query = query.filter(Course.name.like('%{}%'.format(self.lstCmd[1])))
+      #match = 'name contains "{}"'.format(self.lstCmd[1])
+    rounds = query.all()
+    print('{} rounds'.format(len(rounds)))
+    for n,golf_round in enumerate(rounds):
+      print '{:>2} : {}'.format(n+1,golf_round)
+
   def _roundCreate(self):
     if len(self.lstCmd) < 3:
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
@@ -316,7 +335,7 @@ class SQLMenu(Menu):
     self._roundStatus(golf_round, games)
 
   def _roundScorecard(self, golf_round, games):
-    dct = golf_round.course.getScorecard(ESC=True)
+    dct = golf_round.getScorecard(ESC=True)
     print dct['title']
     print dct['hdr']
     print dct['par']

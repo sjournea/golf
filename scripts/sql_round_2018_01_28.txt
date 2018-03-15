@@ -1,5 +1,5 @@
 # create a round and add players scores
-gcr Zinfandel/Merlot 2018-01-13
+gcr Zinfandel/Merlot 2018-01-28
 gad sjournea White
 gad snake White
 gad spanky White

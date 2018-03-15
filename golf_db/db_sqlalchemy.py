@@ -277,6 +277,14 @@ class Round(Base):
   def get_completed_holes(self):
     return max([result.get_completed_holes() for result in self.results])
 
+  def getScorecard(self, ESC=True):
+    dct = self.course.getScorecard(ESC=ESC)
+    dct['title'] = '{0:*^98}'.format(' '+ self.course.name + ' ' + str(self.date_played) + ' ')
+    return dct
+
+  def __str__(self):
+    return '{} {:<30} - {}'.format(self.date_played, self.course.name, ','.join([result.player.nick_name for result in self.results]))
+
 class Database(object):
   def __init__(self, url):
     self.url = url
