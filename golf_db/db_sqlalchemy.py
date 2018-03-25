@@ -192,7 +192,8 @@ class Result(Base):
   
   def get_completed_holes(self):
     return len(self.scores)
-  
+
+
 class Game(Base):
   """Games played in a round."""
   __tablename__ = 'games'

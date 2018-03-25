@@ -65,6 +65,8 @@ class SQLMenu(Menu):
         'Start Round of Golf',         self._roundStart))
     self.addMenuItem( MenuItem( 'gas', '<hole> gross=<gross..> <pause=enable>',
        'Add Scores',                 self._roundScore))
+    self.addMenuItem( MenuItem( 'sql', '',
+       'Test a SQLAlchemy query',    self._roundSQL))
     self.updateHeader()
 
   def updateHeader(self):
@@ -370,6 +372,27 @@ class SQLMenu(Menu):
       dctStatus = game.getStatus()
       print '{:<15} - {}'.format(game.short_description, dctStatus['line'])
 
+  def _roundSQL(self):
+    """ sql <args>"""
+    if self._round_id is None:
+      raise InputException( 'Golf round not created')
+    # 
+    session = self.db.Session()
+    # get round
+    gr = session.query(Round).filter(Round.round_id == self._round_id).one()
+    # 
+    print('round_id:{}'.format(gr.round_id))
+    print('course_id:{}'.format(gr.course_id))
+    print('date_played:{}'.format(gr.date_played))
+    print('course:{}'.format(gr.course))
+    #print('results:{}'.format(gr.results))
+    for n,result in enumerate(gr.results):
+      print('  {:>3} - player {}'.format(n,result.player.getFullName()))
+      for n2,score in enumerate(result.scores):
+        print('    {:>3} - {} {} {}'.format(n2, score.num, score.gross, score.putts))
+    #print('games:{}'.format(gr.games))
+    for n,game in enumerate(gr.games):
+      print('  {:>3} - {}'.format(n, game))
 
 
 def main():
