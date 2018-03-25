@@ -101,6 +101,7 @@ Handicaps are used in match play.
       dct['in'] = sc.dct_score['in']
       dct['out'] = sc.dct_score['out']
       dct['total'] = sc.total
+      dct['holes'] = sc.dct_score['holes']
       line = '{:<6}'.format(sc.player.nick_name)
       for x,bump in zip(sc.dct_score['holes'][:9], sc._bumps[:9]):
         xs = '{:d}'.format(x) if x is not None else ''

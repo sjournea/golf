@@ -67,6 +67,7 @@ class SqlBestBallTeam(SqlGolfTeam):
     dct['in'] = self._in
     dct['out'] = self._out
     dct['total'] = self._total
+    dct['holes'] = self._score
     line = '{:<6}'.format(self.name)
     for i,score in enumerate(self._score[:9]):
       s = '' if score is None else '{:d}'.format(score)

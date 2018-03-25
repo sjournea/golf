@@ -50,6 +50,8 @@ The bumps will be added to the lowest handicap holes on the course being played.
         'in': sc.dct_net['in'],
         'out': sc.dct_net['out'],
         'total': sc.dct_net['total'],
+        'holes': sc.dct_net['holes'],
+        'bumps': sc._bumps,
       }
       line = '{:<6}'.format(sc.player.nick_name)
       for net,bump in zip(sc.dct_net['holes'][:9], sc._bumps[:9]):

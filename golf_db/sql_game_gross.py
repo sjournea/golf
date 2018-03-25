@@ -42,6 +42,7 @@ Basic golf game, the players simply add up their scores and compare. You score 9
       dct['out'] = score.dct_gross['out']
       dct['total'] = score.dct_gross['total']
       dct['esc'] = score.esc
+      dct['holes'] = score.dct_gross['holes']
       # build line for stdout
       line = '{:<6}'.format(score.player.nick_name)
       for gross in score.dct_gross['holes'][:9]:

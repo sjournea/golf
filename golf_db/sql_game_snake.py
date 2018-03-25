@@ -85,6 +85,7 @@ class SqlGameSnake(SqlGolfGame):
       dct['in'] = score.dct_points['in']
       dct['out'] = score.dct_points['out']
       dct['total'] = score.dct_points['total']
+      dct['holes'] = score.dct_points['holes']
       # build line for stdout
       line = '{:<6}'.format(score.player.nick_name)
       for putt in score.dct_points['holes'][:9]:

@@ -70,6 +70,7 @@ In both cases the other players each lose a skin.
       dct['in'] = sc.dct_skins['in']
       dct['out'] = sc.dct_skins['out']
       dct['total'] = sc.dct_skins['total']
+      dct['holes'] = sc.dct_skins['holes']
       line = '{:<6}'.format(sc.player.nick_name)
       for skin in sc.dct_skins['holes'][:9]:
         sk = '{:+d}'.format(skin) if skin else ''

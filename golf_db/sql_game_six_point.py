@@ -80,6 +80,7 @@ At the end of the match, all the points are totaled, with the low-point-total pl
       dct['in'] = sc.dct_points['in']
       dct['out'] = sc.dct_points['out']
       dct['total'] = sc.dct_points['total']
+      dct['holes'] = sc.dct_points['holes']
       line = '{:<6}'.format(sc.player.nick_name)
       for point in sc.dct_points['holes'][:9]:
         line += ' {:>3}'.format(point if point != None else '')

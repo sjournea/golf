@@ -38,6 +38,7 @@ Who has the fewest putts in the round. Must be on the green to be a putt.
       dct['in'] = score.dct_putts['in']
       dct['out'] = score.dct_putts['out']
       dct['total'] = score.dct_putts['total']
+      dct['holes'] = score.dct_putts['holes']
       # build line for stdout
       line = '{:<6}'.format(score.player.nick_name)
       for putt in score.dct_putts['holes'][:9]:
