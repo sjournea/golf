@@ -1,0 +1,301 @@
+[
+  {
+    "nodes" : [
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{35, 91}, {150, 34}}",
+        "class" : "Label",
+        "attributes" : {
+          "font_size" : 18,
+          "frame" : "{{163, 306}, {150, 32}}",
+          "uuid" : "7749818E-3A12-40A9-AD7A-18B809434CE5",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "player 1",
+          "name" : "lblPlayer1",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{35, 37}, {68, 25}}",
+        "class" : "Button",
+        "attributes" : {
+          "name" : "btnPrev",
+          "frame" : "{{224, 306}, {80, 32}}",
+          "title" : "",
+          "uuid" : "4BCCB3F1-99F0-4C76-8767-2DD96A17AB1F",
+          "class" : "Button",
+          "font_size" : 15,
+          "image_name" : "iob:arrow_left_b_32"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{153, 25}, {207, 44}}",
+        "class" : "Label",
+        "attributes" : {
+          "font_size" : 18,
+          "frame" : "{{189, 306}, {150, 32}}",
+          "uuid" : "91E6A157-1061-491F-9D97-4D6663D96A82",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "Hole desc",
+          "name" : "lblHole",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{382, 25}, {80, 44}}",
+        "class" : "Button",
+        "attributes" : {
+          "name" : "btnNext",
+          "frame" : "{{224, 306}, {80, 32}}",
+          "title" : "",
+          "uuid" : "0E7CA685-8C8D-49D6-83BB-CAA625CA7346",
+          "class" : "Button",
+          "font_size" : 15,
+          "image_name" : "iob:arrow_right_b_32"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{35, 143}, {150, 35}}",
+        "class" : "Label",
+        "attributes" : {
+          "name" : "lblPlayer2",
+          "frame" : "{{189, 306}, {150, 32}}",
+          "uuid" : "BD711BDB-AAEF-416A-B870-CDB694CE7CEA",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "player 2",
+          "font_size" : 18,
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{35, 186}, {150, 36}}",
+        "class" : "Label",
+        "attributes" : {
+          "name" : "lblPlayer3",
+          "frame" : "{{189, 306}, {150, 32}}",
+          "uuid" : "7AEABE7F-F787-4803-BD1A-F767632391FB",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "player 3",
+          "font_size" : 18,
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{35, 238}, {150, 37}}",
+        "class" : "Label",
+        "attributes" : {
+          "name" : "lblPlayer4",
+          "frame" : "{{189, 306}, {150, 32}}",
+          "uuid" : "CF65077C-98AC-44A2-8258-8B298EAEB373",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "player 4",
+          "font_size" : 18,
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{211, 91}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "9584A446-3BC2-4CEF-9019-49668517EC51",
+          "alignment" : "right",
+          "text" : "gross",
+          "autocorrection_type" : "default",
+          "name" : "txtGross1",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{327, 91}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "969A6C00-BD81-4A74-99B5-0377C0E5D33E",
+          "alignment" : "right",
+          "text" : "putts",
+          "autocorrection_type" : "default",
+          "name" : "txtPutts1",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{211, 143}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "76EA9B9F-9E3D-4E3C-A0EE-8C734CA00268",
+          "alignment" : "right",
+          "text" : "gross",
+          "autocorrection_type" : "default",
+          "name" : "txtGross2",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{327, 143}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "4B76487F-4E50-421A-A37F-D5F91B31BC14",
+          "alignment" : "right",
+          "text" : "putts",
+          "autocorrection_type" : "default",
+          "name" : "txtPutts2",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{211, 186}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "26E6B7C3-6E45-49EA-A138-B86DA54C43C6",
+          "alignment" : "right",
+          "text" : "gross",
+          "autocorrection_type" : "default",
+          "name" : "txtGross3",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{327, 186}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "72B99915-4259-4E18-A4D0-E0B500F1B190",
+          "alignment" : "right",
+          "text" : "putts",
+          "autocorrection_type" : "default",
+          "name" : "txtPutts3",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{211, 238}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "899CC95E-41E9-41AC-B221-FB6C2AD7ADCF",
+          "alignment" : "right",
+          "text" : "gross",
+          "autocorrection_type" : "default",
+          "name" : "txtGross4",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{327, 238}, {93, 34}}",
+        "class" : "TextField",
+        "attributes" : {
+          "font_size" : 17,
+          "frame" : "{{164, 306}, {200, 32}}",
+          "spellchecking_type" : "default",
+          "class" : "TextField",
+          "uuid" : "FD0475F4-333B-4C57-A683-60E2C4963B67",
+          "alignment" : "right",
+          "text" : "putts",
+          "autocorrection_type" : "default",
+          "name" : "txtPutts4",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      }
+    ],
+    "frame" : "{{0, 0}, {592, 715}}",
+    "class" : "View",
+    "attributes" : {
+      "custom_class" : "RoundScores",
+      "enabled" : true,
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "flex" : ""
+    },
+    "selected" : false
+  }
+]

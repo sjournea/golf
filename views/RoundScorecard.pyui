@@ -1,0 +1,33 @@
+[
+  {
+    "nodes" : [
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{51, 18}, {490, 46}}",
+        "class" : "SegmentedControl",
+        "attributes" : {
+          "name" : "segGames",
+          "frame" : "{{204, 308}, {120, 29}}",
+          "uuid" : "52B674DD-D481-4C29-9A31-31B42C90731C",
+          "class" : "SegmentedControl",
+          "segments" : "Gross|Net|Stableford|Putts|Greenie|Snake|Match",
+          "flex" : "W"
+        },
+        "selected" : false
+      }
+    ],
+    "frame" : "{{0, 0}, {590, 751}}",
+    "class" : "View",
+    "attributes" : {
+      "custom_class" : "RoundScorecard",
+      "enabled" : true,
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "flex" : ""
+    },
+    "selected" : false
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "nodes" : [
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{77, 56}, {460, 65}}",
+        "class" : "Button",
+        "attributes" : {
+          "flex" : "W",
+          "frame" : "{{186, 298}, {80, 32}}",
+          "title" : "New Round",
+          "uuid" : "E94EFBF9-FBCB-4B3A-BFD8-E0E9B53B4EE6",
+          "class" : "Button",
+          "background_color" : "RGBA(0.326087,1.000000,0.550725,1.000000)",
+          "name" : "btnStartRound",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{77, 163}, {460, 65}}",
+        "class" : "Button",
+        "attributes" : {
+          "flex" : "W",
+          "frame" : "{{271, 350}, {80, 32}}",
+          "title" : "Select Round",
+          "uuid" : "CED51BB1-C96B-4BC1-8C86-762B5D03F8E9",
+          "class" : "Button",
+          "background_color" : "RGBA(0.326087,1.000000,0.550725,1.000000)",
+          "name" : "btnSelectRound",
+          "font_size" : 15
+        },
+        "selected" : true
+      }
+    ],
+    "frame" : "{{0, 0}, {622, 731}}",
+    "class" : "View",
+    "attributes" : {
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "enabled" : true,
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "custom_class" : "MainView",
+      "flex" : ""
+    },
+    "selected" : false
+  }
+]
