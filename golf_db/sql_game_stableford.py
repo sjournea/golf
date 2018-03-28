@@ -1,4 +1,5 @@
 """ game_stableford.py - Stableford Golf Game class."""
+import ast
 from .sql_game import SqlGolfGame,GamePlayer
 from .exceptions import GolfException
 
@@ -12,11 +13,42 @@ class StablefordPlayer(GamePlayer):
 class SqlGameStableford(SqlGolfGame):
   """The Stableford game."""
   short_description = 'Stableford'
+  description = """
+Stableford isn't played very often anymore (like knickers, some feel it should remain in the nineteenth century), but 
+in a sport where people trek across the Atlantic to see 'the old course,' a game of Stableford may bring a bit of classic 
+excitement to your round. In Stableford, you play against everyone else in your foursome (or if you have multiple 
+foursomes, everyone else who is playing that day). The game is based on a point system, where the points you earn 
+are determined by your score on the hole. Every point is worth a set monetary amount (some people play 10 cents, 
+some people play ten dollars) that is decided in advance of the game. How many points is a hole worth? 
+Over time, variations on the game have arisen, and so we list three below: 
+
+Stableford Variants
+
+                 Modified  Classic  British	Spanish
+Double Eagle	    8         8        -	
+Eagle	 	    5         5        4 	Same as
+Birdie	 	    2         2        3 	British Stableford
+Par	 	    1         1        2 	but with Joker
+Bogey	 	   -1        -1        1        holes (points on
+Double Bogey	   -3        -2        -	hole are doubled)*
+
+*Before you tee off, each golfer declares two joker holes - one on the front nine and one on the back nine.
+
+Since most people have a hard time shooting double eagles and eagles, golfers often play Stableford
+(especially classic Stableford) using their full handicaps."""
+  
   dct_scoring = {
-    'Modified': { -3: 8, -2: 5, -1: 2, 0: 0, 1: -1, 2:-3, 'min':8, 'max': -3},
+    'Modified': { -3: 8, -2: 5, -1: 2, 0: 1, 1: -1, 2:-3, 'min':8, 'max': -3},
     'Classic':  { -3: 8, -2: 5, -1: 2, 0: 0, 1: -1, 2:-2, 'min':8, 'max': -2},
     'British':  { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':4, 'max': 0 },
     'Spanish':  { -3: 4, -2: 4, -1: 3, 0: 2, 1:  1, 2: 0, 'min':4, 'max': 0 },
+  }
+
+  #    '<attribute>': {'default': <default>, 'type': <data type>, 'desc': 'Option description>'},
+  game_options = {
+    'stableford_type':  { 'default': 'Classic', 'type': str,  'desc': 'Modified, Classis, British or Spanish' },
+    'jokers':           { 'default': None,      'type': ast.literal_eval, 'desc': 'Set joker holes for each player. One in front 9 and one in back 9'},    
+    'wager':            { 'default': 0,         'type': float, 'desc': 'Wager per point.'},    
   }
 
   def validate(self):
@@ -37,8 +69,6 @@ class SqlGameStableford(SqlGolfGame):
           raise GolfException('stableford_type Spanish joker[1] must be in 10-18.')
 
   def setup(self, **kwargs):
-    self.stableford_type = kwargs.get('stableford_type', 'Classic')
-    self.jokers = kwargs.get('jokers')
     self.dct_stableford = self.dct_scoring[self.stableford_type]
     # use full handicap for all players
     self._players = [StablefordPlayer(self, result) for result in self.golf_round.results]
@@ -93,7 +123,7 @@ class SqlGameStableford(SqlGolfGame):
   def getLeaderboard(self, **kwargs):
     board = []
     sort_type = kwargs.get('sort_type', 'points')
-    if sort_type == 'money' and self._wager:
+    if sort_type == 'money' and self.wager:
       self.dctLeaderboard['hdr'] = 'Pos Name  Money  Thru'
       scores = sorted(self.scores, key=lambda score: score.dct_money['total'], reverse=True)
       sort_by = 'money'

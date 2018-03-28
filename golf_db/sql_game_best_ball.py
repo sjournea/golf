@@ -1,4 +1,5 @@
 """game_best_ball.py - Best Ball Golf Game class."""
+import ast
 from .sql_game_net import SqlGameNet, NetPlayer
 from .sql_game import SqlGolfTeam
 
@@ -103,6 +104,10 @@ Two-Person Best Ball (match)	 	100%	100%
 Four-Person Best Ball	 	         80%	 90%
 Four-Person Best Two Balls	 	 90%	 95%
 """
+  #    '<attribute>': {'default': <default>, 'type': <data type>, 'desc': 'Option description>'},
+  game_options = {
+    'teams':  { 'default': None, 'type': ast.literal_eval,  'desc': 'Set teams for best ball match.' },
+  }
   def validate(self):
     if len(self._players) != 4:
       raise GolfException('Best ball game must have 4 players, {} found.'.format(len(self.scores)))
@@ -125,7 +130,6 @@ Four-Person Best Two Balls	 	 90%	 95%
   def setup(self, **kwargs):
     """Start the match game."""
     self.use_full_net = True
-    self.teams = kwargs.get('teams', ((0,1),(2,3)))
     self.winner = None
     self.thru = None
     # TODO - for stroke play will need to adjust handicap

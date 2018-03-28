@@ -13,22 +13,31 @@ class SqlGolfGame(object):
   description = '<Description not set>'
   short_description = '<Not set>'
   
+  # define game options:
+  #    '<attribute>': {'default': <default>, 'type': <data type>, 'desc': 'Option description>'},
+  game_options = {}
+
   def __init__(self, game, golf_round, **kwargs):
     self.game = game
     self.golf_round = golf_round
     self.dctScorecard = {'course': self.golf_round.course.getScorecard() }
     self.dctLeaderboard = {}
     self.dctStatus = {}
-    self._wager = kwargs.get('wager')
+    # set game options
+    for key, dct in self.game_options.items():
+      setattr(self, key, kwargs.get(key, dct['default']))
+    # setup and validate
     self.setup(**kwargs)
     self.validate()
     
   def validate(self):
-    """Validate a game."""
-    if self._wager is not None:
-      self._wager = float(self._wager)
-      if self._wager <= 0:
-        raise GolfException('Wager must be float value > 0')
+    """Overload to validate a game setup."""
+    pass
+
+  def load_game_options(self, **kwargs):
+    """setup game options from game_options dictionary."""
+    for key, dct in self.game_options.items():
+      setattr(self, key, kwargs.get(key, dct['type'](dct['default'])))
 
   def setup(self, **kwargs):
     """Overload to add custom initialization from __init__()."""
