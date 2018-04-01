@@ -22,7 +22,7 @@ are determined by your score on the hole. Every point is worth a set monetary am
 some people play ten dollars) that is decided in advance of the game. How many points is a hole worth? 
 Over time, variations on the game have arisen, and so we list three below: 
 
-Stableford Variants
+Stableford Variants:
 
                  Modified  Classic  British	Spanish
 Double Eagle	    8         8        -	

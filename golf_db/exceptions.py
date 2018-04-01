@@ -11,6 +11,11 @@ class DocValidateFail(GolfException):
 class GolfDBException(GolfException):
   pass
 
+class GolfGameException(GolfException):
+  """Raised when a golf game need more information to resolve score."""
+  def __init__(self, game, msg):
+    self.game = game
+    self.msg = msg
 
 
 

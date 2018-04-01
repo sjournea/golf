@@ -1,5 +1,6 @@
 """ game_snake.py - Implement."""
 from .sql_game import SqlGolfGame,GamePlayer
+from .exceptions import GolfGameException
 
 class SnakePlayer(GamePlayer):
   def __init__(self, game, result):
@@ -55,14 +56,13 @@ class SqlGameSnake(SqlGolfGame):
           # Determine which 3 putt gets snake
           # 1st, is there a largest putt
           max_putts = max([tup[1] for tup in lst_losers])
-          print('max_putts', max_putts)
           lst_losers = [tup for tup in lst_losers if tup[1] == max_putts]
           if len(lst_losers) > 1:
             if hole_num in self.game._game_data:
               loser = self.game._game_data[hole_num]['closest_3_putt']
               lst_losers = [tup for tup in lst_losers if tup[0].player.nick_name == loser]
             else:
-              raise Exception('Need to resolve multiple snake losers')
+              raise GolfGameException(self, 'Need to resolve multiple snake losers')
         #
         if len(lst_losers) == 1:
           # we have a 3 putt winner (loser)

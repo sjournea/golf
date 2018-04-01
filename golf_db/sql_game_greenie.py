@@ -1,6 +1,7 @@
 """ game_greenie.py - GolfGame class."""
 from collections import OrderedDict
 from .sql_game import SqlGolfGame, GamePlayer
+from .exceptions import GolfGameException
 
 class GreeniePlayer(GamePlayer):
   def __init__(self, game, result):
@@ -69,11 +70,11 @@ Options:
         if par > 3 and self._carry == 0:
           break
         if len(lst_winners) > 1:
-          if hole_num in self.game._game_data:
+          if hole_num in self.game._game_data and self.game._game_data[hole_num].get('qualified'):
             qualified = self.game._game_data[hole_num]['qualified']
             lst_winners = [w for w in lst_winners if str(w[0].player.nick_name) == qualified]
           else:
-            raise Exception('Need to resolve multiple greenie winners')
+            raise GolfGameException(self, 'Need to resolve multiple greenie winners')
         if len(lst_winners) == 1:
           winner, gross = lst_winners[0]
           # only get points on par 3
