@@ -1,5 +1,6 @@
 """ game_snake.py - Implement."""
 from .sql_game import SqlGolfGame,GamePlayer
+from .exceptions import GolfGameException
 
 class SnakePlayer(GamePlayer):
   def __init__(self, game, result):
@@ -12,13 +13,17 @@ class SqlGameSnake(SqlGolfGame):
   description = """
 3 putt a green and you could lose.
 """
+  game_options = {
+    'snake_type': {'default': 'Points', 'type': str, 'desc': 'Points will lose every 3 putt. Hold will only lose when you already have the snake, always pays on 9 and 18.'},
+  }
+  
   def setup(self, **kwargs):
     """Start the game."""
-    self._snake_type = kwargs.get('snake_type', 'Points')
+    self.snake_type = kwargs.get('snake_type', 'Points')
     self._players = [SnakePlayer(self, result) for result in self.golf_round.results]
     self._has_snake = None
     # update header to scorecard
-    title = ' Snake - {} '.format(self._snake_type)
+    title = ' Snake - {} '.format(self.snake_type)
     self.dctScorecard['header'] = '{0:*^98}'.format(title)
     self._thru = ''
 
@@ -40,25 +45,24 @@ class SqlGameSnake(SqlGolfGame):
       if lst_losers == []:
         continue
       index = hole_num-1
-      if self._snake_type == 'Points':
+      if self.snake_type == 'Points':
         # all 3 putters lose a point
         for pl,putts in lst_losers:
           pl.dct_points['holes'][index] = -1
           pl.update_totals(pl.dct_points)
-      elif self._snake_type == 'Hold':
+      elif self.snake_type == 'Hold':
         # only one loser allowed
         if len(lst_losers) > 1:
           # Determine which 3 putt gets snake
           # 1st, is there a largest putt
           max_putts = max([tup[1] for tup in lst_losers])
-          print('max_putts', max_putts)
           lst_losers = [tup for tup in lst_losers if tup[1] == max_putts]
           if len(lst_losers) > 1:
             if hole_num in self.game._game_data:
               loser = self.game._game_data[hole_num]['closest_3_putt']
               lst_losers = [tup for tup in lst_losers if tup[0].player.nick_name == loser]
             else:
-              raise Exception('Need to resolve multiple snake losers')
+              raise GolfGameException(self, 'Need to resolve multiple snake losers')
         #
         if len(lst_losers) == 1:
           # we have a 3 putt winner (loser)
@@ -128,7 +132,7 @@ class SqlGameSnake(SqlGolfGame):
       if putt is None:
         self.dctStatus['next_hole'] = n+1
         line = ''
-        if self._snake_type == 'Hold':
+        if self.snake_type == 'Hold':
           if self._has_snake:
             line = '{} has the snake.'.format(self._has_snake.player.nick_name)
           else:

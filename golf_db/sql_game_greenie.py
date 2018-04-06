@@ -1,13 +1,14 @@
 """ game_greenie.py - GolfGame class."""
 from collections import OrderedDict
 from .sql_game import SqlGolfGame, GamePlayer
+from .exceptions import GolfGameException
 
 class GreeniePlayer(GamePlayer):
   def __init__(self, game, result):
     super(GreeniePlayer, self).__init__(game, result)
     self.dct_greens = [None for _ in range(len(self.game.golf_round.course.holes))],
     self.dct_points = self._init_dict()
-    self.dct_money = self._init_dict(score_type=float) if game._wager else None
+    self.dct_money = self._init_dict(score_type=float) if game.wager else None
 
 class SqlGameGreenie(SqlGolfGame):
   """Basic Par 3 games."""
@@ -20,13 +21,20 @@ Options:
   carry_over: If nobody wins a par 3 then carries over to next par 3.
   last_par_3_carry: If nobody wins last par 3 then carry over to next hole and on green in regulation quailifies.  
 """
+  game_options = {
+    'double_birdie':    { 'default': False, 'type': bool,  'desc': 'Birdies are worth double points.' },
+    'carry_over':       { 'default': True,  'type': bool,  'desc': 'If nobody wins a par 3 then carries over to next par 3.'},    
+    'last_par_3_carry': { 'default': True,  'type': bool,  'desc': 'If nobody wins last par 3 then carry over to next hole and on green in regulation quailifies.'},    
+    'wager':            { 'default': 0,     'type': float, 'desc': 'Wager per hole.'},    
+  }
+  
   def setup(self, **kwargs):
     """setup the game."""
-    self._carry_over = kwargs.get('carry_over', True)
-    self._double_birdie = kwargs.get('double_birdie', False)
-    self._last_par_3_carry = kwargs.get('last_par_3_carry', True)
+    self.carry_over = kwargs.get('carry_over', True)
+    self.double_birdie = kwargs.get('double_birdie', False)
+    self.last_par_3_carry = kwargs.get('last_par_3_carry', True)
     self._holes = [hole.num for hole in self.golf_round.course.get_holes_with_par(3)]
-    if self._last_par_3_carry:
+    if self.last_par_3_carry:
       self._last_par_3 = self._holes[-1]
       self._holes += [hole.num for hole in self.golf_round.course.holes[self._last_par_3:]]
     self._players = [GreeniePlayer(self, result) for result in self.golf_round.results]
@@ -62,24 +70,24 @@ Options:
         if par > 3 and self._carry == 0:
           break
         if len(lst_winners) > 1:
-          if hole_num in self.game._game_data:
+          if hole_num in self.game._game_data and self.game._game_data[hole_num].get('qualified'):
             qualified = self.game._game_data[hole_num]['qualified']
             lst_winners = [w for w in lst_winners if str(w[0].player.nick_name) == qualified]
           else:
-            raise Exception('Need to resolve multiple greenie winners')
+            raise GolfGameException(self, 'Need to resolve multiple greenie winners')
         if len(lst_winners) == 1:
           winner, gross = lst_winners[0]
           # only get points on par 3
           value = 1 if par == 3 else 0
           winner.dct_points['holes'][index] = value + self._carry
           self._carry = 0
-          if self._double_birdie and gross < par:
+          if self.double_birdie and gross < par:
             # birdie or better
             winner.dct_points['holes'][index] *= 2
-          if self._wager:
+          if self.wager:
             winner.dct_money['holes'][index] = winner.dct_points['holes'][index]*len(self._players)
         else:
-          if self._carry_over and par == 3:
+          if self.carry_over and par == 3:
             self._carry += 1
     for pl in self._players:
       pl.update_totals(pl.dct_points)
@@ -110,7 +118,7 @@ Options:
   def getLeaderboard(self, **kwargs):
     board = []
     sort_type = kwargs.get('sort_type', 'points')
-    if sort_type == 'money' and self._wager:
+    if sort_type == 'money' and self.wager:
       self.dctLeaderboard['hdr'] = 'Pos Name  Money  Thru'
       scores = sorted(self._players, key=lambda score: score.dct_money['total'], reverse=True)
       sort_by = 'money'
@@ -124,7 +132,7 @@ Options:
       score_dct = {
         'player': sc.player,
         'total' : sc.dct_points['total'],
-        'money' : sc.dct_money['total'] if self._wager else None,
+        'money' : sc.dct_money['total'] if self.wager else None,
       }
       if prev_total != None and score_dct[sort_by] != prev_total:
         pos += 1
@@ -156,8 +164,8 @@ Options:
         line = 'Hole {} Par {} Hdcp {} '.format(
             self.dctStatus['next_hole'], self.dctStatus['par'], self.dctStatus['handicap'])
       line += 'Carry:{}'.format(self._carry)
-      if self._wager and self._carry:
-        line += ' ${:<6g}'.format(self._carry*self._wager*len(self._players))
+      if self.wager and self._carry:
+        line += ' ${:<6g}'.format(self._carry*self.wager*len(self._players))
       if self._use_green_in_regulation:
         line += ' All greens in play'
       self.dctStatus['line'] = line
@@ -167,7 +175,7 @@ Options:
   def total_payout(self):
     """Overload to only count Par 3 holes."""
     # calc total payout, game only uses Par 3
-    if self._wager:
-      return len(self._par_3_holes)*self._wager*len(self._players)
+    if self.wager:
+      return len(self._par_3_holes)*self.wager*len(self._players)
     return None
 
