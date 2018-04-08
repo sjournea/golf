@@ -18,7 +18,6 @@ def make_button_item(action, image_name=None, title=None):
     return ui.ButtonItem(action=action, title=title)
   raise Exception('make_button_item() fail - title or image_name must be set.')
 
-
 class MainView(ui.View):
   def __init__(self):
     self._round_id = None
@@ -42,10 +41,11 @@ class MainView(ui.View):
 
     #self.view = ui.load_view('views/RoundCreate')
     self.scores = make_button_item(self.goto_scores, title='Scores')
+    self.games = make_button_item(self.goto_games, title='Games')
     self.leaderboard = make_button_item(self.goto_leaderboard, title='Leaderboard')
     self.scorecard = make_button_item(self.goto_scorecard, title='Scorecard')
-    self.title_buttons = [self.scores, self.leaderboard, self.scorecard]
-    self.left_button_items = [self.scores]
+    self.title_buttons = [self.games, self.scores, self.leaderboard, self.scorecard]
+    self.left_button_items = [self.games, self.scores]
     self.right_button_items = [self.scorecard, self.leaderboard]
     for button in self.title_buttons:
       button.enabled = False
@@ -70,6 +70,7 @@ class MainView(ui.View):
   def switch_views(self):
     for i in range(len(self.view_array)):
       self.view_array[i].hidden = True
+      self.view_array[self.view_index].deactivate()
     if self.view_index == -1:
       self.name = "Leaderboard"
       self.bring_to_front()
@@ -81,6 +82,11 @@ class MainView(ui.View):
   def enable_title_buttons(self, enabled=True):
     for button in self.title_buttons:
       button.enabled = enabled
+
+  def goto_games(self, sender=None):
+    self.enable_title_buttons()
+    self.view_index = 1
+    self.switch_views()
 
   def goto_scores(self, sender=None):
     self.enable_title_buttons()
@@ -99,10 +105,6 @@ class MainView(ui.View):
 
   def goto_main(self):
     self.view_index = -1
-    self.switch_views()
-
-  def goto_games(self):
-    self.view_index = 1
     self.switch_views()
 
   def start_round(self, sender):

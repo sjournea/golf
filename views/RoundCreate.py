@@ -6,8 +6,9 @@ import dialogs
 import datetime 
 
 from golf_db.db_sqlalchemy import Database, Round, Course, Player, Result
+from golf_view import GolfView
 
-class RoundCreate(ui.View):
+class RoundCreate(GolfView):
   def __init__(self):
     pass
 
@@ -35,9 +36,6 @@ class RoundCreate(ui.View):
       player._player = None
 
     self.btnStartRound.action = self.start_round
-
-  def activate(self):
-    pass
 
   def select_date(self, sender):
     date_played = dialogs.date_dialog()

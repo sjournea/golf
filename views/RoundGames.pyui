@@ -5,14 +5,15 @@
         "nodes" : [
 
         ],
-        "frame" : "{{103, 56}, {235, 70}}",
+        "frame" : "{{51, 45}, {481, 70}}",
         "class" : "Button",
         "attributes" : {
           "flex" : "W",
           "frame" : "{{178, 322}, {80, 32}}",
-          "title" : "New Golf Game",
+          "title" : "Add Game",
           "uuid" : "91B4D47E-6223-4C38-A4F7-3DE00D02B201",
           "class" : "Button",
+          "background_color" : "RGBA(0.411765,1.000000,0.411765,1.000000)",
           "name" : "btnAddGame",
           "font_size" : 15
         },
@@ -22,48 +23,32 @@
         "nodes" : [
 
         ],
-        "frame" : "{{51, 149}, {352, 200}}",
+        "frame" : "{{51, 149}, {474, 483}}",
         "class" : "TableView",
         "attributes" : {
           "flex" : "WH",
           "data_source_items" : "Gross Game\nNet Game\nStableford Game",
-          "name" : "tblGames",
+          "name" : "tvGames",
           "frame" : "{{118, 238}, {200, 200}}",
+          "uuid" : "469F2539-B93C-469A-9EAA-6FA398C0685E",
           "data_source_number_of_lines" : 1,
           "class" : "TableView",
-          "background_color" : "RGBA(1.0, 1.0, 1.0, 1.0)",
-          "data_source_delete_enabled" : true,
           "data_source_font_size" : 18,
+          "background_color" : "RGBA(1.0, 1.0, 1.0, 1.0)",
           "row_height" : 44,
-          "uuid" : "469F2539-B93C-469A-9EAA-6FA398C0685E"
+          "data_source_delete_enabled" : true
         },
         "selected" : true
-      },
-      {
-        "nodes" : [
-
-        ],
-        "frame" : "{{168, 490}, {80, 67}}",
-        "class" : "Button",
-        "attributes" : {
-          "uuid" : "583852E1-DA88-4A66-A71F-83BFF99884A7",
-          "frame" : "{{178, 322}, {80, 32}}",
-          "title" : "Play",
-          "class" : "Button",
-          "name" : "btnPlay",
-          "font_size" : 15
-        },
-        "selected" : false
       }
     ],
-    "frame" : "{{0, 0}, {436, 676}}",
+    "frame" : "{{0, 0}, {590, 751}}",
     "class" : "View",
     "attributes" : {
       "custom_class" : "RoundGames",
       "enabled" : true,
-      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false

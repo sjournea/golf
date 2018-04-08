@@ -6,6 +6,7 @@ import dialogs
 import datetime 
 
 from golf_db.db_sqlalchemy import Round,Score
+from golf_view import GolfView
 
 class PlayerForm:
 	def __init__(self, result_id, txtGross, txtPutts):
@@ -15,7 +16,7 @@ class PlayerForm:
 		self.txtGross.keyboard_type = ui.KEYBOARD_NUMBER_PAD
 		self.txtPutts.keyboard_type = ui.KEYBOARD_NUMBER_PAD
 		
-class RoundScores(ui.View):
+class RoundScores(GolfView):
 	def __init__(self):
 		self._hole_num = 1
 
@@ -34,9 +35,10 @@ class RoundScores(ui.View):
 			self.lblPlayers.append(self['lblPlayer{}'.format(n+1)])
 			self.txtGross.append(self['txtGross{}'.format(n+1)])
 			self.txtPutts.append(self['txtPutts{}'.format(n+1)])
+		self.players = []
 	
-	def will_close(self):
-		print('{} will_close()'.format(self.__class__.__name__))
+	def deactivate(self):
+		print('{} deactivate()'.format(self.__class__.__name__))
 		session = self.db.Session()
 		self._save(session)
 	
@@ -91,7 +93,7 @@ class RoundScores(ui.View):
 
 	def _save(self, session):
 		"""Save the from values to the database."""
-		#print('{} _save() _hole_num:{}'.format(self.__class__.__name__, self._hole_num))
+		print('{} _save() _hole_num:{}'.format(self.__class__.__name__, self._hole_num))
 		for player in self.players:
 			try:
 				gross = int(player.txtGross.text)

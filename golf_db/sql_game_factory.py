@@ -40,6 +40,20 @@ def SqlGolfGameFactory(game):
     return dctGames[game]
   raise GolfException('SQL game "{}" not supported'.format(game))
 
+def SqlGolfGameOptions(game):
+  """Return the SQL game options.
+  
+  Args:
+    game: name of game.
+  Returns:
+    dictionary of game options.
+  Raises:
+    GolfException - bad game name.
+  """
+  if game in dctGames:
+    return dctGames[game].game_options
+  raise GolfException('SQL game "{}" not supported'.format(game))
+
 def SqlGolfGameList():
   """Return list of available games."""
   lst = dctGames.keys()

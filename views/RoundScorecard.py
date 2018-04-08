@@ -6,8 +6,9 @@ import dialogs
 import datetime 
 
 from golf_db.db_sqlalchemy import Round
+from .golf_view import GolfView
 
-class RoundScorecard(ui.View):
+class RoundScorecard(GolfView):
 	def __init__(self):
 		self._controls = []
 		self._display_front = True
