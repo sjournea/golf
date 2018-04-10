@@ -70,7 +70,7 @@ class MainView(ui.View):
   def switch_views(self):
     for i in range(len(self.view_array)):
       self.view_array[i].hidden = True
-      self.view_array[self.view_index].deactivate()
+      self.view_array[i].deactivate()
     if self.view_index == -1:
       self.name = "Leaderboard"
       self.bring_to_front()

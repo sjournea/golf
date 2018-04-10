@@ -27,6 +27,7 @@ class SqlGolfGame(object):
     for key, dct in self.game_options.items():
       setattr(self, key, kwargs.get(key, dct['default']))
     # setup and validate
+    self.print_options()
     self.setup(**kwargs)
     self.validate()
     
@@ -37,8 +38,13 @@ class SqlGolfGame(object):
   def load_game_options(self, **kwargs):
     """setup game options from game_options dictionary."""
     for key, dct in self.game_options.items():
-      setattr(self, key, kwargs.get(key, dct['type'](dct['default'])))
+	  setattr(self, key, kwargs.get(key, dct['type'](dct['default'])))
 
+  def print_options(self):
+	print('{} - {} options'.format(self.__class__.__name__, len(self.game_options)))
+	for key in self.game_options.keys():
+	  print('  {:<20} : {}'.format(key, getattr(self, key)))
+   
   def setup(self, **kwargs):
     """Overload to add custom initialization from __init__()."""
     pass

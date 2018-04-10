@@ -19,7 +19,8 @@ class PlayerForm:
 class RoundScores(GolfView):
 	def __init__(self):
 		self._hole_num = 1
-
+		self._dirty = False
+		
 	def did_load(self):
 		self.name = "Update Scores"
 		
@@ -39,8 +40,7 @@ class RoundScores(GolfView):
 	
 	def deactivate(self):
 		print('{} deactivate()'.format(self.__class__.__name__))
-		session = self.db.Session()
-		self._save(session)
+		self._save()
 	
 	def activate(self):
 		#print('{} activate()'.format(self.__class__.__name__))
@@ -63,6 +63,7 @@ class RoundScores(GolfView):
 			
 		self._set_hole_number(self._hole_num)
 		self._get(session)
+		self._dirty = True
 
 	def _set_hole_number(self, hole_num):
 		#print('{} _set_hole_num() hole_num:{}'.format(self.__class__.__name__, hole_num))
@@ -91,23 +92,27 @@ class RoundScores(GolfView):
 				player.txtGross.text = ''
 				player.txtPutts.text = ''
 
-	def _save(self, session):
+	def _save(self, session=None):
 		"""Save the from values to the database."""
-		print('{} _save() _hole_num:{}'.format(self.__class__.__name__, self._hole_num))
-		for player in self.players:
-			try:
-				gross = int(player.txtGross.text)
-				putts = int(player.txtPutts.text)
-				player.score = session.query(Score).filter(Score.result_id == player.result_id, Score.num == self._hole_num).first()
-				if player.score:
-					player.score.gross = gross
-					player.score.putts = putts
-				else:
-					player.score = Score(result_id=player.result_id, gross=gross, putts=putts, num=self._hole_num)
-					session.add(player.score)
-			except Exception, ex:
-				print('_save() error - {}'.format(ex))
-		session.commit()
+		if self._dirty:
+			print('{} _save() _hole_num:{}'.format(self.__class__.__name__, self._hole_num))
+			if not session:
+				session = self.db.Session()
+			for player in self.players:
+				try:
+					gross = int(player.txtGross.text)
+					putts = int(player.txtPutts.text)
+					player.score = session.query(Score).filter(Score.result_id == player.result_id, Score.num == self._hole_num).first()
+					if player.score:
+						player.score.gross = gross
+						player.score.putts = putts
+					else:
+						player.score = Score(result_id=player.result_id, gross=gross, putts=putts, num=self._hole_num)
+						session.add(player.score)
+				except Exception, ex:
+					print('_save() error - {}'.format(ex))
+			session.commit()
+			self._dirty = False
 			
 	def next_hole(self, sender):
 		session = self.db.Session()
