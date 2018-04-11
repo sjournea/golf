@@ -1,4 +1,5 @@
 """ game.py - GolfGame class."""
+import ast
 from abc import ABCMeta, abstractmethod
 from .exceptions import GolfException
 from .score import GolfScore
@@ -14,7 +15,12 @@ class SqlGolfGame(object):
   short_description = '<Not set>'
   
   # define game options:
-  #    '<attribute>': {'default': <default>, 'type': <data type>, 'desc': 'Option description>'},
+  #    '<attribute>': {
+  #      'default': <default>,           Default value
+  #      'type': <data type>,            'int', 'float', 'string', 'choice'
+  #      'desc': '<option description>',  
+  #      'choices': (choice1, choice2,...),   for type 'choice'
+  #    },
   game_options = {}
 
   def __init__(self, game, golf_round, **kwargs):
@@ -24,8 +30,7 @@ class SqlGolfGame(object):
     self.dctLeaderboard = {}
     self.dctStatus = {}
     # set game options
-    for key, dct in self.game_options.items():
-      setattr(self, key, kwargs.get(key, dct['default']))
+    self.load_game_options(**kwargs)
     # setup and validate
     self.print_options()
     self.setup(**kwargs)
@@ -37,8 +42,40 @@ class SqlGolfGame(object):
 
   def load_game_options(self, **kwargs):
     """setup game options from game_options dictionary."""
+    def set_value(dct, value):
+      if dct['type'] == 'int':
+	dct['value'] = int(value)
+      elif dct['type'] == 'bool':
+	  dct['value'] = bool(value)
+      elif dct['type'] == 'float':
+	dct['value'] = float(value)
+      elif dct['type'] == 'string':
+	dct['value'] = str(value)
+      elif dct['type'] == 'choice':
+	if isinstance(value, str):
+	  # find matching choice
+	  lst = [n for n,choice in enumerate(dct['choices']) if value in choice]
+	  if not lst:
+	    raise GolfException('No matching choice with {} in {}'.format(value, dct['choices']))
+	  if len(lst) > 1:
+	    raise GolfException('Multiple matches with choice {} in {}'.format(value, dct['choices']))
+	  value = lst[0]
+	dct['value'] = dct['choices'][value]
+      elif dct['type'] == 'teams':
+	# tuple : ([int,int], [int,int])
+	#print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
+	dct['value'] = value
+      elif dct['type'] == 'tuple[2]':
+	# tuple[2] : (int,int)
+	#print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
+	dct['value'] = value
+      else:
+	raise GolfException('option type "{}" not supported'.format(dct['type']))
+    # start here
+    print('kwargs:{}'.format(kwargs))
     for key, dct in self.game_options.items():
-	  setattr(self, key, kwargs.get(key, dct['type'](dct['default'])))
+          set_value(dct, kwargs.get(key, dct['default']))
+	  setattr(self, key, dct['value'])
 
   def print_options(self):
 	print('{} - {} options'.format(self.__class__.__name__, len(self.game_options)))

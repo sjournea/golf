@@ -31,7 +31,7 @@ For a threesome this means that the winner wins two skins on a hole. For a fours
 In both cases the other players each lose a skin. 
 """
   game_options = {
-    'use_carryover': {'default': True, 'type': bool, 'desc': 'If use_carryover is set then skins not won will carry to the next hole'},
+    'use_carryover': {'default': True, 'type': 'bool', 'desc': 'If use_carryover is set then skins not won will carry to the next hole'},
   }
   
   def setup(self, **kwargs):
