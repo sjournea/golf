@@ -106,7 +106,7 @@ Four-Person Best Two Balls	 	 90%	 95%
 """
   #    '<attribute>': {'default': <default>, 'type': <data type>, 'desc': 'Option description>'},
   game_options = {
-    'teams':  { 'default': ((0,1),(2,3)), 'type': 'teams',  'desc': 'Set teams for best ball match.' },
+    'teams':  { 'default': ((0,1),(2,3)), 'type': 'tuple[2][2]',  'desc': 'Set teams for best ball match.' },
   }
   def validate(self):
     if len(self._players) != 4:

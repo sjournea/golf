@@ -61,7 +61,7 @@ class SqlGolfGame(object):
 	    raise GolfException('Multiple matches with choice {} in {}'.format(value, dct['choices']))
 	  value = lst[0]
 	dct['value'] = dct['choices'][value]
-      elif dct['type'] == 'teams':
+      elif dct['type'] == 'tuple[2][2]':
 	# tuple : ([int,int], [int,int])
 	#print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
 	dct['value'] = value
