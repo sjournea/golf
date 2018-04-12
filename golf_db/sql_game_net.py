@@ -20,7 +20,7 @@ Take the difference between each handicap (e.g. 25 - 13 = 12) and that is the nu
 The bumps will be added to the lowest handicap holes on the course being played.
 """
   game_options = {
-    'use_full_net':   { 'default': False, 'type': bool,  'desc': 'Use full net instead of relative to lowest handicap.' },
+    'use_full_net':   { 'default': False, 'type': 'bool',  'desc': 'Use full net instead of relative to lowest handicap.' },
   }
   def setup(self, **kwargs):
     """Start the game."""

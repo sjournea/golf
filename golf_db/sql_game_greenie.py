@@ -22,10 +22,10 @@ Options:
   last_par_3_carry: If nobody wins last par 3 then carry over to next hole and on green in regulation quailifies.  
 """
   game_options = {
-    'double_birdie':    { 'default': False, 'type': bool,  'desc': 'Birdies are worth double points.' },
-    'carry_over':       { 'default': True,  'type': bool,  'desc': 'If nobody wins a par 3 then carries over to next par 3.'},    
-    'last_par_3_carry': { 'default': True,  'type': bool,  'desc': 'If nobody wins last par 3 then carry over to next hole and on green in regulation quailifies.'},    
-    'wager':            { 'default': 0,     'type': float, 'desc': 'Wager per hole.'},    
+    'double_birdie':    { 'default': False, 'type': 'bool',  'desc': 'Birdies are worth double points.'},
+    'carry_over':       { 'default': True,  'type': 'bool',  'desc': 'If nobody wins a par 3 then carries over to next par 3.'},    
+    'last_par_3_carry': { 'default': True,  'type': 'bool',  'desc': 'If nobody wins last par 3 then carry over to next hole and on green in regulation quailifies.'},    
+    'wager':            { 'default': 0,     'type': 'float', 'desc': 'Wager per hole.'},    
   }
   
   def setup(self, **kwargs):
