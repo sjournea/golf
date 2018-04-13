@@ -10,11 +10,11 @@ DB_URL = 'sqlite:///golf.sqlite'
 db = Database(DB_URL)
 
 class GolfApp(object):
-	def __init__(self):
-		self.view = ui.load_view('views/main')
-		self.view.db = db
-		self.view.setup()
-		self.view.present('sheet')
-		
+  def __init__(self):
+    self.view = ui.load_view('views/main')
+    self.view.db = db
+    self.view.setup()
+    self.view.present('sheet')
+
 GolfApp()
 
