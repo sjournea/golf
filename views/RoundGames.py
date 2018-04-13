@@ -10,29 +10,25 @@ from golf_db.db_sqlalchemy import Round,Game
 from golf_db.sql_game_factory import SqlGolfGameList, SqlGolfGameFactory, SqlGolfGameOptions
 from golf_view import GolfView
 
-@ui.in_background
-def options_dialog(view, game):
+def options_dialog(view, game_class):
 	def get_type(key, option):
-		if option['type'] is bool:
+		if option['type'] == 'bool':
 			datatype = 'switch'
-			value = getattr(game, key)
-		elif option['type'] is ast.literal_eval:
+			value = option['value']
+		elif option['type'] in ('tuple[2]', 'tuple[2][2]'):
 			datatype = 'text'
-			value = str(getattr(game, key))				
-		elif option['type'] is float:
+			value = str(option['value'])				
+		elif option['type'] in ('float', 'int'):
 			datatype = 'number'			
-			value = str(getattr(game, key))	
-		elif option['type'] is int:
-			datatype = 'number'			
-			value = str(getattr(game, key))
+			value = str(option['value'])
 		else:
 			datatype = 'text'
-			value = str(getattr(game, key))								
+			value = str(option['value'])
 		return datatype, value
 	
-	title = '{} options'.format(game.short_description)
+	title = '{} options'.format(game_class.short_description)
 	fields = []
-	for key, option in game.game_options.items():
+	for key, option in game_class.game_options.items():
 		data_type, value = get_type(key, option)
 		dct = {
 			'title': key,
@@ -41,9 +37,18 @@ def options_dialog(view, game):
 			'value': value,
 		}
 		fields.append(dct)
+	return title, fields
+	
+@ui.in_background
+def do_dialog_background(title, fields):
 	dct = dialogs.form_dialog(title=title, fields=fields)
 	print('dct:{}'.format(dct))
-	view.dct_options = dct
+	return dct
+
+def do_dialog(title, fields):
+	dct = dialogs.form_dialog(title=title, fields=fields)
+	print('dct:{}'.format(dct))
+	return dct
 	
 class GamesViewDataSource(object):
 	def __init__(self, view):
@@ -95,8 +100,9 @@ class GamesViewDataSource(object):
 	def tableview_did_select(self, tableview, section, row):
 		# Called when a row was selected.
 		print('tableview_did_select() section:{} row:{}'.format(section, row))
-		#if self.games[row].game_options:
-			#options_dialog(self.db, self.games[row])
+		if self.games[row].game_options:
+			title, fields = options_dialog(self, self.games[row])
+			do_dialog_background(title, fields)
 			#if dct:
 				#session = self.db.Session()
 				#game = session.query(Game).filter(Game.game_id == game.game.game_id).one()
@@ -159,9 +165,11 @@ class RoundGames(GolfView):
 		name = dialogs.list_dialog('Select Game', game_names)
 		if name:
 			game_class = SqlGolfGameFactory(name)
-			if False: # game_class.game_options:
-				options_dialog(self, game_class)
-				dct = self.dct_options
+			if game_class.game_options:
+				for dct in game_class.game_options.values():
+					dct['value'] = dct['default']
+				title, fields = options_dialog(self, game_class)
+				dct = do_dialog(title, fields)
 			else:
 				dct = {}	
 			round_id = self._mainView._round_id

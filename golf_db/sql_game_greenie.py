@@ -91,7 +91,7 @@ Options:
             self._carry += 1
     for pl in self._players:
       pl.update_totals(pl.dct_points)
-      pl.update_totals(pl.dct_money)
+      #pl.update_totals(pl.dct_money)
       
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""

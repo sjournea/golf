@@ -14,7 +14,7 @@ class SqlGameSnake(SqlGolfGame):
 3 putt a green and you could lose.
 """
   game_options = {
-    'snake_type': {'choices': ('Points', 'Hold'), 'default': 'Points', 'type': 'choice', 'desc': 'Points will lose every 3 putt. Hold will only lose when you already have the snake, always pays on 9 and 18.'},
+    'snake_type': {'choices': ('Points', 'Hold'), 'default': 'Hold', 'type': 'choice', 'desc': 'Points will lose every 3 putt. Hold will only lose when you already have the snake, always pays on 9 and 18.'},
   }
   
   def setup(self, **kwargs):
