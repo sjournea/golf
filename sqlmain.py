@@ -13,6 +13,7 @@ import threading
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.test_data import DBGolfCourses, DBGolfPlayers
+from golf_db.exceptions import GolfGameException
 
 from util.menu import MenuItem, Menu, InputException, FileInput
 from util.tl_logger import TLLog,logOptions
@@ -32,41 +33,41 @@ class SQLMenu(Menu):
     self._round_id = None
     # add menu items
     self.addMenuItem( MenuItem( 'dc', '',        
-        'create golf database.', self._createDatabase) )
+                                'create golf database.', self._createDatabase) )
     self.addMenuItem( MenuItem( 'RM', '',        
-        'remove all data from golf database.', self._clearDatabase) )
+                                'remove all data from golf database.', self._clearDatabase) )
     self.addMenuItem( MenuItem( 'pli', '',       
-        'player insert.', self._playerInsert) )
+                                'player insert.', self._playerInsert) )
     self.addMenuItem( MenuItem( 'pll', '',       
-        'player list.', self._playerList) )
+                                'player list.', self._playerList) )
     self.addMenuItem( MenuItem( 'plu', '<email> <key,value>', 
-        'player update.', self._playerUpdate) )
+                                'player update.', self._playerUpdate) )
     self.addMenuItem( MenuItem( 'plr', '',       
-        'player remove.', self._playerRemove) )
+                                'player remove.', self._playerRemove) )
     self.addMenuItem( MenuItem( 'coi', 'testdata',       
-        'course insert.', self._courseInsert) )
+                                'course insert.', self._courseInsert) )
     self.addMenuItem( MenuItem( 'col', '',       
-        'course list.', self._courseList) )
+                                'course list.', self._courseList) )
     self.addMenuItem( MenuItem( 'cou', '<name> <key,value>', 
-        'course update.', self._courseUpdate) )
+                                'course update.', self._courseUpdate) )
     self.addMenuItem( MenuItem( 'cor', '',       
-        'course remove.', self._courseRemove) )
+                                'course remove.', self._courseRemove) )
     self.addMenuItem( MenuItem( 'cos', '',
-        'Get a scorecard', self._courseGetScorecard))
+                                'Get a scorecard', self._courseGetScorecard))
     self.addMenuItem( MenuItem( 'rol', '',       
-        'round list.', self._roundList) )
+                                'round list.', self._roundList) )
     self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>',
-        'Create a Round of Golf',      self._roundCreate))
+                                'Create a Round of Golf',      self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>',
-        'Add player to Round of Golf', self._roundAddPlayer))
+                                'Add player to Round of Golf', self._roundAddPlayer))
     self.addMenuItem( MenuItem( 'gag', '<game> <players>',
-        'Add game to Round of Golf',   self._roundAddGame))
+                                'Add game to Round of Golf',   self._roundAddGame))
     self.addMenuItem( MenuItem( 'gst', '',
-        'Start Round of Golf',         self._roundStart))
+                                'Start Round of Golf',         self._roundStart))
     self.addMenuItem( MenuItem( 'gas', '<hole> gross=<gross..> <pause=enable>',
-       'Add Scores',                 self._roundScore))
+                                'Add Scores',                 self._roundScore))
     self.addMenuItem( MenuItem( 'sql', '',
-       'Test a SQLAlchemy query',    self._roundSQL))
+                                'Test a SQLAlchemy query',    self._roundSQL))
     self.updateHeader()
 
   def updateHeader(self):
@@ -77,7 +78,7 @@ class SQLMenu(Menu):
 
   def _createDatabase(self):
     self.db.create_tables()
-    
+
   def _playerInsert(self):
     """Inserts ALL players from DBGolfPlayers."""
     session = self.db.Session()
@@ -93,7 +94,7 @@ class SQLMenu(Menu):
       player = Player(**dct) 
       session.add(player)
     session.commit()
-    
+
   def _playerList(self):
     """List all players in database."""
     session = self.db.Session()
@@ -150,7 +151,7 @@ class SQLMenu(Menu):
     else:
       raise InputException('only testdata allowed for courses insert.')
     session.commit()
-    
+
   def _courseList(self):
     """List all courses in database."""
     session = self.db.Session()
@@ -253,7 +254,7 @@ class SQLMenu(Menu):
     # Create Result
     result = Result(round=golf_round, player_id=player.player_id, tee_id=tee.tee_id)
     result.calcCourseHandicap(player, tee)
-    
+
     print result
     session.add(result)
     session.commit()
@@ -321,7 +322,28 @@ class SQLMenu(Menu):
     }
     golf_round.addScores(session, hole, dct_score_data)
     session.commit()
-    
+
+    lst_game_more_info_needed = []
+    golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    for game in golf_round.games:
+      try:
+        game.CreateGame()
+      except GolfGameException, ex:
+        print('{} Game - {} - {}'.format(ex.dct['game'].short_description, ex.dct['msg'], ','.join([pl.nick_name for pl in ex.dct['players']])))
+        lst_game_more_info_needed.append(ex)
+      
+    if lst_game_more_info_needed:
+      for ex in lst_game_more_info_needed:
+        prompt = '{} Game - {} - {} : '.format(ex.dct['game'].short_description, ex.dct['msg'], ','.join(['{} : {}'.format(n, pl.nick_name) for n,pl in enumerate(ex.dct['players'])]))
+        
+        i = raw_input(prompt)
+        if i == 'x':
+          raise Exception('Abort by user')
+        i = int(i)
+        game = session.query(Game).filter(Game.game_id == ex.dct['game'].game.game_id).one()
+        game.add_hole_dict_data(ex.dct['hole_num'], {ex.dct['key'] : ex.dct['players'][i].nick_name})
+        session.commit()
+
     self._roundDump()
     self.pushCommands([pause_command])
 
@@ -406,11 +428,11 @@ def main():
   parser.add_option( "-u",  "--url", dest="url", default=DEF_DB_URL,
                      help='SQLAlchemy Comma separated list of log modules to enable, * for all. Default is "%s"' % DEF_LOG_ENABLE)
   parser.add_option( "-m",  "--logEnable", dest="lstLogEnable", default=DEF_LOG_ENABLE,
-                       help='Comma separated list of log modules to enable, * for all. Default is "%s"' % DEF_LOG_ENABLE)
+                     help='Comma separated list of log modules to enable, * for all. Default is "%s"' % DEF_LOG_ENABLE)
   parser.add_option( "-g",  "--showLogs", action="store_true", dest="showLogs", default=False,
-                       help='list all log options.' )
+                     help='list all log options.' )
   parser.add_option( "-y",  "--runCmdFile", dest="cmdFile", default=None,
-                       help="Run a command file at startup.")
+                     help="Run a command file at startup.")
 
   #  parse the command line and set values
   (options, args) = parser.parse_args()

@@ -60,8 +60,15 @@ class SqlGameSnake(SqlGolfGame):
             if hole_num in self.game._game_data:
               loser = self.game._game_data[hole_num]['closest_3_putt']
               lst_losers = [tup for tup in lst_losers if tup[0].player.nick_name == loser]
-            else:
-              raise GolfGameException(self, 'Need to resolve multiple snake losers')
+            if len(lst_losers) > 1:
+              dct = {
+                'hole_num': hole_num,
+                'players': [w[0].player for w in lst_losers],
+                'key': 'closest_3_putt',
+                'msg': 'Which 3 putt player had the closest 1st putt on hole {}?'.format(hole_num),
+                'game' : self,
+              }
+              raise GolfGameException(dct)
         #
         if len(lst_losers) == 1:
           # we have a 3 putt winner (loser)

@@ -13,10 +13,7 @@ class GolfDBException(GolfException):
 
 class GolfGameException(GolfException):
   """Raised when a golf game need more information to resolve score."""
-  def __init__(self, game, msg):
-    self.game = game
-    self.msg = msg
-
-
+  def __init__(self, dct):
+    self.dct = dct
 
   

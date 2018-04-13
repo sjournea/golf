@@ -13,7 +13,7 @@ class SqlGolfGame(object):
   __metaclass__ = ABCMeta
   description = '<Description not set>'
   short_description = '<Not set>'
-  
+
   # define game options:
   #    '<attribute>': {
   #      'default': <default>,           Default value
@@ -35,7 +35,7 @@ class SqlGolfGame(object):
     self.print_options()
     self.setup(**kwargs)
     self.validate()
-    
+
   def validate(self):
     """Overload to validate a game setup."""
     pass
@@ -44,44 +44,44 @@ class SqlGolfGame(object):
     """setup game options from game_options dictionary."""
     def set_value(dct, value):
       if dct['type'] == 'int':
-	dct['value'] = int(value)
+        dct['value'] = int(value)
       elif dct['type'] == 'bool':
-	  dct['value'] = bool(value)
+        dct['value'] = bool(value)
       elif dct['type'] == 'float':
-	dct['value'] = float(value)
+        dct['value'] = float(value)
       elif dct['type'] == 'string':
-	dct['value'] = str(value)
+        dct['value'] = str(value)
       elif dct['type'] == 'choice':
-	if isinstance(value, str):
-	  # find matching choice
-	  lst = [n for n,choice in enumerate(dct['choices']) if value in choice]
-	  if not lst:
-	    raise GolfException('No matching choice with {} in {}'.format(value, dct['choices']))
-	  if len(lst) > 1:
-	    raise GolfException('Multiple matches with choice {} in {}'.format(value, dct['choices']))
-	  value = lst[0]
-	dct['value'] = dct['choices'][value]
+        if isinstance(value, str):
+          # find matching choice
+          lst = [n for n,choice in enumerate(dct['choices']) if value in choice]
+          if not lst:
+            raise GolfException('No matching choice with {} in {}'.format(value, dct['choices']))
+          if len(lst) > 1:
+            raise GolfException('Multiple matches with choice {} in {}'.format(value, dct['choices']))
+          value = lst[0]
+        dct['value'] = dct['choices'][value]
       elif dct['type'] == 'tuple[2][2]':
-	# tuple : ([int,int], [int,int])
-	#print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
-	dct['value'] = value
+        # tuple : ([int,int], [int,int])
+        #print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
+        dct['value'] = value
       elif dct['type'] == 'tuple[2]':
-	# tuple[2] : (int,int)
-	#print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
-	dct['value'] = value
+        # tuple[2] : (int,int)
+        #print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
+        dct['value'] = value
       else:
-	raise GolfException('option type "{}" not supported'.format(dct['type']))
+        raise GolfException('option type "{}" not supported'.format(dct['type']))
     # start here
     print('kwargs:{}'.format(kwargs))
     for key, dct in self.game_options.items():
-          set_value(dct, kwargs.get(key, dct['default']))
-	  setattr(self, key, dct['value'])
+      set_value(dct, kwargs.get(key, dct['default']))
+      setattr(self, key, dct['value'])
 
   def print_options(self):
-	print('{} - {} options'.format(self.__class__.__name__, len(self.game_options)))
-	for key in self.game_options.keys():
-	  print('  {:<20} : {}'.format(key, getattr(self, key)))
-   
+    print('{} - {} options'.format(self.__class__.__name__, len(self.game_options)))
+    for key in self.game_options.keys():
+      print('  {:<20} : {}'.format(key, getattr(self, key)))
+
   def setup(self, **kwargs):
     """Overload to add custom initialization from __init__()."""
     pass
@@ -96,11 +96,11 @@ class SqlGolfGame(object):
   def getScorecard(self, **kwargs):
     """Return scorecard dictionary for this game."""
     pass
-  
+
   @abstractmethod
   def getLeaderboard(self, **kwargs):
     """Return leaderboard for this game.
-    
+
     Returns:
       list of dictionaries sorted in the order of 1st to last.
     """
@@ -120,7 +120,7 @@ class GamePlayer(object):
 
   def _init_dict(self, score_type=int):
     """Create and initialize scoring dictionary.
-      
+
       add holes, in, out, total.
     """
     return {

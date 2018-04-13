@@ -36,7 +36,7 @@ Double Bogey	   -3        -2        -	hole are doubled)*
 
 Since most people have a hard time shooting double eagles and eagles, golfers often play Stableford
 (especially classic Stableford) using their full handicaps."""
-  
+
   dct_scoring = {
     'Modified': { -3: 8, -2: 5, -1: 2, 0: 1, 1: -1, 2:-3, 'min':8, 'max': -3},
     'Classic':  { -3: 8, -2: 5, -1: 2, 0: 0, 1: -1, 2:-2, 'min':8, 'max': -2},
@@ -48,7 +48,7 @@ Since most people have a hard time shooting double eagles and eagles, golfers of
   game_options = {
     'stableford_type':  { 'default': 'Classic', 'type': 'choice',  'choices': ('Modified', 'Classic', 'British', 'Spanish'), 'desc': 'Modified, Classic, British or Spanish' },
     'jokers':           { 'default': (9,18),    'type': 'tuple[2]',   'desc': 'Set joker holes for each player. One in front 9 and one in back 9'},    
-    'wager':            { 'default': 0.0,         'type': 'float', 'desc': 'Wager per point.'},    
+    'wager':            { 'default': 0.0,       'type': 'float', 'desc': 'Wager per point.'},    
   }
 
   def validate(self):
@@ -119,7 +119,7 @@ Since most people have a hard time shooting double eagles and eagles, golfers of
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers
     return self.dctScorecard
-  
+
   def getLeaderboard(self, **kwargs):
     board = []
     sort_type = kwargs.get('sort_type', 'points')

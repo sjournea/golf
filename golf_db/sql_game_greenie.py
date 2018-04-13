@@ -74,7 +74,14 @@ Options:
             qualified = self.game._game_data[hole_num]['qualified']
             lst_winners = [w for w in lst_winners if str(w[0].player.nick_name) == qualified]
           else:
-            raise GolfGameException(self, 'Need to resolve multiple greenie winners')
+            dct = {
+              'hole_num': hole_num,
+              'players': [w[0].player for w in lst_winners],
+              'key': 'qualified',
+              'msg': 'Which player was closest to the pin on hole {}?'.format(hole_num),
+              'game' : self,
+             }
+            raise GolfGameException(dct)
         if len(lst_winners) == 1:
           winner, gross = lst_winners[0]
           # only get points on par 3
