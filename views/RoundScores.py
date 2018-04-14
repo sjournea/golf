@@ -5,7 +5,8 @@ import ui
 import dialogs
 import datetime 
 
-from golf_db.db_sqlalchemy import Round,Score
+from golf_db.db_sqlalchemy import Round,Score,Game
+from golf_db.exceptions import GolfGameException
 from golf_view import GolfView
 
 class PlayerForm:
@@ -20,6 +21,7 @@ class RoundScores(GolfView):
   def __init__(self):
     self._hole_num = 1
     self._dirty = False
+    self.golf_round = None
 
   def did_load(self):
     self.name = "Update Scores"
@@ -40,7 +42,8 @@ class RoundScores(GolfView):
 
   def deactivate(self):
     print('{} deactivate()'.format(self.__class__.__name__))
-    self._save()
+    if self.golf_round:
+      self._save()
 
   def activate(self):
     #print('{} activate()'.format(self.__class__.__name__))
@@ -113,7 +116,7 @@ class RoundScores(GolfView):
     session.commit()
     # now validate scores
     lst_game_more_info_needed = []
-    golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    golf_round = session.query(Round).filter(Round.round_id == self._mainView._round_id).one()
     for game in golf_round.games:
       try:
         game.CreateGame()
@@ -123,11 +126,11 @@ class RoundScores(GolfView):
       
     if lst_game_more_info_needed:
       for ex in lst_game_more_info_needed:
-        player_nick_names = [pl.nick_name for pl in ex.dct['players'])
+        player_nick_names = [pl.nick_name for pl in ex.dct['players']]
         name = dialogs.list_dialog(ex.dct['msg'], player_nick_names)
         if name:
           game = session.query(Game).filter(Game.game_id == ex.dct['game'].game.game_id).one()
-          game.add_hole_dict_data(ex.dct['hole_num'], {ex.dct['key'] : ex.dct['players'][i].nick_name})
+          game.add_hole_dict_data(ex.dct['hole_num'], {ex.dct['key'] : name})
           session.commit()
 
   def next_hole(self, sender):

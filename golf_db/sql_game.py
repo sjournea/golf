@@ -52,23 +52,23 @@ class SqlGolfGame(object):
       elif dct['type'] == 'string':
         dct['value'] = str(value)
       elif dct['type'] == 'choice':
-        if isinstance(value, str):
-          # find matching choice
-          lst = [n for n,choice in enumerate(dct['choices']) if value in choice]
-          if not lst:
-            raise GolfException('No matching choice with {} in {}'.format(value, dct['choices']))
-          if len(lst) > 1:
-            raise GolfException('Multiple matches with choice {} in {}'.format(value, dct['choices']))
-          value = lst[0]
+        value = str(value)
+        # find matching choice
+        lst = [n for n,choice in enumerate(dct['choices']) if value in choice]
+        if not lst:
+          raise GolfException('No matching choice with {} in {}'.format(value, dct['choices']))
+        if len(lst) > 1:
+          raise GolfException('Multiple matches with choice {} in {}'.format(value, dct['choices']))
+        value = lst[0]
         dct['value'] = dct['choices'][value]
       elif dct['type'] == 'tuple[2][2]':
         # tuple : ([int,int], [int,int])
         #print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
-        dct['value'] = value
+        dct['value'] = ast.literal_eval(value)
       elif dct['type'] == 'tuple[2]':
         # tuple[2] : (int,int)
         #print('{} isinstance:{} value:"{}"'.format(dct['type'], type(value), value))
-        dct['value'] = value
+        dct['value'] = ast.literal_eval(value)
       else:
         raise GolfException('option type "{}" not supported'.format(dct['type']))
     # start here

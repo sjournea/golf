@@ -46,7 +46,7 @@ Since most people have a hard time shooting double eagles and eagles, golfers of
 
   #    '<attribute>': {'default': <default>, 'type': <data type>, 'desc': 'Option description>'},
   game_options = {
-    'stableford_type':  { 'default': 'Classic', 'type': 'choice',  'choices': ('Modified', 'Classic', 'British', 'Spanish'), 'desc': 'Modified, Classic, British or Spanish' },
+    'stableford_type':  { 'default': 'British', 'type': 'choice',  'choices': ('Modified', 'Classic', 'British', 'Spanish'), 'desc': 'Modified, Classic, British or Spanish' },
     'jokers':           { 'default': (9,18),    'type': 'tuple[2]',   'desc': 'Set joker holes for each player. One in front 9 and one in back 9'},    
     'wager':            { 'default': 0.0,       'type': 'float', 'desc': 'Wager per point.'},    
   }
