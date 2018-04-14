@@ -8,8 +8,8 @@ gad reload White
 gag gross
 gag net use_full_net=True
 gag putts
-gag stableford stableford_type='British' wager=0.50
-gag snake snake_type='Hold' wager=0.50 
+gag stableford stableford_type=British wager=0.50
+gag snake snake_type=Hold wager=0.50 
 gag greenie wager=1.0
 gag bestball teams=[(0,2),(1,3)]
 # start game

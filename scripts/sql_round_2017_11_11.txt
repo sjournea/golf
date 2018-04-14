@@ -8,8 +8,8 @@ gad reload Championship
 gag gross
 gag net use_full_net=True
 gag putts
-gag stableford stableford_type='British' wager=0.5
-gag snake snake_type='Hold' wager=0.5
+gag stableford stableford_type=British wager=0.5
+gag snake snake_type=Hold wager=0.5
 gag greenie wager=1 
 # start game
 gst

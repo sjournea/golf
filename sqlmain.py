@@ -276,9 +276,9 @@ class SQLMenu(Menu):
     for arg in self.lstCmd[2:]:
       lst = arg.split('=')
       if lst[0] == 'players':
-        players = eval(lst[1])
+        players = lst[1]
       else:
-        dct[lst[0]] = eval(lst[1])
+        dct[lst[0]] = lst[1]
 
     session = self.db.Session()
     # get round
