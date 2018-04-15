@@ -55,8 +55,8 @@ Options:
           if dct_greens[n+1] is None:
             dct_greens[n+1] = []
           par = self.golf_round.course.holes[n].par
-          if score.gross <= par and score.gross - score.putts == par - 2:
-            dct_greens[n+1].append((pl, score.gross))
+          if score.gross - score.putts == par - 2:
+            dct_greens[n+1].append((pl, score))
 
     self.thru = self.golf_round.get_completed_holes()
     hole_nums = sorted(dct_greens.keys())
@@ -83,17 +83,21 @@ Options:
              }
             raise GolfGameException(dct)
         if len(lst_winners) == 1:
-          winner, gross = lst_winners[0]
-          # only get points on par 3
-          value = 1 if par == 3 else 0
-          winner.dct_points['holes'][index] = value + self._carry
-          self._carry = 0
-          if self.double_birdie and gross < par:
-            # birdie or better
-            winner.dct_points['holes'][index] *= 2
-          if self.wager:
-            winner.dct_money['holes'][index] = winner.dct_points['holes'][index]*len(self._players)
-        else:
+          winner, score = lst_winners[0]
+          # validate winner had 2 putts or less
+          if score.putts < 3:
+            # only get points on par 3
+            value = 1 if par == 3 else 0
+            winner.dct_points['holes'][index] = value + self._carry
+            self._carry = 0
+            if self.double_birdie and self.gross < par:
+              # birdie or better
+              winner.dct_points['holes'][index] *= 2
+            if self.wager:
+              winner.dct_money['holes'][index] = winner.dct_points['holes'][index]*len(self._players)
+          else:
+            lst_winners = []
+        if not lst_winners:
           if self.carry_over and par == 3:
             self._carry += 1
     for pl in self._players:
