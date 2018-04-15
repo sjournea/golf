@@ -32,7 +32,7 @@ class SqlGolfGame(object):
     # set game options
     self.load_game_options(**kwargs)
     # setup and validate
-    self.print_options()
+    #self.print_options()
     self.setup(**kwargs)
     self.validate()
 
@@ -72,7 +72,7 @@ class SqlGolfGame(object):
       else:
         raise GolfException('option type "{}" not supported'.format(dct['type']))
     # start here
-    print('kwargs:{}'.format(kwargs))
+    #print('kwargs:{}'.format(kwargs))
     for key, dct in self.game_options.items():
       set_value(dct, kwargs.get(key, dct['default']))
       setattr(self, key, dct['value'])
