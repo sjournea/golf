@@ -32,5 +32,5 @@ gas  13 gross=[8,6,5,8]   putts=[2,2,2,3]
 gas  14 gross=[9,5,7,7]   putts=[2,2,2,2]
 gas  15 gross=[5,5,6,6]   putts=[2,2,2,2]
 gas  16 gross=[6,5,5,6]   putts=[2,2,2,2]
-gas  17 gross=[5,5,3,4]   putts=[2,4,2,3]
+gas  17 gross=[5,5,3,4]   putts=[2,4,2,3] greenie={'qualified':'Spanky'}
 gas  18 gross=[6,5,6,8]   putts=[1,2,3,2]  pause=enable

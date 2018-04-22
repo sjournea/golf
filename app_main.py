@@ -14,7 +14,7 @@ class GolfApp(object):
     self.view = ui.load_view('views/main')
     self.view.db = db
     self.view.setup()
-    self.view.present('sheet')
+    self.view.present('full_screen')
 
 GolfApp()
 
