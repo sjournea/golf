@@ -85,7 +85,7 @@ class SqlGameSnake(SqlGolfGame):
             else:
               self._has_snake = snake_winner
       # snake automatic payout on 9 and 18
-      print('Snake hole_num:{} has_snake:{}'.format(hole_num, self._has_snake))
+      #print('Snake hole_num:{} has_snake:{}'.format(hole_num, self._has_snake))
       if hole_num in (9, 18) and self._has_snake:
         self._pay_snake(hole_num-1, self._has_snake)
     #print('Snake - thru {} snake {}'.format(self._thru, self._has_snake.player.nick_name if self._has_snake else 'Free'))
