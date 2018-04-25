@@ -10,10 +10,12 @@ from golf_db.exceptions import GolfGameException
 from golf_view import GolfView
 
 class PlayerForm:
-	def __init__(self, result_id, btnGross, btnPutts):
-		self.result_id = result_id
+	def __init__(self, result, btnGross, btnPutts):
+		self.result = result
 		self.btnGross = btnGross
 		self.btnPutts = btnPutts
+		self.btnGross.result = result
+		self.btnPutts.result = result
 
 class RoundScores(GolfView):
 	def __init__(self):
@@ -31,7 +33,7 @@ class RoundScores(GolfView):
 		self.btnPrev.action = self.prev_hole
 		self.add_subview(self.btnPrev)
 
-		self.lblHole = ui.Label(text='Hole Desc', center=(self.width * 0.5, self.height * 0.05), width=self.width*0.4)
+		self.lblHole = ui.Label(text='Hole Desc', center=(self.width * 0.5, self.height * 0.05), width=self.width*0.5)
 		self.add_subview(self.lblHole)
 	
 		self.btnNext = ui.Button(title='Next')
@@ -49,14 +51,14 @@ class RoundScores(GolfView):
 			self.add_subview(lbl)
 			self.lblPlayers.append(lbl)
 
-			btnGross = ui.Button(title='<not set>')
+			btnGross = ui.Button(title='<not set>', font=('<system-bold>', 20))
 			btnGross.center = (self.width * 0.5, height)
 			btnGross.flex = 'LRTB'
 			btnGross.action = self.set_gross
 			self.add_subview(btnGross)
 			self.btnGross.append(btnGross)
 
-			btnPutts = ui.Button(title='<not set>')
+			btnPutts = ui.Button(title='<not set>', font=('<system-bold>', 20))
 			btnPutts.center = (self.width * 0.7, height)
 			btnPutts.flex = 'LRTB'
 			btnPutts.action = self.set_putts
@@ -83,7 +85,7 @@ class RoundScores(GolfView):
 			self.btnGross[n].hidden = False
 			self.btnPutts[n].hidden = False
 			self.lblPlayers[n].text = result.player.getFullName()
-			self.players.append(PlayerForm(result.result_id, self.btnGross[n], self.btnPutts[n]))
+			self.players.append(PlayerForm(result, self.btnGross[n], self.btnPutts[n]))
 
 		self._set_hole_number(self._hole_num)
 		self._get(session)
@@ -104,7 +106,7 @@ class RoundScores(GolfView):
 		"""Read values from database and set into form"""
 		print('{} _get() _hole_num:{}'.format(self.__class__.__name__, self._hole_num))
 		for player in self.players:
-			score = session.query(Score).filter(Score.result_id == player.result_id, Score.num == self._hole_num).first()
+			score = session.query(Score).filter(Score.result_id == player.result.result_id, Score.num == self._hole_num).first()
 			#print('_get() score:{}'.format(score))
 			if score:
 				#print('_get() score.gross:{}'.format(score.gross))
@@ -126,12 +128,12 @@ class RoundScores(GolfView):
 			except Exception, ex:
 				print('_save() error - {}'.format(ex))
 				continue
-			score = session.query(Score).filter(Score.result_id == player.result_id, Score.num == self._hole_num).first()
+			score = session.query(Score).filter(Score.result_id == player.result.result_id, Score.num == self._hole_num).first()
 			if score:
 				score.gross = gross
 				score.putts = putts
 			else:
- 				score = Score(result_id=player.result_id, gross=gross, putts=putts, num=self._hole_num)
+ 				score = Score(gross=gross, putts=putts, num=self._hole_num)
  				session.add(score)
 		session.commit()
 		# now validate scores
@@ -198,14 +200,14 @@ class RoundScores(GolfView):
 			4: par_4_scores + [str(n) for n in range(8,21)],
 			5: par_5_scores + [str(n) for n in range(9,21)],		
 		}
-		title = 'Hole {} Par {} - Gross'.format(self._current_hole.num, self._current_hole.par)
+		title = '{} - Hole {} Par {} - Gross'.format(sender.result.player.nick_name, self._current_hole.num, self._current_hole.par)
 		gross = dialogs.list_dialog(title, dct_scores[self._current_hole.par])
 		if gross:
 			sender.title = gross.split()[0]
 
 	def set_putts(self, sender):
 		putt_scores = [str(n) for n in range(11)]
-		putts = dialogs.list_dialog('Hole 1 Par 3 - Putts', putt_scores)
+		putts = dialogs.list_dialog('{} - Hole 1 Par 3 - Putts'.format(sender.result.player.nick_name), putt_scores)
 		if putts:
 			sender.title = putts
 

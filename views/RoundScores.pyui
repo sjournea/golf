@@ -3,7 +3,7 @@
     "nodes" : [
 
     ],
-    "frame" : "{{0, 0}, {415, 657}}",
+    "frame" : "{{0, 0}, {383, 662}}",
     "class" : "View",
     "attributes" : {
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
