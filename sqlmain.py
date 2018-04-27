@@ -68,10 +68,26 @@ class SQLMenu(Menu):
                                 'Add Scores',                 self._roundScore))
     self.addMenuItem( MenuItem( 'sql', '',
                                 'Test a SQLAlchemy query',    self._roundSQL))
+    self.addMenuItem( MenuItem( 'tbl', '',
+                                'SQLAlchemy tables',    self._dbTables))
     self.updateHeader()
 
   def updateHeader(self):
     self.header = 'database url:{} - database:{}'.format(self.url, '???')
+
+  def _dbTables(self):
+    for col in Player.__table__.columns:
+      print('col.name:{}'.format(col.name))
+      print('col.desc:{}'.format(col.desc))
+      print('col.type:{}'.format(col.type))
+      #print('type(col):{}'.format(type(col)))
+      for attr in dir(col):
+        try:
+          if attr[0] == '_':
+            continue
+          print('  {:<30} -- {}'.format(attr, getattr(col, attr)))
+        except Exception, ex:
+          print( '  EXCEPTION - {}'.format(ex))
 
   def _clearDatabase(self):
     self.db.remove()
@@ -254,8 +270,6 @@ class SQLMenu(Menu):
     # Create Result
     result = Result(round=golf_round, player_id=player.player_id, tee_id=tee.tee_id)
     result.calcCourseHandicap(player, tee)
-
-    print result
     session.add(result)
     session.commit()
 

@@ -189,6 +189,7 @@ class Result(Base):
   def calcCourseHandicap(self, player, tee):
     """Course Handicap = Handicap Index * Slope rating / 113."""
     self.course_handicap = int(round(player.handicap * tee.slope / 113))
+    print('calcCourseHandicap() player:{} handicap:{} slope:{} course_handicap:{}'.format(player.nick_name, player.handicap, tee.slope, self.course_handicap))
   
   def get_completed_holes(self):
     return len(self.scores)
