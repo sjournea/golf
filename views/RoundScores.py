@@ -208,5 +208,3 @@ class RoundScores(GolfView):
         putts = dialogs.list_dialog('Hole 1 Par 3 - Putts', putt_scores)
         if putts:
             sender.title = putts
-
-
