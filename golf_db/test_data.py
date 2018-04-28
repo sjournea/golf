@@ -983,6 +983,7 @@ DBGolfPlayers = (
   {'email':'perl@tl.com',     'first_name': 'Perl',  'last_name': 'Journeay', 'nick_name': 'Cattle', 'handicap':  8.6,  'gender': 'woman'},
   {'email':'ricky@tl.com',    'first_name': 'Ricky', 'last_name': 'Rao',      'nick_name': 'Rao',    'handicap': 29.5, 'gender': 'man'},
   {'email':'spike@tl.com',    'first_name': 'John',  'last_name': 'Molcillo', 'nick_name': 'Spike',  'handicap': 17.5, 'gender': 'man'},
+  {'email':'jimbo@tl.com',    'first_name': 'Jim',   'last_name': 'Nelson',   'nick_name': 'Jimbo',  'handicap': 10.2, 'gender': 'man'},
 )
 
 TestGolfPlayers = [
