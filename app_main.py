@@ -1,5 +1,3 @@
-git status
-git # coding: utf-8
 """app_main.py - golf app entry point."""
 import console
 import ui
