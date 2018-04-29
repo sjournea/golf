@@ -1,4 +1,19 @@
-Bugs
+TODO 4/28/18
+
+* Status display
+  Money won on holes
+  Money on table
+  bumps next hole
+* Tiebreaker on Stableford
+  - best csco{}
+* Money on all games
+  - Total pot
+  - winners paid
+* Edit database records
+* Animate snake if holding snake
+
+
+
 
 Golf game TODO 11/23/17
   Python prototype
@@ -13,10 +28,8 @@ Golf game TODO 11/23/17
      - GolfGame class needs doc support
        - toDict(), fromDict()
        - __eq__, __ne__ for testing.
-    - GolfCourse, GolfPlayers, GolfRound (no games)
-    
-Mobile version - iOS - Pythonista
-   * installed stash shell for github access.
+   * Cloud implementation
+     - gRPC server
    
     
 
