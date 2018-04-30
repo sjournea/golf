@@ -180,16 +180,18 @@ class Result(Base):
   round_id = Column(Integer(), ForeignKey('rounds.round_id'), nullable=False)
   player_id = Column(Integer(), ForeignKey('players.player_id'), nullable=False)
   tee_id = Column(Integer(), ForeignKey('tees.tee_id'), nullable=False)
+  handicap = Column(Float())
   course_handicap = Column(Integer())
   scores = relationship("Score", order_by=Score.num, back_populates="result")  
   round = relationship("Round", back_populates="results")  
   #player = relationship("Player", uselist=False, back_populates="result")
   player = relationship("Player", uselist=False)
 
-  def calcCourseHandicap(self, player, tee):
+  def calcCourseHandicap(self, tee):
     """Course Handicap = Handicap Index * Slope rating / 113."""
-    self.course_handicap = int(round(player.handicap * tee.slope / 113))
-    print('calcCourseHandicap() player:{} handicap:{} slope:{} course_handicap:{}'.format(player.nick_name, player.handicap, tee.slope, self.course_handicap))
+    
+    self.course_handicap = int(round(self.handicap * tee.slope / 113))
+    print('calcCourseHandicap() handicap:{} slope:{} course_handicap:{}'.format(self.handicap, tee.slope, self.course_handicap))
   
   def get_completed_holes(self):
     return len(self.scores)

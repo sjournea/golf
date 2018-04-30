@@ -107,8 +107,8 @@ class RoundCreate(GolfView):
     # add players
     for pl in self.btnPlayers:
       if pl._player is not None:
-        result = Result(round=golf_round, player_id=pl._player.player_id, tee_id=self._tee.tee_id)
-        result.calcCourseHandicap(pl._player, self._tee)
+        result = Result(round=golf_round, player_id=pl._player.player_id, tee_id=self._tee.tee_id, handicap=pl._player.handicap)
+        result.calcCourseHandicap(self._tee)
         session.add(result)
     session.commit()
     # switch back to main view
