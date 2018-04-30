@@ -905,6 +905,38 @@ los_lagos_men_holes = (
   {'par': 5, 'handicap':   2},
 )
 
+morgan_creek_tees = [
+  {'gender': 'mens',   'name': 'Black',      'rating': 73.4, 'slope': 135 },
+  {'gender': 'mens',   'name': 'Gold',       'rating': 71.9, 'slope': 132 },
+  {'gender': 'mens',   'name': 'Blue',       'rating': 70.0, 'slope': 128 },
+  {'gender': 'mens',   'name': 'White',      'rating': 66.6, 'slope': 123 },
+  {'gender': 'mens',   'name': 'Green',      'rating': 66.0, 'slope': 121 },
+  {'gender': 'womens', 'name': 'White',      'rating': 72.8, 'slope': 131 },
+  {'gender': 'womens', 'name': 'Green',      'rating': 72.1, 'slope': 129 },
+]
+
+morgan_creek_men_holes = (
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   3},
+  {'par': 5, 'handicap':   7},
+  {'par': 3, 'handicap':  15},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':  13},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':   5},
+  {'par': 4, 'handicap':   9},
+
+  {'par': 5, 'handicap':   6},
+  {'par': 4, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':  16},
+  {'par': 5, 'handicap':   4},
+  {'par': 4, 'handicap':  10},
+  {'par': 3, 'handicap':  14},
+  {'par': 4, 'handicap':  12},
+  {'par': 4, 'handicap':   8},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees, 'id':1},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees, 'id':2},
@@ -961,6 +993,7 @@ DBGolfCourses = (
   {'name': 'Pacific Grove Golf Links',         'holes': pacific_grove_men_holes, 'tees': pacific_grove_tees},  
   {'name': 'Los Lagos Golf Course',            'holes': los_lagos_men_holes, 'tees': los_lagos_tees},  
   {'name': 'Redwood Canyon Golf Course',       'holes': redwood_canyon_men_holes, 'tees': redwood_canyon_tees},  
+  {'name': 'Morgan Creek Golf Club',           'holes': morgan_creek_men_holes, 'tees': morgan_creek_tees},  
 )
 
 GolfPlayers = (

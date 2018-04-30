@@ -1,19 +1,26 @@
 TODO 4/28/18
 
 * Status display
-  Money won on holes
-  Money on table
-  bumps next hole
+  - Money won on holes
+  - Money on table
+  - bumps next hole
 * Tiebreaker on Stableford
-  - best csco{}
+  - best net score on 18,17,...
 * Money on all games
   - Total pot
   - winners paid
 * Edit database records
 * Animate snake if holding snake
+* Auto rotate to Portrait/Landscape on views.
+  - Scores Portrait, Scoreboard/Leaderboard Landscape
+* Database update.
+  - Save handicap used in Result record.
 
+* Storyboard for App.
 
-
+* Wifi on phone to share data/results
+  -- notification of you just lost money
+  
 
 Golf game TODO 11/23/17
   Python prototype
