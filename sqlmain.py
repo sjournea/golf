@@ -269,8 +269,8 @@ class SQLMenu(Menu):
       Tee.gender == player.genderPlural,
       Tee.name == self.lstCmd[2]).one()
     # Create Result
-    result = Result(round=golf_round, player_id=player.player_id, tee_id=tee.tee_id)
-    result.calcCourseHandicap(player, tee)
+    result = Result(round=golf_round, player_id=player.player_id, tee_id=tee.tee_id, handicap=player.handicap)
+    result.calcCourseHandicap(tee)
     session.add(result)
     session.commit()
 
