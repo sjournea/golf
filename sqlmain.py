@@ -13,6 +13,7 @@ import threading
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.test_data import DBGolfCourses, DBGolfPlayers
+from golf_db.sql_game_factory import SqlGolfGameOptions
 from golf_db.exceptions import GolfGameException
 
 from util.menu import MenuItem, Menu, InputException, FileInput
@@ -297,6 +298,14 @@ class SQLMenu(Menu):
     session = self.db.Session()
     # get round
     golf_round = session.query(Round).filter(Round.round_id == self._round_id).one()
+    gameOptions = SqlGolfGameOptions(game_type)
+    #print('dct:{}'.format(dct))
+    #print('gameOptions:{}'.format(gameOptions))
+    for key,value in dct.items():
+      if key in gameOptions:
+        if gameOptions[key]['type'] == 'bool':
+          dct[key] = value.lower() in ('yes', 'true', 'on')
+    #print('dct:{}'.format(dct))
     golf_round.addGame(session, game_type, dct)
     session.commit()
 
