@@ -41,15 +41,15 @@ class RoundScorecard(GolfView):
     # create ScrollView
     self.cardView = ui.ScrollView(x=self.width*0.15, y=self.height*0.10, width=self.width*0.85, height=self.height*0.30)
     # content width is double wide! with the same width it won't scroll.
-    self.cardView.content_size = (1.9*self.width, self.height*0.30)
+    self.cardView.content_size = (2.2*self.width, self.height*0.30)
     self.cardView.directional_lock_enabled = True
-    lstHoles = [str(hole) for hole in range(1,10)] + ['Out'] + [str(hole) for hole in range(10,19)] + ['In', 'Total']
-    lstWidths = 21*[50]
-    widthOffsets = [n*self.width*0.09 + 20 for n in range(21)]
+    lstHoles = [str(hole) for hole in range(1,10)] + ['Out'] + [str(hole) for hole in range(10,19)] + ['In', 'Total', 'ESC']
+    lstWidths = 22*[50]
+    widthOffsets = [n*self.width*0.09 + 20 for n in range(22)]
     height = 13
     for widthPos,text,width in zip(widthOffsets, lstHoles, lstWidths):
       #print 'widthPos:{} text:{} width:{}'.format(widthPos, text, width)
-      font = '<system-bold>' if text in ('In', 'Out', 'Total') else '<system>'
+      font = '<system-bold>' if text in ('In', 'Out', 'Total', 'ESC') else '<system>'
       lbl = ui.Label(text=text, alignment=ui.ALIGN_RIGHT, center=(widthPos, height), font=(font, 20), width=width)
       self.cardView.add_subview(lbl)
     self.dctPars = {}
@@ -73,7 +73,7 @@ class RoundScorecard(GolfView):
       height += self.height*0.04
       for widthPos,text,width in zip(widthOffsets, lstHoles, lstWidths):
         #print 'widthPos:{} text:{} width:{}'.format(widthPos, text, width)
-        font = '<system-bold>' if text in ('In', 'Out', 'Total') else '<system>'
+        font = '<system-bold>' if text in ('In', 'Out', 'Total', 'ESC') else '<system>'
         lbl = ui.Label(text='', alignment=ui.ALIGN_RIGHT, center=(widthPos, height), font=(font, 20), width=width)
         dct[text] = lbl
         self.cardView.add_subview(lbl)
@@ -107,6 +107,7 @@ class RoundScorecard(GolfView):
           dctLabels['In'].text = str(dct['in'])
           dctLabels['Out'].text = str(dct['out'])
           dctLabels['Total'].text = str(dct['total'])
+          dctLabels['ESC'].text = str(dct['esc']) if 'esc' in dct else ''
         else:
           self.lstPlayerLabels[n].hidden = True
           hidden = True
