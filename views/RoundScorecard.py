@@ -94,7 +94,7 @@ class RoundScorecard(GolfView):
 
   def _update_controls(self):
     """Add controls to view."""
-    if self.game.game.game_type in ('gross', 'net', 'putts', 'stableford', 'greenie', 'snake'): 
+    if self.game.game.game_type in ('gross', 'net', 'putts', 'stableford', 'greenie', 'snake', 'skins'): 
       for n in range(4):
         dctLabels = self.lstPlayers[n]
         if n < len(self.dctScorecard['players']): 

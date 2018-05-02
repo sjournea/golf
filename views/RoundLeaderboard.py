@@ -33,7 +33,7 @@ class RoundLeaderboard(GolfView):
     """Add controls to view."""
     self._remove_all_controls()
     hdrHeight = self.height * 0.11
-    if self.game.game.game_type in ('gross', 'net', 'putts', 'stableford', 'greenie', 'snake'): 
+    if self.game.game.game_type in ('gross', 'net', 'putts', 'stableford', 'greenie', 'snake', 'skins'): 
       # header
       alignments = [ui.ALIGN_RIGHT, ui.ALIGN_CENTER, ui.ALIGN_RIGHT, ui.ALIGN_RIGHT]
       widthPositions = [self.width * 0.1, self.width * 0.3, self.width * 0.6,self.width * 0.8]
