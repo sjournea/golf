@@ -173,6 +173,7 @@ class RoundScores(GolfView):
             '4 - Bogey',
             '5 - Double Bogey',
             '6 - Triple Bogey',
+            '7 - Quadruple Bogey',
         ]
         par_4_scores = [
             '1 - Ace',
@@ -182,6 +183,7 @@ class RoundScores(GolfView):
             '5 - Bogey',
             '6 - Double Bogey',
             '7 - Triple Bogey',
+            '8 - Quadruple Bogey',
         ]	
         par_5_scores = [
             '1 - Ace',
@@ -192,11 +194,25 @@ class RoundScores(GolfView):
             '6 - Bogey',
             '7 - Double Bogey',
             '8 - Triple Bogey',
+            '9 - Quadruple Bogey',
+        ]
+        par_6_scores = [
+            '1 - Ace',
+            '2 - Triple Eagle',
+            '3 - Double Eagle',
+            '4 - Eagle',
+            '5 - Birdie',
+            '6 - Par',
+            '7 - Bogey',
+            '8 - Double Bogey',
+            '9 - Triple Bogey',
+            '10 - Quadruple Bogey',
         ]
         dct_scores = {
-            3: par_3_scores + [str(n) for n in range(7,21)],
-            4: par_4_scores + [str(n) for n in range(8,21)],
-            5: par_5_scores + [str(n) for n in range(9,21)],		
+            3: par_3_scores + ['{}'.format(n) for n in range(8,21)],
+            4: par_4_scores + ['{}'.format(n) for n in range(9,21)],
+            5: par_5_scores + ['{}'.format(n) for n in range(10,21)],		
+            6: par_6_scores + ['{}'.format(n) for n in range(11,21)],		
         }
         title = 'Hole {} Par {} - Gross'.format(self._current_hole.num, self._current_hole.par)
         gross = dialogs.list_dialog(title, dct_scores[self._current_hole.par])
@@ -205,6 +221,7 @@ class RoundScores(GolfView):
 
     def set_putts(self, sender):
         putt_scores = [str(n) for n in range(11)]
-        putts = dialogs.list_dialog('Hole 1 Par 3 - Putts', putt_scores)
+        title = 'Hole {} Par {} - Putts'.format(self._current_hole.num, self._current_hole.par)
+        putts = dialogs.list_dialog(title, putt_scores)
         if putts:
             sender.title = putts
