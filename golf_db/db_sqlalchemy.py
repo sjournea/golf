@@ -51,6 +51,21 @@ class Hole(Base):
   handicap = Column(Integer(), nullable=False)
   course = relationship("Course", back_populates="holes")
 
+  valid_pars = [3, 4, 5, 6]
+  valid_handicaps = [n+1 for n in range(18)]
+  
+  def validate(self):
+    if self.par not in self.valid_pars:
+      raise Exception('par must be {}'.format(self.valid_pars))
+    if self.handicap not in self.valid_handicaps:
+      raise Exception('handicap must be {}'.format(self.valid_handicaps))
+
+  def isPar(self, par):
+    return self.par == par
+    
+  def __str__(self):
+    return 'par {} handicap {}'.format(self.par, self.handicap)
+
 
 class Tee(Base):
   __tablename__ = 'tees'
