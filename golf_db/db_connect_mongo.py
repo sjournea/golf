@@ -2,7 +2,7 @@
 from pymongo import MongoClient, errors
 
 from .db_connect import DBConnect
-from .test_data import DBGolfCourses, DBGolfPlayers, DBGolfRounds
+from .data.test_data import DBGolfCourses, DBGolfPlayers, DBGolfRounds
 from .exceptions import GolfDBException
 from util.tl_logger import TLLog
 

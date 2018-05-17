@@ -10,7 +10,7 @@ import traceback
 import threading
 #import time,datetime,re,os,traceback,pdb
 
-from golf_db.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
+from golf_db.data.test_data import GolfCourses, GolfPlayers, GolfRounds, RoundsPlayed
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.round import GolfRound

@@ -2,7 +2,7 @@ import unittest
 
 from golf_db.score import GolfScore
 from golf_db.player import GolfPlayer
-from golf_db.test_data import CanyonLake_Players
+from golf_db.data.test_data import CanyonLake_Players
 
 class GolfScoreTest(unittest.TestCase):
 

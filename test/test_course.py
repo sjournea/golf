@@ -2,7 +2,7 @@ import unittest
 
 from golf_db.course import GolfCourse
 from golf_db.hole import GolfHole
-from golf_db.test_data import GolfCourses
+from golf_db.data.test_data import GolfCourses
 from golf_db.db import GolfDBAdmin
 from golf_db.exceptions import GolfException,DocValidateFail
 

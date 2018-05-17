@@ -3,7 +3,7 @@ import datetime
 
 from golf_db.round import GolfRound
 from golf_db.course import GolfCourse
-from golf_db.test_data import TestGolfPlayers
+from golf_db.data.test_data import TestGolfPlayers
 from golf_db.db import GolfDBAdmin
 from golf_db.game_stableford import StablefordGame
 from golf_db.player import GolfPlayer

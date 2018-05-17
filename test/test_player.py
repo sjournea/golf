@@ -1,7 +1,7 @@
 import unittest
 
 from golf_db.player import GolfPlayer
-from golf_db.test_data import GolfPlayers
+from golf_db.data.test_data import GolfPlayers
 from golf_db.exceptions import DocValidateFail
 
 class GolfPlayerInitCase(unittest.TestCase):
