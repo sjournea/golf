@@ -12,7 +12,8 @@ import threading
 
 from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
-from golf_db.data.test_data import DBGolfCourses, DBGolfPlayers
+from golf_db.data.test_data import DBGolfCourses
+from golf_db.data.test_players import DBGolfPlayers
 from golf_db.sql_game_factory import SqlGolfGameOptions
 from golf_db.exceptions import GolfGameException
 

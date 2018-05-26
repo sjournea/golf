@@ -44,7 +44,7 @@ class RoundScores(GolfView):
         self.btnGross = []
         self.btnPutts = []
         for n in range(4):
-            height = self.height * 0.15 + n * self.height*0.10
+            height = self.height * 0.15 + n * self.height*0.05
             lbl = ui.Label(text='Player {}'.format(n+1), center=(self.width*0.25, height), width=self.width*0.4)
             self.add_subview(lbl)
             self.lblPlayers.append(lbl)
