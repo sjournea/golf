@@ -15,6 +15,8 @@ class PlayerForm:
         self.btnGross = btnGross
         self.btnPutts = btnPutts
 
+MAX_PLAYERS = 4
+
 class RoundScores(GolfView):
     def __init__(self):
         self._hole_num = 1
@@ -43,7 +45,7 @@ class RoundScores(GolfView):
         self.lblPlayers = []
         self.btnGross = []
         self.btnPutts = []
-        for n in range(4):
+        for n in range(MAX_PLAYERS):
             height = self.height * 0.15 + n * self.height*0.05
             lbl = ui.Label(text='Player {}'.format(n+1), center=(self.width*0.25, height), width=self.width*0.4)
             self.add_subview(lbl)
@@ -70,7 +72,7 @@ class RoundScores(GolfView):
 
     def activate(self):
         #print('{} activate()'.format(self.__class__.__name__))
-        for n in range(4):
+        for n in range(MAX_PLAYERS):
             self.lblPlayers[n].hidden = True
             self.btnGross[n].hidden = True
             self.btnPutts[n].hidden = True
