@@ -15,6 +15,8 @@ class PlayerForm:
         self.btnGross = btnGross
         self.btnPutts = btnPutts
 
+MAX_PLAYERS = 4
+
 class RoundScores(GolfView):
     def __init__(self):
         self._hole_num = 1
@@ -43,9 +45,10 @@ class RoundScores(GolfView):
         self.lblPlayers = []
         self.btnGross = []
         self.btnPutts = []
-        for n in range(4):
-            height = self.height * 0.15 + n * self.height*0.05
+        height = self.height * 0.15
+        for n in range(MAX_PLAYERS):
             lbl = ui.Label(text='Player {}'.format(n+1), center=(self.width*0.25, height), width=self.width*0.4)
+            height += self.height*0.05
             self.add_subview(lbl)
             self.lblPlayers.append(lbl)
 
@@ -63,6 +66,11 @@ class RoundScores(GolfView):
             self.add_subview(btnPutts)
             self.btnPutts.append(btnPutts)
 
+        # add the label for hole status updates
+        height += self.height*0.05
+        self.lblStatus = ui.Label(text='Game Status', center=(self.width*0.25, height), width=self.width*0.4)
+        self.add_subview(lbl)
+
     def deactivate(self):
         print('{} deactivate()'.format(self.__class__.__name__))
         if self.golf_round:
@@ -70,7 +78,7 @@ class RoundScores(GolfView):
 
     def activate(self):
         #print('{} activate()'.format(self.__class__.__name__))
-        for n in range(4):
+        for n in range(MAX_PLAYERS):
             self.lblPlayers[n].hidden = True
             self.btnGross[n].hidden = True
             self.btnPutts[n].hidden = True
@@ -113,6 +121,16 @@ class RoundScores(GolfView):
             else:
                 player.btnGross.title = '<not set>'
                 player.btnPutts.title = '<not set>'
+        # get all game status
+        all_game_status = ''
+        golf_round = session.query(Round).filter(Round.round_id == self._mainView._round_id).one()
+        for game in golf_round.games:
+            try:
+                game.CreateGame()
+                all_game_status += game.getStatus() + '\n'
+            except GolfGameException, ex:
+                print('{} Game - {} - {}'.format(ex.dct['game'].short_description, ex.dct['msg'], ','.join([pl.nick_name for pl in ex.dct['players']])))
+        self.lblStatus = all_game_status
 
     def _save(self, session=None):
         """Save the from values to the database."""
