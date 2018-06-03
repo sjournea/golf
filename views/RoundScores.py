@@ -48,7 +48,6 @@ class RoundScores(GolfView):
         height = self.height * 0.15
         for n in range(MAX_PLAYERS):
             lbl = ui.Label(text='Player {}'.format(n+1), center=(self.width*0.25, height), width=self.width*0.4)
-            height += self.height*0.05
             self.add_subview(lbl)
             self.lblPlayers.append(lbl)
 
@@ -65,11 +64,12 @@ class RoundScores(GolfView):
             btnPutts.action = self.set_putts
             self.add_subview(btnPutts)
             self.btnPutts.append(btnPutts)
+            height += self.height*0.05
 
         # add the label for hole status updates
-        height += self.height*0.05
-        self.lblStatus = ui.Label(text='Game Status', center=(self.width*0.25, height), width=self.width*0.4, number_of_lines=10)
-        self.add_subview(lbl)
+        #height += self.height*0.05
+        #self.lblStatus = ui.Label(text='Game Status', center=(self.width*0.25, height), width=self.width*0.4, number_of_lines=10)
+        #self.add_subview(lbl)
 
     def deactivate(self):
         print('{} deactivate()'.format(self.__class__.__name__))
@@ -122,15 +122,20 @@ class RoundScores(GolfView):
                 player.btnGross.title = '<not set>'
                 player.btnPutts.title = '<not set>'
         # get all game status
-        all_game_status = ''
-        golf_round = session.query(Round).filter(Round.round_id == self._mainView._round_id).one()
-        for game in golf_round.games:
-            try:
-                game.CreateGame()
-                all_game_status += game.getStatus() + '\n'
-            except GolfGameException, ex:
-                print('{} Game - {} - {}'.format(ex.dct['game'].short_description, ex.dct['msg'], ','.join([pl.nick_name for pl in ex.dct['players']])))
-        self.lblStatus = all_game_status
+        #all_game_status = ''
+        #golf_round = session.query(Round).filter(Round.round_id == self._mainView._round_id).one()
+        #for game in golf_round.games:
+        #    try:
+        #        print(game)
+        #        game_instance = game.CreateGame()
+        #        print(game_instance)
+        #        dct = game_instance.getStatus()
+        #        print(dct)
+        #        all_game_status += '{} - {}\n'.format(game_instance.short_description, dct['line'])
+        #    except GolfGameException, ex:
+        #        print('{} Game - {} - {}'.format(ex.dct['game'].short_description, ex.dct['msg'], ','.join([pl.nick_name for pl in   ex.dct['players']])))
+        #print(all_game_status)
+        #self.lblStatus.text = all_game_status
 
     def _save(self, session=None):
         """Save the from values to the database."""
