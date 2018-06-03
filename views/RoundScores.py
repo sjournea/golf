@@ -68,7 +68,7 @@ class RoundScores(GolfView):
 
         # add the label for hole status updates
         height += self.height*0.05
-        self.lblStatus = ui.Label(text='Game Status', center=(self.width*0.25, height), width=self.width*0.4)
+        self.lblStatus = ui.Label(text='Game Status', center=(self.width*0.25, height), width=self.width*0.4, number_of_lines=10)
         self.add_subview(lbl)
 
     def deactivate(self):
