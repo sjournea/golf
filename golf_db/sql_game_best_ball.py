@@ -68,8 +68,19 @@ class SqlBestBallTeam(SqlGolfTeam):
       self._status += ' {} to play'.format(to_play)
     return self._win
   
-  def get_scorecard(self):
+  def get_scorecard(self, index):
     """Scorecard for team."""
+    def score_string(index, score):
+      s = ''
+      if score is not None:
+        if score > 0:
+          s = '{:d}'.format(score)
+        elif index == 0 and score == 0:
+          s = 'AS'
+        else:
+          s = '-'
+      return s
+    #
     dct = {'team': self.name }
     dct['in'] = self._in
     dct['out'] = self._out
@@ -77,13 +88,11 @@ class SqlBestBallTeam(SqlGolfTeam):
     dct['holes'] = self._score
     line = '{:<6}'.format(self.name)
     for i,score in enumerate(self._score[:9]):
-      s = '' if score is None else '{:d}'.format(score)
-      line += ' {:>3}'.format(s)
-    line += ' {:>4d}'.format(self._out)
+      line += ' {:>3}'.format(score_string(index, score))
+    line += ' {:>4}'.format(score_string(index, self._out))
     for i,score in enumerate(self._score[9:]):
-      s = '' if score is None else '{:d}'.format(score)
-      line += ' {:>3}'.format(s)
-    line += ' {:>4d} {:>4d}'.format(self._in, self._total)
+      line += ' {:>3}'.format(score_string(index, score))
+    line += ' {:>4} {:>4}'.format(score_string(index, self._in), score_string(index, self._total))
     dct['line'] = line
     return dct
 
@@ -172,7 +181,7 @@ Four-Person Best Two Balls	 	 90%	 95%
       
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    self.dctScorecard['players'] = [team.get_scorecard() for team in self.team_list]
+    self.dctScorecard['players'] = [team.get_scorecard(index) for index,team in enumerate(self.team_list)]
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):
