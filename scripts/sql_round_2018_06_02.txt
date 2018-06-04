@@ -1,5 +1,5 @@
 # create a round and add players scores
-gcr Skywest 2018-06-02
+gcr Skywest 2018-06-02 calc_course_handicap=simple
 gad sjournea White
 gad snake White
 gad spanky White
