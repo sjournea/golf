@@ -21,7 +21,7 @@ class RoundScorecard(GolfView):
 
     height = self.height * 0.12
     widthPos = self.width*0.08
-    width = 60
+    width = 70
     lbl = ui.Label(text='Hole', alignment=ui.ALIGN_LEFT, center=(widthPos, height), font=('<system>', 20), width=width)
     self.add_subview(lbl)
     height += self.height*0.040
@@ -102,7 +102,7 @@ class RoundScorecard(GolfView):
           dct = self.dctScorecard['players'][n]
           self.lstPlayerLabels[n].text = dct['player'].getInitials()
           if self.game.game.game_type == 'net':
-            self.lstPlayerLabels[n].text += '   {:>2}'.format(self.golf_round.results[n].course_handicap)
+            self.lstPlayerLabels[n].text += ' {:>3}'.format(self.golf_round.results[n].course_handicap)
           self.lstPlayerLabels[n].hidden = False
           for n,value in enumerate(dct['holes']):
             if value is None:
