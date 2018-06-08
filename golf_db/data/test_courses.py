@@ -968,6 +968,41 @@ santa_teresa_men_holes = (
   {'par': 4, 'handicap':   5},
 )
 
+cameron_park_tees = [
+  {'gender': 'mens',   'name': '4 Pines',    'rating': 72.0, 'slope': 126 },
+  {'gender': 'mens',   'name': '3 Pines',    'rating': 71.0, 'slope': 125 },
+  {'gender': 'mens',   'name': '2 Pines',    'rating': 68.5, 'slope': 122 },
+  {'gender': 'mens',   'name': 'Combo',      'rating': 66.7, 'slope': 117 },
+  {'gender': 'mens',   'name': '1 Pine',     'rating': 65.9, 'slope': 114 },
+  {'gender': 'womens', 'name': '4 Pines',    'rating': 77.9, 'slope': 147 },
+  {'gender': 'womens', 'name': '3 Pines',    'rating': 76.6, 'slope': 144 },
+  {'gender': 'womens', 'name': '2 Pines',    'rating': 74.5, 'slope': 135 },
+  {'gender': 'womens', 'name': 'Combo',      'rating': 72.2, 'slope': 129 },
+  {'gender': 'womens', 'name': '1 Pine',     'rating': 71.1, 'slope': 126 },
+]
+
+cameron_park_men_holes = (
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   9},
+  {'par': 3, 'handicap':  17},
+  {'par': 4, 'handicap':  13},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':   3},
+  {'par': 4, 'handicap':   5},
+  {'par': 3, 'handicap':  15},
+  {'par': 5, 'handicap':   7},
+
+  {'par': 4, 'handicap':  14},
+  {'par': 5, 'handicap':   2},
+  {'par': 3, 'handicap':  18},
+  {'par': 5, 'handicap':   4},
+  {'par': 4, 'handicap':  10},
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   8},
+  {'par': 4, 'handicap':  12},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees, 'id':1},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees, 'id':2},
@@ -1026,5 +1061,6 @@ DBGolfCourses = (
   {'name': 'Redwood Canyon Golf Course',       'holes': redwood_canyon_men_holes, 'tees': redwood_canyon_tees},  
   {'name': 'Morgan Creek Golf Club',           'holes': morgan_creek_men_holes, 'tees': morgan_creek_tees},  
   {'name': 'Santa Teresa Golf Club',           'holes': santa_teresa_men_holes, 'tees': santa_teresa_tees},  
+  {'name': 'Cameron Park Country Club',        'holes': cameron_park_men_holes, 'tees': cameron_park_tees},  
 )
 
