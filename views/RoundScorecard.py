@@ -101,11 +101,13 @@ class RoundScorecard(GolfView):
           hidden = False
           dct = self.dctScorecard['players'][n]
           self.lstPlayerLabels[n].text = dct['player'].getInitials()
+          if self.game.game.game_type == 'net':
+            self.lstPlayerLabels[n].text += '   {:>2}'.format(self.golf_round.results[n].course_handicap)
           self.lstPlayerLabels[n].hidden = False
           for n,value in enumerate(dct['holes']):
             if value is None:
               s = ''
-              if self.game.game.game_types == 'net':
+              if self.game.game.game_type == 'net':
                 s = dct['bumps'][n]*'*'
             else:
               s = str(value)
