@@ -12,6 +12,7 @@ gag stableford stableford_type=British wager=0.50
 gag greenie wager=1.0
 gag snake snake_type=Hold wager=1.0
 gag bestball teams=[(0,1),(2,3)]
+gag rewards wager=2.0
 # start game
 gst 
 pause enable

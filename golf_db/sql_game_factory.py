@@ -11,6 +11,7 @@ from .sql_game_best_ball import SqlGameBestBall
 from .sql_game_six_point import SqlGameSixPoint
 from .sql_game_eighty_one import SqlGameEightyOne
 from .sql_game_match import SqlGameMatch
+from .sql_game_rewards import SqlGameRewards
 
 dctGames = { 
   'gross': SqlGameGross,
@@ -24,6 +25,7 @@ dctGames = {
   'six_point': SqlGameSixPoint,
   'eighty_one': SqlGameEightyOne,
   'match': SqlGameMatch,
+  'rewards': SqlGameRewards,
 }
 
 def SqlGolfGameFactory(game):

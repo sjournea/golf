@@ -6,8 +6,8 @@ TODO 6/03/18
        assume all players from the same tee.
      Will affect all games using handicap
 * Add new game - Rewards
-  - Most Birdies - 1/2 of wager, no birdies, money carrys to Pars
-  - Most Pars    - 1/2 of wager.
+  - Most Birdies (gross) - 1/2 of wager, no birdies, money carrys to Pars
+  - Most Pars (gross)    - 1/2 of wager.
   - Wager $2 / player
 * In UI
   - show course handicap used
