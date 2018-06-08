@@ -103,7 +103,13 @@ class RoundScorecard(GolfView):
           self.lstPlayerLabels[n].text = dct['player'].getInitials()
           self.lstPlayerLabels[n].hidden = False
           for n,value in enumerate(dct['holes']):
-            dctLabels[str(n+1)].text = str(value) if value is not None else ''
+            if value is None:
+              s = ''
+              if self.game.game.game_types == 'net':
+                s = dct['bumps'][n]*'*'
+            else:
+              s = str(value)
+            dctLabels[str(n+1)].text = s
           dctLabels['In'].text = str(dct['in'])
           dctLabels['Out'].text = str(dct['out'])
           dctLabels['Total'].text = str(dct['total'])
