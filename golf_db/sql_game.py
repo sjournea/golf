@@ -158,7 +158,7 @@ class SqlGolfTeam(object):
       self.name = '/'.join([pl.player.getInitials() for pl in self.players])
 
   @abstractmethod
-  def setup(self, min_handicap):
+  def setup(self, min_handicap=None):
     pass
 
   @abstractmethod

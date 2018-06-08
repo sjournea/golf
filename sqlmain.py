@@ -58,7 +58,7 @@ class SQLMenu(Menu):
                                 'Get a scorecard', self._courseGetScorecard))
     self.addMenuItem( MenuItem( 'rol', '',       
                                 'round list.', self._roundList) )
-    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD>',
+    self.addMenuItem( MenuItem( 'gcr', '<course> <YYYY-MM-DD> [option=value,...]',
                                 'Create a Round of Golf',      self._roundCreate))
     self.addMenuItem( MenuItem( 'gad', '<email> <tee>',
                                 'Add player to Round of Golf', self._roundAddPlayer))
@@ -241,6 +241,11 @@ class SQLMenu(Menu):
       raise InputException( 'Not enough arguments for %s command' % self.lstCmd[0] )
     course_name = self.lstCmd[1]
     dtPlay = datetime.datetime.strptime(self.lstCmd[2], "%Y-%m-%d")
+    # get options
+    options = {}
+    for option in self.lstCmd[3:]:
+      lst = option.split('=')
+      options[lst[0]] = lst[1]
     # session
     session = self.db.Session()
     query = session.query(Course).filter(Course.name.like('%{}%'.format(self.lstCmd[1])))
@@ -248,6 +253,12 @@ class SQLMenu(Menu):
     golf_round = Round(course_id=course.course_id, date_played=dtPlay)
     session.add(golf_round)
     session.commit()
+    if options:
+      print('options:{}'.format(options))
+      for key,value in options.items():
+        print('key:{} value:{}'.format(key,value))
+        golf_round.set_option(key, value)
+        session.commit()
     # save round id
     self._round_id = golf_round.round_id
     print 'new round id = {}'.format(golf_round.round_id)

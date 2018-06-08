@@ -17,7 +17,8 @@ Basic golf game, the players simply add up their scores and compare. You score 9
 """
   def setup(self, **kwargs):
     """Start the game."""
-    self._players = [GrossPlayer(self, result) for result in self.golf_round.results]
+    player_class = kwargs.get('player_class', GrossPlayer)
+    self._players = [player_class(self, result) for result in self.golf_round.results]
     # add header to scorecard
     self.dctScorecard['course'] = self.golf_round.course.getScorecard(ESC=1)
     self.dctScorecard['header'] = '{0:*^98}'.format(' Gross ')

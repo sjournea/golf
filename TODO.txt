@@ -1,3 +1,24 @@
+TODO 6/03/18
+* Add simple course handicap calculation
+  - round option - calc_course_handicap=<USGA|simple>
+     USGA   = player_index * (tee_slope_rating / 113)
+     Simple = Round(player_index)
+       assume all players from the same tee.
+     Will affect all games using handicap
+* Add new game - Rewards
+  - Most Birdies (gross) - 1/2 of wager, no birdies, money carrys to Pars
+  - Most Pars (gross)    - 1/2 of wager.
+  - Wager $2 / player
+* In UI
+  - show course handicap used
+  - show bumps on all holes
+* Web based implementation
+  - on phone run a local server
+  - develop on linux desktop
+    Bottle for python web server
+* SQLAlchemy -- delete a round
+  - needs cascade relationships
+
 TODO 4/28/18
 
 * Status display

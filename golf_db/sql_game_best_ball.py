@@ -4,7 +4,7 @@ from .sql_game_net import SqlGameNet, NetPlayer
 from .sql_game import SqlGolfTeam
 
 class SqlBestBallTeam(SqlGolfTeam):
-  def setup(self, min_handicap):
+  def setup(self, min_handicap=None):
     """Setup holes and scores for match play."""
     self.course = self.game.golf_round.course
     self._net = [None for _ in range(len(self.course.holes))]
@@ -20,6 +20,12 @@ class SqlBestBallTeam(SqlGolfTeam):
   def status(self):
     return self._status
 
+  def print_net_scores(self):
+    print('team:{}'.format(self.name))
+    for pl in self.players:
+      print('  {:<10}: {}'.format(pl.player.nick_name, pl.dct_net['holes'])) 
+
+  
   def calculate_score(self, index):
     # net scores have already set.
     self._net[index] = min([pl.dct_net['holes'][index] for pl in self.players])
@@ -62,8 +68,19 @@ class SqlBestBallTeam(SqlGolfTeam):
       self._status += ' {} to play'.format(to_play)
     return self._win
   
-  def get_scorecard(self):
+  def get_scorecard(self, index):
     """Scorecard for team."""
+    def score_string(index, score):
+      s = ''
+      if score is not None:
+        if score > 0:
+          s = '{:d}'.format(score)
+        elif index == 0 and score == 0:
+          s = 'AS'
+        else:
+          s = '-'
+      return s
+    #
     dct = {'team': self.name }
     dct['in'] = self._in
     dct['out'] = self._out
@@ -71,13 +88,11 @@ class SqlBestBallTeam(SqlGolfTeam):
     dct['holes'] = self._score
     line = '{:<6}'.format(self.name)
     for i,score in enumerate(self._score[:9]):
-      s = '' if score is None else '{:d}'.format(score)
-      line += ' {:>3}'.format(s)
-    line += ' {:>4d}'.format(self._out)
+      line += ' {:>3}'.format(score_string(index, score))
+    line += ' {:>4}'.format(score_string(index, self._out))
     for i,score in enumerate(self._score[9:]):
-      s = '' if score is None else '{:d}'.format(score)
-      line += ' {:>3}'.format(s)
-    line += ' {:>4d} {:>4d}'.format(self._in, self._total)
+      line += ' {:>3}'.format(score_string(index, score))
+    line += ' {:>4} {:>4}'.format(score_string(index, self._in), score_string(index, self._total))
     dct['line'] = line
     return dct
 
@@ -135,12 +150,12 @@ Four-Person Best Two Balls	 	 90%	 95%
     # TODO - for stroke play will need to adjust handicap
     handicap_multiplier = 1
     # find min handicap in all players
-    min_handicap = min([result.course_handicap*handicap_multiplier for result in self.golf_round.results])
-    self._players = [NetPlayer(self, result, min_handicap) for result in self.golf_round.results]
+    #min_handicap = min([result.course_handicap*handicap_multiplier for result in self.golf_round.results])
+    self._players = [NetPlayer(self, result, 0) for result in self.golf_round.results]
     # create teams
     self.team_list = [SqlBestBallTeam(self, [self._players[i1], self._players[i2]]) for (i1,i2) in self.teams]
     for team in self.team_list:
-      team.setup(min_handicap)
+      team.setup()
       
     self.to_play = len(self.golf_round.course.holes)
     self.dctScorecard['header'] = '{0:*^98}'.format(' BestBall - Match Play')
@@ -154,6 +169,8 @@ Four-Person Best Two Balls	 	 90%	 95%
     self.to_play = len(self.golf_round.course.holes) - self.thru
     for index in range(self.thru):
       for team in self.team_list:
+        # print net scores
+        #team.print_net_scores()
         team.calculate_score(index)
       self.team_list[0].update_points(index, self.team_list[1])  
       self.team_list[1].update_points(index, self.team_list[0])  
@@ -164,7 +181,7 @@ Four-Person Best Two Balls	 	 90%	 95%
       
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
-    self.dctScorecard['players'] = [team.get_scorecard() for team in self.team_list]
+    self.dctScorecard['players'] = [team.get_scorecard(index) for index,team in enumerate(self.team_list)]
     return self.dctScorecard
   
   def getLeaderboard(self, **kwargs):

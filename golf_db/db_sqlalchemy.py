@@ -204,9 +204,12 @@ class Result(Base):
 
   def calcCourseHandicap(self, tee):
     """Course Handicap = Handicap Index * Slope rating / 113."""
-    
-    self.course_handicap = int(round(self.handicap * tee.slope / 113))
-    print('calcCourseHandicap() handicap:{} slope:{} course_handicap:{}'.format(self.handicap, tee.slope, self.course_handicap))
+    type = self.round.get_option('calc_course_handicap')
+    if type == 'simple':
+      self.course_handicap = round(self.handicap)
+    else:   # type == 'USTA':
+      self.course_handicap = int(round(self.handicap * tee.slope / 113))   
+    print('calcCourseHandicap() type:{} handicap:{} slope:{} course_handicap:{}'.format(type, self.handicap, tee.slope, self.course_handicap))
   
   def get_completed_holes(self):
     return len(self.scores)
@@ -248,10 +251,32 @@ class Round(Base):
   round_id = Column(Integer(), primary_key=True)
   course_id =  Column(Integer(), ForeignKey('courses.course_id'), nullable=False)
   date_played = Column(Date(), nullable=False, default=datetime.date.today())
+  dict_options = Column(Text, default="{}")
   course = relationship("Course", uselist=False)
   results = relationship("Result", order_by=Result.result_id, back_populates="round")  
   games = relationship("Game", order_by=Game.game_id, back_populates="round")  
   
+  OPTIONS = {
+    'calc_course_handicap': {'type': 'enum', 'values': ('USGA', 'simple')},
+  }
+  def get_option(self, name):
+    dct = ast.literal_eval(self.dict_options)
+    return dct.get(name)
+
+  def set_option(self, name, value):
+    if name not in self.OPTIONS:
+      raise GolfDBException('option name "{}" not supported'.format(name))
+    option = self.OPTIONS[name]
+    if option['type'] == 'enum':
+      if value not in option['values']:
+        raise GolfDBException('option {} value "{}" illegal. Must be in {}'.format(name, value, option['values']))      
+    else:
+      raise GolfDBException('option type "{}" not supported'.format(option['type']))
+    # set option value
+    dct = ast.literal_eval(self.dict_options)
+    dct[name] = value
+    self.dict_options = str(dct)
+
   def addScores(self, session, hole, dct_scores):
     """Add some scores for this round.
 
