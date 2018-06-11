@@ -25,8 +25,9 @@ Who has the fewest putts in the round. Must be on the green to be a putt.
   def update(self):
     """Update gross results for all scores so far."""
     for pl, result in zip(self._players, self.golf_round.results):
-      for n,score in enumerate(result.scores):
-        # update gross 
+      for score in result.scores:
+        # update gross
+        n = score.num-1
         pl.dct_putts['holes'][n] = score.putts
       pl.update_totals(pl.dct_putts)
     

@@ -48,11 +48,12 @@ In both cases the other players each lose a skin.
     """Update gross results for all scores so far."""
     for pl, result in zip(self._players, self.golf_round.results):
       # calculate net
-      for n, score in enumerate(result.scores):
+      for score in result.scores:
+        n = score.num-1
         pl.dct_nets['holes'][n] = score.gross - pl._bumps[n] 
     for n in range(len(self.golf_round.course.holes)):
       if pl.dct_nets['holes'][n] == None:
-        break
+        continue
       net_scores = [pl.dct_nets['holes'][n] for pl in self._players]
       net_scores.sort()
       winner = net_scores[0] < net_scores[1]
@@ -75,14 +76,20 @@ In both cases the other players each lose a skin.
       dct['total'] = sc.dct_skins['total']
       dct['holes'] = sc.dct_skins['holes']
       line = '{:<6}'.format(sc.player.nick_name)
-      for skin in sc.dct_skins['holes'][:9]:
-        sk = '{:+d}'.format(skin) if skin else ''
+      for skin,bumps in zip(sc.dct_skins['holes'][:9], sc._bumps[:9]):
+        # show bumps
+        sk = bumps*'*'
+        if skin and skin > 0:
+          sk += '{:d}'.format(skin)
         line += ' {:>3}'.format(sk)
-      line += ' {:>+4d}'.format(dct['out'])
-      for skin in sc.dct_skins['holes'][9:]:
-        sk = '{:+d}'.format(skin) if skin else ''
+      line += ' {:>4d}'.format(dct['out'])
+      for skin,bumps in zip(sc.dct_skins['holes'][9:], sc._bumps[9:]):
+        # show bumps
+        sk = bumps*'*'
+        if skin and skin > 0:
+          sk += '{:d}'.format(skin)
         line += ' {:>3}'.format(sk)
-      line += ' {:>+4d} {:>+4d}'.format(dct['in'], dct['total'])
+      line += ' {:>4d} {:>4d}'.format(dct['in'], dct['total'])
       dct['line'] = line
       lstPlayers.append(dct)
     self.dctScorecard['players'] = lstPlayers

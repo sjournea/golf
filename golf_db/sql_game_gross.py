@@ -28,8 +28,9 @@ Basic golf game, the players simply add up their scores and compare. You score 9
     """Update gross results for all scores so far."""
     for pl, result in zip(self._players, self.golf_round.results):
       pl.esc = 0
-      for n,score in enumerate(result.scores):
-        # update gross 
+      for score in result.scores:
+        # update gross
+        n = score.num-1
         pl.dct_gross['holes'][n] = score.gross
         pl.esc += self.golf_round.course.calcESC(n, score.gross, result.course_handicap)
       pl.update_totals(pl.dct_gross)
