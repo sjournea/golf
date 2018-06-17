@@ -36,10 +36,11 @@ Which ever player gets the most natural birdies and pars wins. If there are no b
     super(SqlGameRewards, self).update()
     self.thru = self.golf_round.get_completed_holes()    
     for pl, result in zip(self._players, self.golf_round.results):
-      for n,score in enumerate(result.scores):
+      for score in result.scores:
+        n = score.num-1
         # update birdies and pars
         gross = pl.dct_gross['holes'][n]
-        if gross <= self.pars[n] - 1:
+        if gross <= self.pars[n]-1:
           pl.dct_rewards['holes'][n] = 'B'
         elif gross == self.pars[n]:
           pl.dct_rewards['holes'][n] = 'P'

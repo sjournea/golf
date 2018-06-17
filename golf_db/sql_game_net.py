@@ -39,7 +39,8 @@ The bumps will be added to the lowest handicap holes on the course being played.
   def update(self):
     """Update gross results for all scores so far."""
     for pl, result in zip(self._players, self.golf_round.results):
-      for n,score in enumerate(result.scores):
+      for score in result.scores:
+        n = score.num-1
         # update net 
         pl.dct_net['holes'][n] = score.gross - pl._bumps[n]
       pl.update_totals(pl.dct_net)

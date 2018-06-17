@@ -36,11 +36,12 @@ class SqlGameSnake(SqlGolfGame):
     """Update gross results for all scores so far."""
     dct_three_putts = {hole.num: None for hole in self.golf_round.course.holes}
     for pl, result in zip(self._players, self.golf_round.results):
-      for n, score in enumerate(result.scores):
-        if dct_three_putts[n+1] is None:
-            dct_three_putts[n+1] = []
+      for score in result.scores:
+        n = score.num
+        if dct_three_putts[n] is None:
+            dct_three_putts[n] = []
         if score.putts >= 3:
-            dct_three_putts[n+1].append((pl, score.putts))
+            dct_three_putts[n].append((pl, score.putts))
     hole_nums = sorted(dct_three_putts.keys())
     for hole_num in hole_nums:
       lst_losers = dct_three_putts[hole_num]

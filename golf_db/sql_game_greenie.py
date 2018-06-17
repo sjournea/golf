@@ -51,12 +51,13 @@ Options:
     dct_greens = {hole_num: None for hole_num in self._holes}
     for pl, result in zip(self._players, self.golf_round.results):
       for n, score in enumerate(result.scores):
-        if n+1 in self._holes:
-          if dct_greens[n+1] is None:
-            dct_greens[n+1] = []
-          par = self.golf_round.course.holes[n].par
+        n = score.num
+        if n in self._holes:
+          if dct_greens[n] is None:
+            dct_greens[n] = []
+          par = self.golf_round.course.holes[n-1].par
           if score.gross - score.putts == par - 2:
-            dct_greens[n+1].append((pl, score))
+            dct_greens[n].append((pl, score))
 
     self.thru = self.golf_round.get_completed_holes()
     hole_nums = sorted(dct_greens.keys())
