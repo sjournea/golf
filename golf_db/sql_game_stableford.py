@@ -104,6 +104,7 @@ Since most people have a hard time shooting double eagles and eagles, golfers of
       dct['out'] = sc.dct_points['out']
       dct['total'] = sc.dct_points['total']
       dct['holes'] = sc.dct_points['holes']
+      dct['bumps'] = sc._bumps
       line = '{:<6}'.format(sc.player.nick_name)
       for i,point in enumerate(sc.dct_points['holes'][:9]):
         s = '*' if sc._jokers and (i+1) in sc._jokers else ''
