@@ -49,7 +49,11 @@ class RoundLeaderboard(GolfView):
       for n,dct in enumerate(self.dctLeaderboard['leaderboard']):
         playerHeight = (n+1)*self.height*0.05 + hdrHeight
         for widthPos,key,alignment,width in zip(widthPositions, keys, alignments, widths):
-          text = dct['player'].getFullName() if key == 'player' else str(dct[key])
+          if key == 'player':
+            text = '*' if dct.get('has_snake') else ''
+            text += dct['player'].getFullName()
+          else:
+            text = str(dct[key])
           lbl = ui.Label(text=text, alignment=alignment, center=(widthPos, playerHeight), width=width)
           self._add_control(lbl)			
     elif self.game.game.game_type in ('bestball'):

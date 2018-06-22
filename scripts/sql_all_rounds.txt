@@ -42,4 +42,5 @@
 < scripts/sql_round_2018_05_28.txt
 < scripts/sql_round_2018_06_02.txt
 < scripts/sql_round_2018_06_09.txt
+< scripts/sql_round_2018_06_16.txt
 
