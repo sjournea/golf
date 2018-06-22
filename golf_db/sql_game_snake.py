@@ -124,14 +124,15 @@ class SqlGameSnake(SqlGolfGame):
       score_dct = {
         'player': sc.player,
         'total' : sc.dct_points['total'],
+        'has_snake' : sc == self._has_snake,
       }
       if prev_total != None and score_dct[sort_by] != prev_total:
         pos += 1
       prev_total = score_dct[sort_by]
       score_dct['pos'] = pos
       score_dct['thru'] = self._thru
-      score_dct['line'] = '{:<3} {:<6} {:>5} {:>4}'.format(
-        score_dct['pos'], score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
+      score_dct['line'] = '{:<2} {}{:<6} {:>5} {:>4}'.format(
+        score_dct['pos'], '*' if score_dct['has_snake'] else ' ', score_dct['player'].nick_name, score_dct['total'], score_dct['thru'])
       board.append(score_dct)
     self.dctLeaderboard['leaderboard'] = board
     return self.dctLeaderboard

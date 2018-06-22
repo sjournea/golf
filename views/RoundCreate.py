@@ -102,6 +102,8 @@ class RoundCreate(GolfView):
     # Start the round
     session = self.db.Session()
     golf_round = Round(course_id=self._course.course_id, date_played=self._date_played)
+    # HARDWIRED to simple
+    golf_round.set_option('calc_course_handicap', 'simple')
     session.add(golf_round)
     session.commit()
     # add players
