@@ -251,7 +251,7 @@ class Round(Base):
   round_id = Column(Integer(), primary_key=True)
   course_id =  Column(Integer(), ForeignKey('courses.course_id'), nullable=False)
   date_played = Column(Date(), nullable=False, default=datetime.date.today())
-  dict_options = Column(Text, default="{}")
+  dict_options = Column(Text, default="{'calc_course_handicap': 'simple'}")
   course = relationship("Course", uselist=False)
   results = relationship("Result", order_by=Result.result_id, back_populates="round")  
   games = relationship("Game", order_by=Game.game_id, back_populates="round")  

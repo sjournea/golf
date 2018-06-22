@@ -1,4 +1,5 @@
 # create a round and add players scores
+#gcr Monarch 2018-06-16 calc_course_handicap=simple
 gcr Monarch 2018-06-16 calc_course_handicap=simple
 gad sjournea Member
 gad snake Member
