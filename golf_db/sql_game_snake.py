@@ -6,6 +6,7 @@ class SnakePlayer(GamePlayer):
   def __init__(self, game, result):
     super(SnakePlayer, self).__init__(game, result)
     self.dct_points = self._init_dict()
+    self.dct_snake = [None for _ in range(len(self.game.golf_round.course.holes))]
 
 class SqlGameSnake(SqlGolfGame):
   """3 putt game."""
@@ -32,6 +33,11 @@ class SqlGameSnake(SqlGolfGame):
     snake_winner.update_totals(snake_winner.dct_points)
     self._has_snake = None
     
+  def _set_snake(self, index, snake_winner):
+    # You just got the snake
+    snake_winner.dct_snake[index] = 'S'
+    self._has_snake = snake_winner
+    
   def update(self):
     """Update gross results for all scores so far."""
     dct_three_putts = {hole.num: None for hole in self.golf_round.course.holes}
@@ -48,48 +54,45 @@ class SqlGameSnake(SqlGolfGame):
       if lst_losers == None:
         break
       self._thru = hole_num
-      if lst_losers:
-        index = hole_num-1
-        if self.snake_type == 'Points':
-          # all 3 putters lose a point
-          for pl,putts in lst_losers:
-            pl.dct_points['holes'][index] = -1
-            pl.update_totals(pl.dct_points)
-        elif self.snake_type == 'Hold':
-          # only one loser allowed
+      index = hole_num-1
+      if self.snake_type == 'Points':
+        # all 3 putters lose a point
+        for pl,putts in lst_losers:
+          self._pay_snake(index, pl)
+      elif self.snake_type == 'Hold':
+        # only one loser allowed
+        if len(lst_losers) > 1:
+          # Determine which 3 putt gets snake
+          # 1st, is there a largest putt
+          max_putts = max([tup[1] for tup in lst_losers])
+          lst_losers = [tup for tup in lst_losers if tup[1] == max_putts]
           if len(lst_losers) > 1:
-            # Determine which 3 putt gets snake
-            # 1st, is there a largest putt
-            max_putts = max([tup[1] for tup in lst_losers])
-            lst_losers = [tup for tup in lst_losers if tup[1] == max_putts]
+            if hole_num in self.game._game_data:
+              loser = self.game._game_data[hole_num]['closest_3_putt']
+              lst_losers = [tup for tup in lst_losers if tup[0].player.nick_name == loser]
             if len(lst_losers) > 1:
-              if hole_num in self.game._game_data:
-                loser = self.game._game_data[hole_num]['closest_3_putt']
-                lst_losers = [tup for tup in lst_losers if tup[0].player.nick_name == loser]
-              if len(lst_losers) > 1:
-                dct = {
-                  'hole_num': hole_num,
-                  'players': [w[0].player for w in lst_losers],
-                  'key': 'closest_3_putt',
-                  'msg': 'Which 3 putt player had the closest 1st putt on hole {}?'.format(hole_num),
-                  'game' : self,
-                }
-                raise GolfGameException(dct)
-          #
-          if len(lst_losers) == 1:
-            # we have a 3 putt winner (loser)
-            snake_winner = lst_losers[0][0]
-          if snake_winner:
-            if self._has_snake and self._has_snake == snake_winner:
-              # immediate payout and release snake
-              self._pay_snake(index, self._has_snake)
-            else:
-              self._has_snake = snake_winner
-      # snake automatic payout on 9 and 18
-      #print('Snake hole_num:{} has_snake:{}'.format(hole_num, self._has_snake))
-      if hole_num in (9, 18) and self._has_snake:
-        self._pay_snake(hole_num-1, self._has_snake)
-    #print('Snake - thru {} snake {}'.format(self._thru, self._has_snake.player.nick_name if self._has_snake else 'Free'))
+              dct = {
+                'hole_num': hole_num,
+                'players': [w[0].player for w in lst_losers],
+                'key': 'closest_3_putt',
+                'msg': 'Which 3 putt player had the closest 1st putt on hole {}?'.format(hole_num),
+                'game' : self,
+              }
+              raise GolfGameException(dct)
+        #
+        if len(lst_losers) == 1:
+          # we have a 3 putt winner (loser)
+          snake_winner = lst_losers[0][0]
+          if self._has_snake and self._has_snake == snake_winner:
+            # immediate payout and release snake
+            self._pay_snake(index, snake_winner)
+          else:
+            self._has_snake = snake_winner
+        if self._has_snake:
+          self._set_snake(index, self._has_snake)
+        # snake automatic payout on 9 and 18
+        if hole_num in (9, 18) and self._has_snake:
+          self._pay_snake(index, self._has_snake)
 
   def getScorecard(self, **kwargs):
     """Scorecard with all players."""
@@ -100,13 +103,24 @@ class SqlGameSnake(SqlGolfGame):
       dct['out'] = score.dct_points['out']
       dct['total'] = score.dct_points['total']
       dct['holes'] = score.dct_points['holes']
+      dct['snake'] = score.dct_snake
       # build line for stdout
       line = '{:<6}'.format(score.player.nick_name)
-      for putt in score.dct_points['holes'][:9]:
-        line += ' {:>3}'.format(putt) if putt is not None else '    '
+      for putt,snake in zip(score.dct_points['holes'][:9], score.dct_snake[:9]):
+        s = ''
+        if putt:
+          s = putt
+        elif snake:
+          s = snake
+        line += ' {:>3}'.format(s)
       line += ' {:>4}'.format(dct['out'])
-      for putt in score.dct_points['holes'][9:]:
-        line += ' {:>3}'.format(putt) if putt is not None else '    '
+      for putt,snake in zip(score.dct_points['holes'][9:], score.dct_snake[9:]):
+        s = ''
+        if putt:
+          s = putt
+        elif snake:
+          s = snake
+        line += ' {:>3}'.format(s)
       line += ' {:>4} {:>4}'.format(dct['in'], dct['total'])
       dct['line'] = line
       lstPlayers.append(dct)
