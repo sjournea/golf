@@ -108,6 +108,8 @@ class RoundScorecard(GolfView):
             s = dct['bumps'][n]*'*' if 'bumps' in dct else ''
             if value is not None:
               s += str(value)
+            elif 'snake' in dct and dct['snake']:
+              s = dct['snake']
             dctLabels[str(n+1)].text = s
           dctLabels['In'].text = str(dct['in'])
           dctLabels['Out'].text = str(dct['out'])

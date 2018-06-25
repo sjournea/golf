@@ -1,7 +1,7 @@
 TODO 6/24/18
   * Best Ball should have a final to end matches
   * Games need to support fewer then 4 players
-  * Leaderboard Snake show "S" if holding snake.
+*** Leaderboard Snake show "S" if holding snake.
   
 TODO 6/03/18
 * Add simple course handicap calculation
