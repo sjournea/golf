@@ -1,7 +1,12 @@
 TODO 6/24/18
   * Best Ball should have a final to end matches
   * Games need to support fewer then 4 players
-*** Leaderboard Snake show "S" if holding snake.
+  * Gross game option - only use max score per hole.
+    - show in scorecard with an 'm' for Max score
+  * Greenie game - scorecard show Q for qualified, 
+*** Snake game - Scorecard show "S" if holding snake.
+  * Architecture improvement
+    - Add callback routine to update screen.
   
 TODO 6/03/18
 * Add simple course handicap calculation

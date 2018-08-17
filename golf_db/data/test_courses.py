@@ -1033,6 +1033,36 @@ rolling_hills_men_holes = (
   {'par': 5, 'handicap':   4},
 )
 
+coyote_creek_valley_tees = [
+  {'gender': 'mens',   'name': 'Blue',    'rating': 74.6, 'slope': 129 },
+  {'gender': 'mens',   'name': 'White',   'rating': 71.2, 'slope': 126 },
+  {'gender': 'mens',   'name': 'Gold',    'rating': 68.2, 'slope': 121 },
+  {'gender': 'womens', 'name': 'Gold',    'rating': 76.1, 'slope': 133 },
+  {'gender': 'womens', 'name': 'Red',     'rating': 69.8, 'slope': 117 },
+]
+
+coyote_creek_valley_men_holes = (
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':   9},
+  {'par': 4, 'handicap':  17},
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':   7},
+  {'par': 5, 'handicap':   3},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':  15},
+  {'par': 4, 'handicap':   5},
+
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   4},
+  {'par': 3, 'handicap':  18},
+  {'par': 5, 'handicap':   2},
+  {'par': 4, 'handicap':  14},
+  {'par': 4, 'handicap':   8},
+  {'par': 3, 'handicap':  12},
+  {'par': 5, 'handicap':  10},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees, 'id':1},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees, 'id':2},
@@ -1093,5 +1123,6 @@ DBGolfCourses = (
   {'name': 'Santa Teresa Golf Club',           'holes': santa_teresa_men_holes, 'tees': santa_teresa_tees},  
   {'name': 'Cameron Park Country Club',        'holes': cameron_park_men_holes, 'tees': cameron_park_tees},  
   {'name': 'The Links at Rolling Hills',       'holes': rolling_hills_men_holes, 'tees': rolling_hills_tees},  
+  {'name': 'Coyote Creek Valley Course',       'holes': coyote_creek_valley_men_holes, 'tees': coyote_creek_valley_tees},  
 )
 
