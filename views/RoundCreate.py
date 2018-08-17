@@ -105,7 +105,7 @@ class RoundCreate(GolfView):
     session.add(golf_round)
     session.commit()
     # HARDWIRED to simple
-    golf_round.set_option('calc_course_handicap', 'simple')
+    # golf_round.set_option('calc_course_handicap', 'simple')
     session.commit()
     # add players
     for pl in self.btnPlayers:
