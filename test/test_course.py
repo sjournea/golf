@@ -243,3 +243,12 @@ class GolfCourseTestCase(unittest.TestCase):
     for key in ['hdr', 'par', 'hdcp', 'title']:
       self.assertIn(key, dct)
     self.assertIn('ESC', dct['hdr'])
+
+  def test_gonna_fail(self):
+    self.assertFalse(True)
+
+  def test_gonna_fail_2(self):
+    self.assertEqual(3, 4)
+
+  def test_gonna_fail_3(self):
+    raise Exception('Fail with exception')
