@@ -1063,6 +1063,38 @@ coyote_creek_valley_men_holes = (
   {'par': 5, 'handicap':  10},
 )
 
+empire_ranch_tees = [
+  {'gender': 'mens',   'name': 'Blue',       'rating': 71.7, 'slope': 127, 'yards': 6668},
+  {'gender': 'mens',   'name': 'Tournament', 'rating': 69.6, 'slope': 127, 'yards': 6308},
+  {'gender': 'mens',   'name': 'White',      'rating': 68.6, 'slope': 122, 'yards': 6056},
+  {'gender': 'mens',   'name': 'Combo',      'rating': 65.7, 'slope': 111, 'yards': 5327},
+  {'gender': 'mens',   'name': 'Red',        'rating': 63.5, 'slope': 106, 'yards': 5036},
+  {'gender': 'womens', 'name': 'White',      'rating': 73.6, 'slope': 124, 'yards': 6506},
+  {'gender': 'womens', 'name': 'Red',        'rating': 63.5, 'slope': 106, 'yards': 5036},
+]
+
+empire_ranch_men_holes = (
+  {'par': 4, 'handicap':   7},
+  {'par': 3, 'handicap':   9},
+  {'par': 5, 'handicap':  17},
+  {'par': 4, 'handicap':  11},
+  {'par': 4, 'handicap':  15},
+  {'par': 4, 'handicap':   1},
+  {'par': 5, 'handicap':   3},
+  {'par': 3, 'handicap':  13},
+  {'par': 4, 'handicap':   5},
+
+  {'par': 4, 'handicap':   8},
+  {'par': 5, 'handicap':  10},
+  {'par': 3, 'handicap':  18},
+  {'par': 4, 'handicap':   4},
+  {'par': 4, 'handicap':  12},
+  {'par': 5, 'handicap':  14},
+  {'par': 3, 'handicap':  16},
+  {'par': 4, 'handicap':   6},
+  {'par': 3, 'handicap':   2},
+)
+
 GolfCourses = (
   {'name': 'Canyon Lakes',    'holes': canyon_lakes_mens_holes, 'tees': canyon_lake_tees, 'id':1},
   {'name': 'San Jose Muni',   'holes': sj_muni_holes, 'tees': sj_muni_tees, 'id':2},
@@ -1124,5 +1156,6 @@ DBGolfCourses = (
   {'name': 'Cameron Park Country Club',        'holes': cameron_park_men_holes, 'tees': cameron_park_tees},  
   {'name': 'The Links at Rolling Hills',       'holes': rolling_hills_men_holes, 'tees': rolling_hills_tees},  
   {'name': 'Coyote Creek Valley Course',       'holes': coyote_creek_valley_men_holes, 'tees': coyote_creek_valley_tees},  
+  {'name': 'Empire Ranch Golf Club',           'holes': empire_ranch_men_holes, 'tees': empire_ranch_tees},  
 )
 

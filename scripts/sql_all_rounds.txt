@@ -47,4 +47,7 @@ pause ignore on
 < scripts/sql_round_2018_06_22_2.txt
 < scripts/sql_round_2018_06_23_1.txt
 < scripts/sql_round_2018_06_23_2.txt
+< scripts/sql_round_2018_08_09.txt
+< scripts/sql_round_2018_08_26.txt
+< scripts/sql_round_2018_09_03.txt
 
