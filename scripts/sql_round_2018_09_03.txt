@@ -1,5 +1,5 @@
 # create a round and add players scores
-gcr Teresa 2018-08-26
+gcr Teresa 2018-09-03
 gad sjournea Blue
 gad ricky Blue
 # add games
