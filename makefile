@@ -1,7 +1,7 @@
 # makefile for grid-baseball
 #
 APPS = sqlmain.py
-SUB_DIRS = util
+SUB_DIRS = util golf_db
 # python black for code formatting
 BLACK := black
 BLACK_OPTS := -v
