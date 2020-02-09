@@ -9,7 +9,7 @@ from util.tl_logger import TLLog
 log = TLLog.getLogger("golfdb")
 
 
-class GolfDB(object):
+class GolfDB:
     """Database wrapper for golf objects."""
 
     DATABASE = "golf"

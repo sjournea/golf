@@ -15,7 +15,7 @@ class WatchFile:
             # open file and move to end of file
             self._fp = open(self.filename, "rb")
             self._fp.seek(0, os.SEEK_END)
-        except Exception as err:
+        except Exception:
             self.close()
             raise
 

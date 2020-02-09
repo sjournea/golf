@@ -61,11 +61,11 @@ The bumps will be added to the lowest handicap holes on the course being played.
             }
             line = "{:<6}".format(sc.player.nick_name)
             for net, bump in zip(sc.dct_net["holes"][:9], sc._bumps[:9]):
-                nets = "{}{}".format(bump * "*", net if net > 0 else "")
+                nets = "{}{}".format(bump * "*", net if net and net > 0 else "")
                 line += " {:>3}".format(nets)
             line += " {:>4}".format(dct["out"])
             for net, bump in zip(sc.dct_net["holes"][9:], sc._bumps[9:]):
-                nets = "{}{}".format(bump * "*", net if net > 0 else "")
+                nets = "{}{}".format(bump * "*", net if net and net > 0 else "")
                 line += " {:>3}".format(nets)
             line += " {:>4} {:>4}".format(dct["in"], dct["total"])
             dct["line"] = line

@@ -266,7 +266,7 @@ class GolfMenu(Menu):
   def _roundScorecard(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    for n in xrange(self.golf_round.getGameCount()):
+    for n in range(self.golf_round.getGameCount()):
       dct = self.golf_round.getScorecard(n)
       if n == 0:
         print dct['course']['title']
@@ -289,7 +289,7 @@ class GolfMenu(Menu):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
     header = '{0:-^22}' if kwargs.get('sort_type') == 'money' else '{0:*^22}'
-    for n in xrange(self.golf_round.getGameCount()):
+    for n in range(self.golf_round.getGameCount()):
       game = self.golf_round.getGame(n)
       dctLeaderboard = game.getLeaderboard(**kwargs)
       update_line(0, header.format(' '+ game.short_description+ ' '))
@@ -302,7 +302,7 @@ class GolfMenu(Menu):
   def _roundStatus(self):
     if self.golf_round is None:
       raise InputException( 'Golf round not created')
-    for n in xrange(self.golf_round.getGameCount()):
+    for n in range(self.golf_round.getGameCount()):
       game = self.golf_round.getGame(n)
       dctStatus = game.getStatus()
       print '{:<15} - {}'.format(game.short_description, dctStatus['line'])
@@ -334,7 +334,7 @@ class GolfMenu(Menu):
         f.write('# add games\n')
         f.write('gag gross\n')
         f.write('gag net\n')
-        for n in xrange(len(roundData['players'])-1):
+        for n in range(len(roundData['players'])-1):
           f.write('gag match [0,{}]\n'.format(n+1))
         f.write('pause enable\n')
         f.write('# start all games\n')

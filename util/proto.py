@@ -1,11 +1,9 @@
 """proto.py - abstract data model class."""
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 
-class Proto:
+class Proto(ABC):
     """Abstract base class."""
-
-    __metaclass__ = ABCMeta
 
     def validate(self):
         pass

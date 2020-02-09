@@ -297,7 +297,7 @@ if __name__ == "__main__":
         showDatabases()
 
         # insert some docs
-        for i in xrange(5):
+        for i in range(5):
             doc = {
                 "author": "Steve",
                 "text": "This is a test doc {0}".format(i + 1),
@@ -307,7 +307,7 @@ if __name__ == "__main__":
             db.insert(dbName, dbColl, doc)
         # bulk insert some docs
         lst = []
-        for i in xrange(15):
+        for i in range(15):
             doc = {
                 "author": "Steve",
                 "text": "This is a test doc for bulk insert {0}".format(i + 1),

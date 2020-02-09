@@ -1,35 +1,29 @@
 #!/usr/bin/env python
 """ dbmain.py - simple query test program for database """
-import ast
 import datetime
 import logging
-import os
-import platform
 
-if platform.system() == "Linux":
-    import readline
-import traceback
+# import platform
 import threading
+import traceback
 
-from golf_db.player import GolfPlayer
+# from golf_db.player import GolfPlayer
 from golf_db.course import GolfCourse
 from golf_db.data.test_courses import DBGolfCourses
 from golf_db.data.test_players import DBGolfPlayers
 from golf_db.sql_game_factory import SqlGolfGameOptions
 from golf_db.exceptions import GolfGameException
 
-from util.menu import MenuItem, Menu, InputException, FileInput
+from util.menu import MenuItem, Menu, InputException
 from util.tl_logger import TLLog, logOptions
 
 from golf_db.db_sqlalchemy import (
     Player,
     Course,
     Round,
-    Database,
     Hole,
     Tee,
     Result,
-    Score,
     Game,
     DBAdmin,
 )
@@ -42,7 +36,8 @@ log = TLLog.getLogger("sqlmain")
 class SQLMenu(Menu):
     def __init__(self, **kwargs):
         cmdFile = kwargs.get("cmdFile")
-        super(SQLMenu, self).__init__(cmdFile)
+        super().__init__(cmdFile)
+
         self.url = kwargs.get("url")
         self.db = DBAdmin(self.url)
         self._round_id = None
@@ -289,7 +284,6 @@ class SQLMenu(Menu):
     def _roundCreate(self):
         if len(self.lstCmd) < 3:
             raise InputException("Not enough arguments for %s command" % self.lstCmd[0])
-        course_name = self.lstCmd[1]
         dtPlay = datetime.datetime.strptime(self.lstCmd[2], "%Y-%m-%d")
         # get options
         options = {}
@@ -364,14 +358,10 @@ class SQLMenu(Menu):
             raise InputException("Not enough arguments for %s command" % self.lstCmd[0])
         game_type = self.lstCmd[1]
 
-        players = None
         dct = {}
         for arg in self.lstCmd[2:]:
             lst = arg.split("=")
-            if lst[0] == "players":
-                players = lst[1]
-            else:
-                dct[lst[0]] = lst[1]
+            dct[lst[0]] = lst[1]
 
         session = self.db.Session()
         # get round
@@ -452,7 +442,7 @@ class SQLMenu(Menu):
                     ),
                 )
 
-                i = raw_input(prompt)
+                i = input(prompt)
                 if i == "x":
                     raise Exception("Abort by user")
                 i = int(i)
@@ -493,7 +483,6 @@ class SQLMenu(Menu):
                 print(player["line"])
 
     def _roundLeaderboard(self, golf_round, games, **kwargs):
-        length = 22
         lstLines = [None for _ in range(10)]
 
         def update_line(index, msg):
@@ -546,8 +535,6 @@ class SQLMenu(Menu):
 
 def main():
     DEF_LOG_ENABLE = "sqlmain"
-    DEF_DATABASE = "golf"
-    DEF_DB_TYPE = "local"
     DEF_DB_URL = "sqlite:///golf.sqlite"
     # build the command line arguments
     from optparse import OptionParser
@@ -588,14 +575,13 @@ def main():
     #  parse the command line and set values
     (options, args) = parser.parse_args()
 
-    master = None
     try:
         # set the main thread name
         thrd = threading.currentThread()
         thrd.setName("sqlmain")
 
         log.info(80 * "*")
-        ##log.info( 'dbmain - starting' )
+        log.info("sqlmain - starting")
         logOptions(options.lstLogEnable, options.showLogs, log=log)
 
         # create menu application

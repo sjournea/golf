@@ -169,7 +169,7 @@ class Course(Base):
             handicap -= 18
         # now handicaps < 18
         if handicap > 0:
-            for bp in xrange(handicap % 18, 0, -1):
+            for bp in range(handicap % 18, 0, -1):
                 for n, hole in enumerate(self.holes):
                     if hole.handicap == bp:
                         bumps[n] += 1

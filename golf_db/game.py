@@ -1,5 +1,5 @@
 """ game.py - GolfGame class."""
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from .exceptions import GolfException
 from .score import GolfScore
 from util.tl_logger import TLLog
@@ -7,10 +7,9 @@ from util.tl_logger import TLLog
 log = TLLog.getLogger("golfgame")
 
 
-class GolfGame(object):
+class GolfGame(ABC):
     """Base class for all golf games."""
 
-    __metaclass__ = ABCMeta
     description = "<Description not set>"
     short_description = "<Not set>"
 
@@ -18,7 +17,7 @@ class GolfGame(object):
         self.golf_round = golf_round
         self.players = kwargs.get("players")
         if not self.players:
-            self.players = [n for n in xrange(len(scores))]
+            self.players = [n for n in range(len(scores))]
         self.scores = [GolfScore(dct=scores[n].toDict()) for n in self.players]
         self.dctScorecard = {"course": self.golf_round.course.getScorecard()}
         self.dctLeaderboard = {}
@@ -164,10 +163,8 @@ class GolfGame(object):
             dct["total"] = dct["in"] + dct["out"] + dct.get("overall", 0)
 
 
-class GolfTeam:
+class GolfTeam(ABC):
     """Base class for all golf teams."""
-
-    __metaclass__ = ABCMeta
 
     def __init__(self, players, **kwargs):
         self.name = kwargs.get("name")
