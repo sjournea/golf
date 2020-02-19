@@ -1,11 +1,9 @@
 """db_connect.py"""
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod, abstractproperty
 
 
-class DBConnect:
+class DBConnect(ABC):
     """Abstract base databse connection class."""
-
-    __metaclass__ = ABCMeta
 
     def __init__(self, db, **kwargs):
         self.db = db

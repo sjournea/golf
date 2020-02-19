@@ -1,5 +1,4 @@
 """game_best_ball.py - Best Ball Golf Game class."""
-import ast
 from .sql_game_net import SqlGameNet, NetPlayer
 from .sql_game import SqlGolfTeam
 

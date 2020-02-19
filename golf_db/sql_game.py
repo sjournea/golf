@@ -1,6 +1,6 @@
 """ game.py - GolfGame class."""
 import ast
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from .exceptions import GolfException
 from .score import GolfScore
 from util.proto import Proto
@@ -9,10 +9,9 @@ from util.tl_logger import TLLog
 log = TLLog.getLogger("sqlgame")
 
 
-class SqlGolfGame(object):
+class SqlGolfGame(ABC):
     """Base class for all golf games."""
 
-    __metaclass__ = ABCMeta
     description = "<Description not set>"
     short_description = "<Not set>"
 
@@ -110,11 +109,11 @@ class SqlGolfGame(object):
 
     @abstractmethod
     def getLeaderboard(self, **kwargs):
-        """Return leaderboard for this game.
+        """ Return leaderboard for this game.
 
-    Returns:
-      list of dictionaries sorted in the order of 1st to last.
-    """
+          Returns:
+          list of dictionaries sorted in the order of 1st to last.
+          """
         pass
 
     @abstractmethod
@@ -132,8 +131,8 @@ class GamePlayer(object):
     def _init_dict(self, score_type=int):
         """Create and initialize scoring dictionary.
 
-      add holes, in, out, total.
-    """
+         add holes, in, out, total.
+        """
         return {
             "holes": [None for _ in range(len(self.game.golf_round.course.holes))],
             "in": score_type(0),
@@ -160,10 +159,8 @@ class GamePlayer(object):
         )
 
 
-class SqlGolfTeam(object):
-    """Base class for all golf teams."""
-
-    __metaclass__ = ABCMeta
+class SqlGolfTeam(ABC):
+    """Abstract base class for all golf teams."""
 
     def __init__(self, game, players, **kwargs):
         self.game = game

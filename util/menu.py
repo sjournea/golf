@@ -11,7 +11,7 @@ class InputException(Exception):
     pass
 
 
-class FileInput(object):
+class FileInput:
     def __init__(self, filename):
         self.filename = filename
         self._lstLines = open(self.filename, "r").readlines()
@@ -25,7 +25,7 @@ class FileInput(object):
         return curLine
 
 
-class MenuItem(object):
+class MenuItem:
     lstCmds = []
 
     def __init__(self, cmd, command, desc, func=None):
@@ -41,7 +41,7 @@ class MenuItem(object):
             MenuItem.lstCmds.append(self.cmd)
 
 
-class Menu(object):
+class Menu:
     def __init__(self, cmd_file=None, menuSize=50):
         self.lstMenuItems = []
         self.header = "****"
@@ -170,7 +170,7 @@ class Menu(object):
                     if len(self.lstCmd) > 1 and self.lstCmd[1] == "enable":
                         self._pause_enabled = True
                     if self._pause_enabled:
-                        x = raw_input("Continue ? ")
+                        x = input("Continue ? ")
                         if x == "x":
                             self.shutdown()
                             break
