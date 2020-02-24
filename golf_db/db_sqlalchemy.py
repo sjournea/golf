@@ -5,7 +5,7 @@ import datetime
 from sqlalchemy import Table, Column, ForeignKey
 from sqlalchemy import Integer, Float, String, Enum, Text, Date
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker, relationship, backref
 
 from .sql_game_factory import SqlGolfGameFactory
@@ -310,15 +310,15 @@ class Round(Base):
         lstPutts - list of putts per player.
     """
         if hole < 1 or hole > len(self.course.holes):
-            raise GolfException(
+            raise GolfDBException(
                 "hole number must be in 1-{}".format(len(self.course.holes))
             )
         lstGross = dct_scores["lstGross"]
         lstPutts = dct_scores.get("lstPutts")
         if len(lstGross) != len(self.results):
-            raise GolfException("gross scores do not match number of players")
+            raise GolfDBException("gross scores do not match number of players")
         if lstPutts and len(lstPutts) != len(self.results):
-            raise GolfException("putts do not match number of players")
+            raise GolfDBException("putts do not match number of players")
         # update scores
         for n, result in enumerate(self.results):
             score = Score(num=hole, gross=lstGross[n], result=result)
@@ -376,6 +376,11 @@ class Database:
     def create_tables(self):
         """Create all tables."""
         Base.metadata.create_all(self.engine)
+
+    def list_tables(self):
+        """Create all tables."""
+        inspector = inspect(self.engine)
+        return inspector.get_table_names()
 
 
 class DBAdmin(Database):
