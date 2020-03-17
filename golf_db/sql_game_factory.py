@@ -13,23 +13,24 @@ from .sql_game_eighty_one import SqlGameEightyOne
 from .sql_game_match import SqlGameMatch
 from .sql_game_rewards import SqlGameRewards
 
-dctGames = { 
-  'gross': SqlGameGross,
-  'net': SqlGameNet,
-  'skins': SqlGameSkins,
-  'putts': SqlGamePutts,
-  'stableford': SqlGameStableford,
-  'greenie': SqlGameGreenie,
-  'snake': SqlGameSnake,
-  'bestball': SqlGameBestBall,
-  'six_point': SqlGameSixPoint,
-  'eighty_one': SqlGameEightyOne,
-  'match': SqlGameMatch,
-  'rewards': SqlGameRewards,
+dctGames = {
+    "gross": SqlGameGross,
+    "net": SqlGameNet,
+    "skins": SqlGameSkins,
+    "putts": SqlGamePutts,
+    "stableford": SqlGameStableford,
+    "greenie": SqlGameGreenie,
+    "snake": SqlGameSnake,
+    "bestball": SqlGameBestBall,
+    "six_point": SqlGameSixPoint,
+    "eighty_one": SqlGameEightyOne,
+    "match": SqlGameMatch,
+    "rewards": SqlGameRewards,
 }
 
+
 def SqlGolfGameFactory(game):
-  """Return the SQL game class.
+    """Return the SQL game class.
   
   Args:
     game: name of game.
@@ -38,12 +39,13 @@ def SqlGolfGameFactory(game):
   Raises:
     GolfException - bad game name.
   """
-  if game in dctGames:
-    return dctGames[game]
-  raise GolfException('SQL game "{}" not supported'.format(game))
+    if game in dctGames:
+        return dctGames[game]
+    raise GolfException('SQL game "{}" not supported'.format(game))
+
 
 def SqlGolfGameOptions(game):
-  """Return the SQL game options.
+    """Return the SQL game options.
   
   Args:
     game: name of game.
@@ -52,12 +54,12 @@ def SqlGolfGameOptions(game):
   Raises:
     GolfException - bad game name.
   """
-  if game in dctGames:
-    return dctGames[game].game_options
-  raise GolfException('SQL game "{}" not supported'.format(game))
+    if game in dctGames:
+        return dctGames[game].game_options
+    raise GolfException('SQL game "{}" not supported'.format(game))
+
 
 def SqlGolfGameList():
-  """Return list of available games."""
-  lst = dctGames.keys()
-  return sorted(lst) 
-  
+    """Return list of available games."""
+    lst = dctGames.keys()
+    return sorted(lst)
