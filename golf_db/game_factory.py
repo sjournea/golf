@@ -13,23 +13,24 @@ from .game_putts import PuttGame
 from .game_snake import SnakeGame
 from .game_greenie import GreenieGame
 
-dctGames = { 
-  'bestball': BestBallGame,
-  'skins': SkinsGame,
-  'gross': GrossGame,
-  'net': NetGame,
-  'six_point': SixPointGame, 
-  'eighty_one': EightyOneGame, 
-  'match': MatchGame, 
-  'stableford': StablefordGame, 
-  'vegas': VegasGame, 
-  'putts': PuttGame, 
-  'snake': SnakeGame, 
-  'greenie': GreenieGame, 
+dctGames = {
+    "bestball": BestBallGame,
+    "skins": SkinsGame,
+    "gross": GrossGame,
+    "net": NetGame,
+    "six_point": SixPointGame,
+    "eighty_one": EightyOneGame,
+    "match": MatchGame,
+    "stableford": StablefordGame,
+    "vegas": VegasGame,
+    "putts": PuttGame,
+    "snake": SnakeGame,
+    "greenie": GreenieGame,
 }
 
+
 def GolfGameFactory(game):
-  """Return the game class.
+    """Return the game class.
   
   Args:
     game: name of game.
@@ -38,12 +39,12 @@ def GolfGameFactory(game):
   Raises:
     GolfException - bad game name.
   """
-  if game in dctGames:
-    return dctGames[game]
-  raise GolfException('game "{}" not supported'.format(game))
+    if game in dctGames:
+        return dctGames[game]
+    raise GolfException('game "{}" not supported'.format(game))
+
 
 def GolfGameList():
-  """Return list of available games."""
-  lst = dctGames.keys()
-  return sorted(lst) 
-  
+    """Return list of available games."""
+    lst = dctGames.keys()
+    return sorted(lst)
