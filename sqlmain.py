@@ -188,14 +188,17 @@ class SQLMenu(Menu):
         session = self.db.Session()
         if self.lstCmd[1] == "testdata":
             for dct in DBGolfCourses:
-                co = GolfCourse(dct=dct)
-                course = Course(name=co.name)
-                for n, gh in enumerate(co.holes):
+                # co = GolfCourse(dct=dct)
+                course = Course(name=dct["name"])
+                for n, dct_hole in enumerate(dct["holes"]):
                     hole = Hole(
-                        par=gh.par, handicap=gh.handicap, num=n + 1, course=course
+                        par=dct_hole["par"],
+                        handicap=dct_hole["handicap"],
+                        num=n + 1,
+                        course=course,
                     )
                     session.add(hole)
-                for gt in co.tees:
+                for gt in dct["tees"]:
                     tee = Tee(
                         gender=gt["gender"],
                         name=gt["name"],

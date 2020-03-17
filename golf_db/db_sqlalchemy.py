@@ -79,7 +79,7 @@ class Tee(Base):
     __tablename__ = "tees"
     tee_id = Column(Integer(), primary_key=True)
     course_id = Column(Integer(), ForeignKey("courses.course_id"), nullable=False)
-    gender = Column(Enum("mens", "womens", name="gender"))
+    gender = Column(Enum("mens", "womens", name="gender"), nullable=False)
     name = Column(String(32), nullable=False)
     rating = Column(Float(), nullable=False)
     slope = Column(Integer(), nullable=False)

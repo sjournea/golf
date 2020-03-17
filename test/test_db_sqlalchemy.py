@@ -1,6 +1,6 @@
 """test_db_sqlalchemy.py"""
 import pytest
-from golf_db.db_sqlalchemy import Player, Hole
+from golf_db.db_sqlalchemy import Player, Hole, Tee, Course
 from golf_db.db_sqlalchemy import Database, DBAdmin
 
 
@@ -15,6 +15,13 @@ tables = sorted(
 @pytest.fixture
 def db():
     return Database(test_golf_url)
+
+
+@pytest.fixture
+def sess():
+    db = Database(test_golf_url)
+    db.create_tables()
+    return db.create_session()
 
 
 @pytest.fixture
@@ -106,13 +113,46 @@ class TestPlayer:
         for value in dct.values():
             assert str(value) in s
 
+    @pytest.mark.parametrize("dct", lst_valid_players)
+    def test_insert(self, sess, dct):
+        p = Player(**dct)
+        sess.add(p)
+        sess.commit()
+
+    def test_insert_fail_no_email(self, sess):
+        p = Player()
+        sess.add(p)
+        with pytest.raises(Exception):
+            sess.commit()
+
+    def test_insert_fail_bad_gender(self, sess):
+        p = Player(email="sj@tl.com", gender="dog")
+        sess.add(p)
+        with pytest.raises(Exception):
+            sess.commit()
+
+    def test_insert_fail_duplicate_email(self, sess):
+        p = Player(email="sj@tl.com")
+        sess.add(p)
+        sess.commit()
+        p2 = Player(email="sj@tl.com")
+        sess.add(p2)
+        with pytest.raises(Exception):
+            sess.commit()
+
 
 class TestHole:
     lst_columns = ["hole_id", "course_id", "num", "par", "handicap"]
     lst_valid_holes = [
-        {"num": 1, "par": 4, "handicap": 1},
-        {"num": 2, "par": 3, "handicap": 17},
-        {"num": 3, "par": 5, "handicap": 3},
+        {"course_id": 1, "num": 1, "par": 4, "handicap": 1},
+        {"course_id": 1, "num": 2, "par": 3, "handicap": 17},
+        {"course_id": 1, "num": 3, "par": 5, "handicap": 3},
+    ]
+    lst_invalid_holes = [
+        {},
+        {"course_id": 1, "num": 1, "par": 4},
+        {"course_id": 1, "num": 2, "handicap": 17},
+        {"course_id": 1, "par": 5, "handicap": 3},
     ]
 
     def test_columns(self):
@@ -132,3 +172,63 @@ class TestHole:
     def test_str_(self, dct):
         h = Hole(**dct)
         assert str(h) == f"par {h.par} handicap {h.handicap}"
+
+    @pytest.mark.parametrize("dct", lst_valid_holes)
+    def test_insert(self, sess, dct):
+        h = Hole(**dct)
+        sess.add(h)
+        sess.commit()
+
+    @pytest.mark.parametrize("dct", lst_invalid_holes)
+    def test_insert_fail_invalid_holes(self, sess, dct):
+        h = Hole(**dct)
+        sess.add(h)
+        with pytest.raises(Exception):
+            sess.commit()
+
+
+class TestTees:
+    lst_columns = ["tee_id", "course_id", "gender", "name", "rating", "slope"]
+    lst_valid_tees = [
+        {"course_id": 1, "gender": "mens", "name": "Blue", "rating": 72.2, "slope": 68},
+        {
+            "course_id": 1,
+            "gender": "womens",
+            "name": "Red",
+            "rating": 72.2,
+            "slope": 68,
+        },
+    ]
+    lst_invalid_tees = [
+        {},
+        {"gender": "mens", "name": "Blue", "rating": 72.2, "slope": 68},
+        {"course_id": 1, "name": "Blue", "rating": 72.2, "slope": 68},
+        {"course_id": 1, "gender": "mens", "rating": 72.2, "slope": 68},
+        {"course_id": 1, "gender": "mens", "name": "Blue", "slope": 68},
+        {"course_id": 1, "gender": "mens", "name": "Blue", "rating": 72.2},
+        {"course_id": 1, "gender": "goat", "name": "Blue", "rating": 72.2, "slope": 68},
+    ]
+
+    def test_columns(self):
+        assert Tee.__table__.columns.keys() == self.lst_columns
+
+    @pytest.mark.parametrize("dct", lst_valid_tees)
+    def test_insert(self, sess, dct):
+        t = Tee(**dct)
+        sess.add(t)
+        sess.commit()
+
+    @pytest.mark.parametrize("dct", lst_invalid_tees)
+    def test_insert_fail_invalid_tees(self, sess, dct):
+        h = Tee(**dct)
+        sess.add(h)
+        with pytest.raises(Exception):
+            sess.commit()
+
+
+class TestCourse:
+    lst_columns = ["course_id", "name"]
+    lst_all_columns = lst_columns + ["holes", "tees", "round"]
+
+    def test_columns(self):
+        assert Course.__table__.columns.keys() == self.lst_columns
