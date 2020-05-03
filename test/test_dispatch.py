@@ -1,25 +1,22 @@
 """ functional_tests.py """
 import time
-import unittest
 
 from util.dispatch import PathDispatcher
 
-class DispatchInstanceTest(unittest.TestCase):
-  def setUp(self):
-    pass
 
-  def test_create(self):
-    pd = PathDispatcher()
-    self.assertEqual(pd.pathmap, {})
+class TestDispatchInstance:
+    def test_create(self):
+        pd = PathDispatcher()
+        assert pd.pathmap == {}
 
-    
+
 def config_register(dispatcher):
-  dispatcher.register('GET', '/hello', hello_world)
-  dispatcher.register('GET', '/localtime', localtime)
+    dispatcher.register("GET", "/hello", hello_world)
+    dispatcher.register("GET", "/localtime", localtime)
 
 
-class DispatchRunTest(unittest.TestCase):
-  hello_resp = """
+class TestDispatchRun:
+    hello_resp = """
   <html>
     <head>
       <title>Hello {name}</title>
@@ -29,14 +26,14 @@ class DispatchRunTest(unittest.TestCase):
     </body>
   </html>
   """
-  
-  def hello_world(self, environ, start_response):
-    start_response('200 OK', [('Content-type', 'text/html')])
-    params = environ['params']
-    resp = self.hello_resp.format(name=params.get('name'))
-    yield resp.encode('utf-8')
-    
-  localtime_resp = '''\
+
+    def hello_world(self, environ, start_response):
+        start_response("200 OK", [("Content-type", "text/html")])
+        params = environ["params"]
+        resp = self.hello_resp.format(name=params.get("name"))
+        yield resp.encode("utf-8")
+
+    localtime_resp = """\
   <?xml version="1.0"?>
   <time>
     <year>{t.tm_year}</year>
@@ -46,23 +43,21 @@ class DispatchRunTest(unittest.TestCase):
     <minute>{t.tm_min}</minute>
     <second>{t.tm_sec}</second>
   </time>
-  '''
-  
-  def localtime(self, environ, start_response):
-    start_response('200 OK', [('Content-type', 'application/xml')])
-    resp = self.localtime_resp.format(t=time.localtime())
-    yield resp.encode('utf-8')
+  """
 
-  
-  def test_register(self):
-    pd = PathDispatcher()
-    paths = (
-      ('GET', '/hello', self.hello_world),
-      ('GET', '/localtime', self.localtime),
-    )
-    self.assertEqual(len(pd.pathmap), 0)
-    for n,(method, path, function) in enumerate(paths):
-      pd.register(method, path, function)
-      self.assertEqual(len(pd.pathmap), n+1)
-      self.assertIn((method.lower(), path), pd.pathmap)
+    def localtime(self, environ, start_response):
+        start_response("200 OK", [("Content-type", "application/xml")])
+        resp = self.localtime_resp.format(t=time.localtime())
+        yield resp.encode("utf-8")
 
+    def test_register(self):
+        pd = PathDispatcher()
+        paths = (
+            ("GET", "/hello", self.hello_world),
+            ("GET", "/localtime", self.localtime),
+        )
+        assert len(pd.pathmap) == 0
+        for n, (method, path, function) in enumerate(paths):
+            pd.register(method, path, function)
+            assert len(pd.pathmap) == n + 1
+            assert (method.lower(), path) in pd.pathmap
